@@ -1,0 +1,224 @@
+@startuml "Diagramme de classe"
+class Robot {
+    # pos : Position
+    # vit : double
+    # capteurs : ArrayList<AddOn>
+    # strat : Strategie
+
+    + Robot(s : Strategie)
+    + Robot(x : double , y : double , s : Strategie)
+    + Robot(p : Position , s : Strategie)
+
+
+    + update(s : Solution) : boolean
+    + getPos() : Position
+    + move(dl : double , dr : double , ecartRoues : double) : Position
+    + getVit() : double
+    + setVit(v : double) : void
+    + getStrat() : Strategie
+    + getAddOn(c : Class<T extends AddOn>) :  List<T>
+}
+
+class Position {
+    # x : double
+    # y : double
+    # theta : double
+
+    + Position(x : double , y : double , theta : double)
+
+    + getX() : double
+    + getY() : double
+    + getTheta() : double
+    + clone() : Object
+    + rotate(alpha : double) : Position
+    + toString() : String
+    # normalizeAngle(a : double) : double
+}
+
+
+
+abstract class AddOn<T> {
+    # forme : Forme
+
+    + AddOn(f : Forme)
+
+    {abstract} + getInfo() : T
+    + getForme() : Forme
+    {abstract} + update(s :  Simulation) : boolean
+}
+
+class CapteurContact {
+    + CapteurContact(f : ArcDeCercle)
+
+    + getInfo() : Boolean
+    + update(s : Simulation) : boolean
+}
+
+class CapteurSalete {
+    + CapteurSalete(f : Cercle)
+
+    + getInfo() : Boolean
+    + update(s : Simulation) : boolean
+}
+
+class CapteurLaser {
+    # portee : Forme
+
+    + CapteurLaser(f : Forme , p : Rectangle)
+
+    + getInfo() : boolean
+    + update(s : Simulation) : boolean
+}
+
+abstract class Forme {
+    # centre : Position
+
+    + Forme(p : Position)
+    + Forme(x : double , y : double)
+
+    + getCentre() : Position
+    + setCentre(p : Position) : void
+    + estSuperposee(f : Forme) : boolean
+    {abstract}+ rotation(alpha : double) : Forme
+    {abstract}+ rotation(alpha : double , p : Position) : Forme
+}
+
+class Rectangle {
+    # longueur : double
+    # largeur : double
+
+    + Rectangle()
+    + Rectangle(p : Position , l1 : double , l2 : double)
+    + Rectangle(x : double , y : double , l1 : double , l2 : double)
+
+    + getLongueur() : double
+    + setLongueur(l : double) : void
+    + getLargeur() : double
+    + setLargeur(l : double) : void
+    + rotation(alpha : double) : Forme
+    + rotation(alpha : double , p : Position) : Forme
+}
+
+class Cercle {
+    # diametre : double
+
+    + Cercle()
+    + Cercle(p : Position , d : double)
+    + Cercle(x : double , y : double , d : double)
+
+    + getDiametre() : double
+    + setDiametre(d : double) : void
+    + rotation(alpha : double) : Forme
+    + rotation(alpha : double , p : Position) : Forme
+}
+
+class ArcDeCercle {
+    # ang1 : double
+    # ang2 : double
+
+    + ArcDeCercle(p : Psoition , d : double , a1 : double , a2 : double)
+    + ArcDeCercle(x : double , y : double , d : double , a1 : double , a2 : double)
+
+    + getOuverture() : double
+    + getorientation() : double
+    + setOuverture(o : double) : void
+    + setOrientation(o : double) : void
+    + rotation(alpha : double) : Forme
+    + rotation(alpha : double , p : Position) : Forme
+}
+
+class Polygone {
+    # points : List<Position>
+
+    + Polygone(p : Position , cp : Collection<Position>)
+
+    + getPoints() : List<Position>
+}
+
+class Tache {
+    + Tache(f : Forme)
+}
+
+class Obstacle {
+    + Obstacle(f : Forme)
+
+    + gestionCollision(e : Element) : boolean
+}
+
+abstract class Element {
+    #forme : Forme
+
+    + Element(f : Forme)
+
+    + getForme() : Forme
+    + update(s : Simulation) : boolean
+}
+
+
+class StratAleatoire
+
+class StratSuiveurMurs
+
+class StartChemin
+
+class Simulation {
+    # elems : ArrayList<Element>
+
+    + getCollisionable() : List<Collisionable>
+    + getElems(c : Class<T>) : List<T>
+    + play() : void
+    + pause() : void
+    + quit() : void
+    # update() : void
+    # run() : void
+}
+
+interface Nettoyable
+
+interface Collisionable {
+
+    {abstract} + gestionCollision(e : Element)
+
+}
+
+interface Runnable
+
+interface Strategie {
+    {abstract} + update(r : Robot) : boolean
+}
+
+CapteurContact --|> AddOn
+CapteurSalete --|> AddOn
+CapteurLaser --|> AddOn
+
+Rectangle --|> Forme
+Cercle --|> Forme
+Polygone --|> Forme
+
+ArcDeCercle --|> Cercle
+
+Robot --|> Element
+Robot ..|> Collisionable
+Position "1" --* "1" Robot
+AddOn "0..n" --* "1" Robot
+Strategie "1" --* "1" Robot
+
+Tache --|> Element
+
+Obstacle --|> Element
+Obstacle ..|> Collisionable
+
+StratAleatoire ..|> Strategie
+StratSuiveurMurs ..|> Strategie
+StartChemin ..|> Strategie
+
+Forme "1" --* "1" Element
+
+Position "1" --* "1" Forme
+Forme "1" --* "1" AddOn
+
+Tache ..|> Nettoyable
+
+Simulation ..|> Runnable
+Element "0..1" --* "1" Simulation
+@enduml
