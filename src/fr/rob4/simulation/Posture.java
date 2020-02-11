@@ -4,7 +4,7 @@ package fr.rob4.simulation;
  * Represente la position (coordonnees et orientation) d'un robot a deux roues
  */
 public class Posture implements Cloneable {
-    private double x, y, theta;
+    protected double x, y, theta;
 
     /**
      * Constructeur
