@@ -1,10 +1,13 @@
 package fr.rob4.simulation;
 
+import fr.rob4.simulation.geometrie.Vecteur2D;
+
 /**
  * Represente la position (coordonnees et orientation) d'un robot a deux roues
  */
-public class Posture implements Cloneable {
-    private double x, y, theta;
+public class Position implements Cloneable {
+    protected double theta;
+    protected Vecteur2D coord;
 
     /**
      * Constructeur
@@ -16,7 +19,7 @@ public class Posture implements Cloneable {
      * @param y     Coordonnee y initiale
      * @param theta Angle initial
      */
-    public Posture(double x, double y, double theta) {
+    public Position(double x, double y, double theta) {
 	this.x = x;
 	this.y = y;
 	this.theta = theta;
@@ -36,7 +39,7 @@ public class Posture implements Cloneable {
     }
 
     public Object clone() {
-	return new Posture(x, y, theta);
+	return new Position(x, y, theta);
     }
 
     /**
@@ -44,7 +47,7 @@ public class Posture implements Cloneable {
      * 
      * @param alpha Angle de la rotation
      */
-    public Posture rotate(double alpha) {
+    public Position rotate(double alpha) {
 	double x_ = Math.cos(alpha) * getX() - Math.sin(alpha) * getY();
 	double y_ = Math.cos(alpha) * getY() + Math.sin(alpha) * getX();
 	x = x_;
@@ -60,18 +63,18 @@ public class Posture implements Cloneable {
      * @param d_r        distance parcourue par la roue droite
      * @param ecartRoues distance entre les deux roues
      */
-    public Posture move(double d_l, double d_r, double ecartRoues) {
+    public Position move(double d_l, double d_r, double ecartRoues) {
 	double alpha = (d_r - d_l) / ecartRoues;
-	Posture p = null;
+	Position p = null;
 	if (alpha > 1e-20 || alpha < -1e-20) {
 	    double r = (d_l / alpha) + ecartRoues / 2;
 	    double d_x = (Math.cos(alpha) - 1) * r;
 	    double d_y = Math.sin(alpha) * r;
-	    p = new Posture(d_x, d_y, alpha);
+	    p = new Position(d_x, d_y, alpha);
 	    p.rotate(this.getTheta() - Math.PI / 2);
 	    p.theta = alpha;
 	} else {
-	    p = new Posture(d_l * Math.cos(this.getTheta()),
+	    p = new Position(d_l * Math.cos(this.getTheta()),
 		    d_l * Math.sin(this.getTheta()), 0);
 	}
 
@@ -107,7 +110,7 @@ public class Posture implements Cloneable {
     // Exemple d'utilisation
     public static void main(String args[]) {
 	double largeur_robot = 34.0; // Le robot mesure 34cm de large
-	Posture p = new Posture(0, 0, 0); // Nouvelle posture a l'origine
+	Position p = new Position(0, 0, 0); // Nouvelle posture a l'origine
 	for (int j = 0; j < 4; ++j) {
 	    for (int i = 0; i < 10; ++i) {
 		System.out.println(p);
