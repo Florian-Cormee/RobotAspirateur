@@ -4,7 +4,7 @@ skinparam linetype ortho
 
 ' package "geometrie" {
     abstract class Forme {
-        # centre : Position
+        # centre : Point2D
 
         + Forme(p : Position)
         + Forme(x : double , y : double)
@@ -12,10 +12,10 @@ skinparam linetype ortho
         + getCentre() : Position
         + setCentre(p : Position) : void
         + estSuperposee(f : Forme) : boolean
-        {abstract}+ rotation(alpha : double) : Forme
-        {abstract}+ rotation(alpha : double , p : Position) : Forme
+        {abstract} + rotation(alpha : double) : Forme
+        {abstract} + rotation(alpha : double , p : Position) : Forme
     }
-    Forme "1" *-- "1" Position
+    Forme "1" *-- "1" Point2D
 
     class Rectangle {
         # longueur : double
@@ -73,14 +73,46 @@ skinparam linetype ortho
     }
     Polygone --|> Forme
 
+    class Vecteur2D {
+        # x : double
+        # y : double
 
+        + Vecteur2D()
+        + Vecteur2D(x : double , y : double)
 
+        + getX() : double
+        + getY() : double
+        + addition(v : Vecteur2D) : Vecteur2D
+        + getAngle(v : Vecteur2D) : double
+        + norme() : double
+        + normalise() : Vecteur2D
+        + produit(a : double) : Vecteur2D
+        + rotation(angle : double) : Vecteur2D
+        + scalaire(v : Vecteur2D) : double
+        + soustraction(v : Vecteur2D) : Vecteur2D
+        + clone() : Vecteur2D
+        + toString() : String
+        + equals(o : Object) : boolean
+        + equals(v : Vecteur2D , double epsilon) : boolean
+    }
 
+    class Point2D {
+        # origine : Point2D
+        # position : Vecteur2D
 
+        + Point2D(position : Vecteur2D)
+        + Point2D(position : Vecteur2D, origine : Point2D)
 
-
-
-
+        + getOrigine() : Point2D
+        + getPositionRelative() : Vecteur2D
+        + getPositionRelative(p : Point2D) : Vecteur2D
+        + deplace(v : Vecteur2D) : Point2D
+        + toString() : String
+        + equals(o : Object) : boolean
+        + equals(p : Point2D , double epsilon) : boolean
+    }
+    Point2D "1" *-- "1" Vecteur2D
+    ' Point2D "0..1" *-- "0..1" Point2D
 ' }
 
 ' package "element" {
@@ -117,6 +149,7 @@ skinparam linetype ortho
     Obstacle ..|> ICollisionable
 
     class Robot {
+        # direction : Vecteur2D
         # vitesse : double
         # modules : List<IModule<?>>
         # IStrategie : IStrategie
@@ -137,6 +170,7 @@ skinparam linetype ortho
     Robot ..|> ICollisionable
     Robot  "1" *-- "0..n" IModule
     Robot  "1" *-- "1" IStrategie
+    Robot "1" *-- "1" Vecteur2D
 
     class Tache {
         + Tache(f : Forme)
@@ -201,22 +235,6 @@ skinparam linetype ortho
 
 interface IActuallisable {
     {abstract} + actualise(simulation : Simulation) : boolean
-}
-
-class Position {
-    # x : double
-    # y : double
-    # theta : double
-
-    + Position(x : double , y : double , theta : double)
-
-    + getX() : double
-    + getY() : double
-    + getTheta() : double
-    + clone() : Object
-    + rotate(alpha : double) : Position
-    + toString() : String
-    # normalizeAngle(a : double) : double
 }
 
 class Simulation {
