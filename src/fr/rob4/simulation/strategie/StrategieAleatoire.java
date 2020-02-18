@@ -1,4 +1,4 @@
-package fr.rob4.simulation;
+package fr.rob4.simulation.strategie;
 
 import fr.rob4.simulation.element.Robot;
 import fr.rob4.simulation.strategie.IStrategie;

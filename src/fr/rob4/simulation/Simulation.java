@@ -7,6 +7,9 @@ import java.util.List;
 import fr.rob4.simulation.element.IElement;
 
 public class Simulation {
+    /** Période d'échantillonage (en secondes) */
+    public static final double T = 1e-2;
+    
     protected List<IElement> elements;
 
     public List<IElement> getElements() {
@@ -22,19 +25,19 @@ public class Simulation {
 	}
 	return list;
     }
-    
+
     public void joue() {
 	// TODO
     }
-    
+
     public void pause() {
 	// TODO
     }
-    
+
     public void quitter() {
 	// TODO
     }
-    
+
     protected void actualise() {
 	// TODO
     }
