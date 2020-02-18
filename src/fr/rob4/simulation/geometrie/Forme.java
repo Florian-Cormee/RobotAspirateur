@@ -3,7 +3,7 @@
  */
 package fr.rob4.simulation.geometrie;
 
-import fr.rob4.simulation.Position;
+
 
 /**
  * @author flore
@@ -12,21 +12,21 @@ import fr.rob4.simulation.Position;
 public abstract class Forme {
 	
 	// Attribut
-	protected Position centre;
+	protected Point2D centre;
 	
-	public Forme( Position p ) {
+	public Forme( Point2D p ) {
 		centre = p;
 	}
 	
 	public Forme( double x, double y ) {
-		centre = new Position(x, y, 0);
+		centre = new Point2D(new Vecteur2D(x, y));
 	}
 
-	public Position getCentre() {
+	public Point2D getCentre() {
 		return centre;
 	}
 
-	public void setCentre(Position centre) {
+	public void setCentre(Point2D centre) {
 		this.centre = centre;
 	}
 	
@@ -38,5 +38,5 @@ public abstract class Forme {
 		return rotation(alpha,centre);
 	}
 	
-	public abstract Forme rotation( double alpha, Position p );
+	public abstract Forme rotation( double alpha, Point2D p );
 }
