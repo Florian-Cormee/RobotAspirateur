@@ -3,7 +3,7 @@
  */
 package fr.rob4.simulation.geometrie;
 
-import fr.rob4.simulation.Position;
+
 
 /**
  * @author flore
@@ -16,7 +16,7 @@ public class Cercle extends Forme {
 	/**
 	 * @param p
 	 */
-	public Cercle(Position p , double d) {
+	public Cercle(Point2D p , double d) {
 		super(p);
 		diametre = d;
 	}
@@ -31,12 +31,13 @@ public class Cercle extends Forme {
 	}
 
 	/* (non-Javadoc)
-	 * @see fr.rob4.simulation.geometrie.Forme#rotation(double, fr.rob4.simulation.Position)
+	 * @see fr.rob4.simulation.geometrie.Forme#rotation(double, fr.rob4.simulation.Point2D)
 	 */
 	@Override
-	public Forme rotation(double alpha, Position p) {
-		// TODO Auto-generated method stub
-		return null;
+	public Forme rotation(double alpha, Point2D p) {
+		Vecteur2D newPos = p.getPositionRelative(centre).rotation(alpha).addition(p.position);
+		Cercle newCercle = new Cercle(new Point2D(centre.origine, newPos),diametre);
+		return newCercle;
 	}
 
 }
