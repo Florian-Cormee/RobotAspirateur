@@ -19,7 +19,7 @@ public class Robot extends Element implements ICollisionable {
 
     protected List<IModule<?>> modules;
     protected IStrategie strategie;
-    protected Vecteur2D direction;
+    protected double theta;
     protected double ecartRoues;
 
     /**
@@ -38,10 +38,10 @@ public class Robot extends Element implements ICollisionable {
      * @see Collections#emptyList()
      */
     public Robot(Forme forme, Collection<? extends IModule<?>> capteurs,
-	    IStrategie strategie, Vecteur2D direction, double ecartRoues) {
+	    IStrategie strategie, double theta, double ecartRoues) {
 	super(forme);
 	this.strategie = Objects.requireNonNull(strategie);
-	this.direction = Objects.requireNonNull(direction).normalise();
+	this.theta = theta;
 	if (capteurs == null) {
 	    this.modules = Collections.emptyList();
 	} else {
@@ -66,17 +66,22 @@ public class Robot extends Element implements ICollisionable {
      * @param dD La distance parcourue par la roue droite
      */
     public void deplace(double dG, double dD) {
-	// Mise à jour de la position & limitation par la vitesse du déplacement
-	double distance = Math.min((dG + dD) / 2, VITESSE_MAX * Simulation.T);
-	Vecteur2D deplacement = direction.produit(distance);
-	Point2D pos = getPosition().deplace(deplacement);
-	forme.setCentre(pos);
-	// Mise à jour de la direction
-	Vecteur2D uCA = direction.rotation(Math.PI / 2);
-	Vecteur2D dir = direction.addition(uCA.produit((dD - dG) / ecartRoues))
-		.normalise();
-	double dtheta = direction.getAngle(dir);
-	forme = forme.rotation(dtheta);
+	double alpha = (dD - dG) / ecartRoues;
+	Vecteur2D deplacement;
+	if (Math.abs(alpha) > 1e-20) {
+	    double r = (dG / alpha) + (ecartRoues / 2);
+	    double dx = r * (Math.cos(alpha) - 1);
+	    double dy = r * Math.sin(alpha);
+	    deplacement = new Vecteur2D(dx, dy);
+	    deplacement = deplacement.rotation(theta - Math.PI / 2);
+	} else {
+	    double dx = dG * Math.cos(theta);
+	    double dy = dG * Math.sin(theta);
+	    deplacement = new Vecteur2D(dx, dy);
+	    alpha = 0;
+	}
+	forme.setCentre(getPosition().deplace(deplacement));
+	theta += alpha;
     }
 
     /**
@@ -135,7 +140,7 @@ public class Robot extends Element implements ICollisionable {
     @Override
     public String toString() {
 	return "Robot [modules=" + modules + ", strategie=" + strategie
-		+ ", direction=" + direction + ", toString()="
+		+ ", theta=" + theta + ", toString()="
 		+ super.toString() + "]";
     }
 }
