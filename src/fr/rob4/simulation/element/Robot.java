@@ -13,7 +13,7 @@ import fr.rob4.simulation.geometrie.Point2D;
 import fr.rob4.simulation.geometrie.Vecteur2D;
 import fr.rob4.simulation.strategie.IStrategie;
 
-public class Robot extends Element implements ICollisionable {
+public class Robot extends Element implements ICollisionable, IActuallisable {
     /** Vitesse maximale des robots (en m/s) */
     public static final double VITESSE_MAX = 1;
 
@@ -21,6 +21,7 @@ public class Robot extends Element implements ICollisionable {
     protected IStrategie strategie;
     protected double theta;
     protected double ecartRoues;
+    protected Point2D dernierePos;
 
     /**
      * Crée un robot
@@ -60,27 +61,49 @@ public class Robot extends Element implements ICollisionable {
     }
 
     /**
+     * Définit la nouvelle position
+     * 
+     * S'assure que la position soit non {@code null}<br>
+     * Sauvegarde la précédente position
+     * 
+     * @param pos La nouvelle position
+     */
+    protected void setPosition(Point2D pos) {
+	Objects.requireNonNull(pos);
+	dernierePos = getPosition();
+	forme.setCentre(pos);
+    }
+
+    /**
      * Déplace en fonction des distances parcourues par les roues
      * 
      * @param dG La distance parcourue par la roue gauche
      * @param dD La distance parcourue par la roue droite
      */
     public void deplace(double dG, double dD) {
+	// Limitation du déplacement des roues
+	dG = Math.min(dG, VITESSE_MAX * Simulation.T);
+	dD = Math.min(dD, VITESSE_MAX * Simulation.T);
+	// Déplacement du robot (cf. code fourni dans Position.java)
 	double alpha = (dD - dG) / ecartRoues;
 	Vecteur2D deplacement;
 	if (Math.abs(alpha) > 1e-20) {
+	    // Rotation non négligeable
 	    double r = (dG / alpha) + (ecartRoues / 2);
 	    double dx = r * (Math.cos(alpha) - 1);
 	    double dy = r * Math.sin(alpha);
 	    deplacement = new Vecteur2D(dx, dy);
 	    deplacement = deplacement.rotation(theta - Math.PI / 2);
 	} else {
+	    // Rotation négligeable
 	    double dx = dG * Math.cos(theta);
 	    double dy = dG * Math.sin(theta);
 	    deplacement = new Vecteur2D(dx, dy);
 	    alpha = 0;
 	}
-	forme.setCentre(getPosition().deplace(deplacement));
+	// Mise à jour de la position et de l'orientation
+	Point2D pos = getPosition().deplace(deplacement);
+	setPosition(pos);
 	theta += alpha;
     }
 
@@ -121,8 +144,9 @@ public class Robot extends Element implements ICollisionable {
 
     @Override
     public boolean gereCollision(Element element) {
-	// TODO Auto-generated method stub
-	return false;
+	// Annulation du dernier déplacement
+	setPosition(dernierePos);
+	return true;
     }
 
     /**
@@ -140,7 +164,6 @@ public class Robot extends Element implements ICollisionable {
     @Override
     public String toString() {
 	return "Robot [modules=" + modules + ", strategie=" + strategie
-		+ ", theta=" + theta + ", toString()="
-		+ super.toString() + "]";
+		+ ", theta=" + theta + ", toString()=" + super.toString() + "]";
     }
 }

@@ -1,25 +1,37 @@
 package fr.rob4.simulation.element.module;
 
+import java.util.List;
+import java.util.stream.Stream;
+
 import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.Element;
+import fr.rob4.simulation.element.ICollisionable;
+import fr.rob4.simulation.element.Robot;
 import fr.rob4.simulation.geometrie.Forme;
 
-public class CapteurContact extends Element implements IModule<Boolean>{
+public class CapteurContact extends Element implements IModule<Boolean> {
+    protected boolean collision;
 
     public CapteurContact(Forme forme) {
 	super(forme);
+	collision = false;
     }
 
     @Override
     public boolean actualise(Simulation simulation) {
-	// TODO Auto-generated method stub
-	return false;
+	List<ICollisionable> elements = simulation
+		.getElements(ICollisionable.class);
+	// Cherche parmis les éléments collisionable un avec lequel l'instance
+	// se superpose
+	Stream<ICollisionable> stream = elements.stream();
+	stream = stream.filter(e -> !(e instanceof Robot));
+	collision = stream.anyMatch(e -> forme.estSupperposee(e.getForme()));
+	return true;
     }
 
     @Override
     public Boolean getInfo() {
-	// TODO Auto-generated method stub
-	return null;
+	return collision;
     }
 
 }
