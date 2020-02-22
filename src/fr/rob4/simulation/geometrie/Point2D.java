@@ -5,13 +5,14 @@ import java.util.Objects;
 import fr.rob4.simulation.exception.NonRelatifException;
 
 /**
- * Cette classe repr�sente un Point2D. Il connait son rep�re d'origine �galement
- * rep�sent� par un Point2D. El�ment principale des Formes
+ * Cette classe represente un Point2D. Il connait son repere d'origine egalement
+ * represente par un Point2D. Element principale des Formes
  * 
  * @author Florentin BEROUJON & Florian CORMEE
  * @version 0.0.1
  * @see Vecteur2D
  * @see Forme
+ * @see NonRelatifException
  */
 public class Point2D {
     protected final Point2D origine;
@@ -30,9 +31,9 @@ public class Point2D {
     }
 
     /**
-     * Crée un Point2D dans le repère absolu
+     * Cree un Point2D dans le repere absolu
      * 
-     * @param position La postion dans le repère absolu
+     * @param position La postion dans le repere absolu
      * @see Point2D#Point2D(double, double)
      */
     public Point2D(Vecteur2D position) {
@@ -40,10 +41,10 @@ public class Point2D {
     }
 
     /**
-     * Obtient l'origine du repère relatif
+     * Obtient l'origine du repere relatif
      * 
-     * @return L'origine du repère relatif
-     * @throws NonRelatifException Quand le repère est absolu
+     * @return L'origine du repere relatif
+     * @throws NonRelatifException Quand le reere est absolu
      */
     public Point2D getOrigine() throws NonRelatifException {
 	if (origine == null) {

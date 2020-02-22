@@ -6,7 +6,17 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * @author flore
+ * Cette Classe représente un polygone. Il peut avoir autant de point que
+ * souhaité.
+ * 
+ * @author Florentin BEROUJON & Florian CORMEE
+ * @version 0.0.1
+ * @see Point2D
+ * @see Vecteur2D
+ * @see Forme
+ * @see Cercle
+ * @see ArcDeCercle
+ * @see Rectangle
  *
  */
 public class Polygone extends Forme {
@@ -15,7 +25,11 @@ public class Polygone extends Forme {
 	protected List<Point2D> points;
 
 	/**
-	 * @param p
+	 * Crée un polygone à partir de son centre et d'une liste de Point2D
+	 * représentant ses sommets.
+	 * 
+	 * @param p  Centre
+	 * @param cp Liste des sommets (Collection)
 	 */
 	public Polygone(Point2D p, Collection<Point2D> cp) {
 		super(p);
@@ -26,8 +40,12 @@ public class Polygone extends Forme {
 	}
 
 	/**
-	 * @param x
-	 * @param y
+	 * Crée un polygone à partir des coordonnées de son centre et d'une liste de
+	 * Point2D représentant ses sommets.
+	 * 
+	 * @param x Abscisse du centre.
+	 * @param y Ordonnée du centre.
+	 * @param cp Liste des sommets (Collection)
 	 */
 	public Polygone(double x, double y, Collection<Point2D> cp) {
 		super(x, y);
@@ -37,6 +55,11 @@ public class Polygone extends Forme {
 		}
 	}
 
+	/**
+	 * Obtient la liste des sommets.
+	 * 
+	 * @return Liste des sommets.
+	 */
 	public List<Point2D> getPoints() {
 		return points;
 	}

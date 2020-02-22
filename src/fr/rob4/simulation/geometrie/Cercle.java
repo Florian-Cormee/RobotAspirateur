@@ -4,8 +4,17 @@
 package fr.rob4.simulation.geometrie;
 
 /**
- * @author flore
- *
+ * Cette classe représente un Cercle paramétré par son centre et son diametre.
+ * Classe fille de Forme.
+ * 
+ * @author Florentin BEROUJON & Florian CORMEE
+ * @version 0.0.1
+ * @see Point2D
+ * @see Vecteur2D
+ * @see Forme
+ * @see ArcDeCercle
+ * @see Polygone
+ * @see Rectangle
  */
 public class Cercle extends Forme {
 
@@ -13,7 +22,10 @@ public class Cercle extends Forme {
 	protected double diametre;
 
 	/**
-	 * @param p
+	 * Crée un nouveau Cercle à partir de son centre et de son diametre.
+	 * 
+	 * @param p Centre
+	 * @param d Diametre
 	 */
 	public Cercle(Point2D p, double d) {
 		super(p);
@@ -21,8 +33,11 @@ public class Cercle extends Forme {
 	}
 
 	/**
-	 * @param x
-	 * @param y
+	 * Crée un nouveau cercle à partir des coordonnées du centre et du diamètre.
+	 * 
+	 * @param x Abscisse du centre.
+	 * @param y Ordonnée du centre.
+	 * @param d Diametre
 	 */
 	public Cercle(double x, double y, double d) {
 		super(x, y);
