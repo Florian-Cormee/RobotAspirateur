@@ -1,7 +1,7 @@
 package fr.rob4.simulation.strategie;
 
-import fr.rob4.simulation.element.Robot;
+import fr.rob4.simulation.element.IRobot;
 
 public interface IStrategie {
-    boolean decide(Robot robot);
+    boolean decide(IRobot robot);
 }

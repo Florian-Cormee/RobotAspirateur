@@ -1,33 +1,49 @@
 package fr.rob4.simulation.element.module;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.Element;
 import fr.rob4.simulation.element.INettoyable;
 import fr.rob4.simulation.geometrie.Forme;
 
-public class CapteurSalete extends Element implements IModule<Boolean> {
-    protected boolean sale;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+public class CapteurSalete extends Element implements IModule<Boolean> {
+    protected Set<INettoyable> nettoyables;
+
+    /**
+     * Crée un CapteurSalete à partir de sa zone de détection
+     * @param forme La zone de détection
+     */
     public CapteurSalete(Forme forme) {
-	super(forme);
-	sale = false;
+        super(forme);
+        nettoyables = new HashSet<>();
     }
 
     @Override
-    public boolean actualise(Simulation simulation) {
-	List<INettoyable> nettoyables = simulation
-		.getElements(INettoyable.class);
-	Stream<INettoyable> stream = nettoyables.stream();
-	sale = stream.anyMatch(e -> forme.estSupperposee(e.getForme()));
-	return true;
+    public void actualise(Simulation simulation) {
+        List<INettoyable> nettoyables = simulation.getElements(INettoyable.class);
+        this.nettoyables.clear();
+        for (INettoyable nettoyable : nettoyables) {
+            if (forme.estSupperposee(nettoyable.getForme())) {
+                this.nettoyables.add(nettoyable);
+            }
+        }
     }
 
     @Override
     public Boolean getInfo() {
-	return sale;
+        return nettoyables.size() > 0;
+    }
+
+    /**
+     * Obtient l'ensemble des nettoyables qui sont détectées
+     *
+     * @return L'ensemble des nettoyables qui sont détectées
+     */
+    public Set<INettoyable> getNettoyables() {
+        return nettoyables;
     }
 
 }
