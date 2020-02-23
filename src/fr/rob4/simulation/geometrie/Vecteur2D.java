@@ -54,13 +54,14 @@ public class Vecteur2D implements Cloneable {
      * @param v Un vecteur
      *
      * @return L'angle en radian dans l'intervalle ]-pi ; pi]
-	 * @throws IllegalArgumentException Quand l'instance ou {@code v} est un vecteur nul
+     *
+     * @throws IllegalArgumentException Quand l'instance ou {@code v} est un vecteur nul
      */
     public double angle(Vecteur2D v) {
-		if (scalaire(this) < 1e-10 || v.scalaire(v) < 1e-10) {
-			throw new IllegalArgumentException("On peut pas calculer l'angle avec un vecteur nul");
-		}
-			double prodNormes = norme() * v.norme();
+        if (scalaire(this) < 1e-10 || v.scalaire(v) < 1e-10) {
+            throw new IllegalArgumentException("On peut pas calculer l'angle avec un vecteur nul");
+        }
+        double prodNormes = norme() * v.norme();
         // Par définition du produit scalaire : s = ||this|| * ||v|| *
         // cos(angle)
         double cosAngle = scalaire(v) / prodNormes;
@@ -115,12 +116,12 @@ public class Vecteur2D implements Cloneable {
 
     @Override
     public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || getClass() != o.getClass()) {
-			return false;
-		}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Vecteur2D vecteur2D = (Vecteur2D) o;
         return equals(vecteur2D, 1e-20);
     }
@@ -149,13 +150,14 @@ public class Vecteur2D implements Cloneable {
      * Note : L'instance n'est pas modifiée.
      *
      * @return Un vecteur unitaire avec la même direction et même sens.
-	 * @throws IllegalArgumentException Quand l'instance est un vecteur nul
+     *
+     * @throws IllegalArgumentException Quand l'instance est un vecteur nul
      */
     public Vecteur2D normalise() {
         double norme = norme();
-        if(norme < 1e-10){
-        	throw new IllegalArgumentException("Ne peut pas normaliser un vecteur nul");
-		}
+        if (norme < 1e-10) {
+            throw new IllegalArgumentException("Ne peut pas normaliser un vecteur nul");
+        }
         return new Vecteur2D(x / norme, y / norme);
     }
 
@@ -180,8 +182,13 @@ public class Vecteur2D implements Cloneable {
      * @param angle L'angle de rotation
      *
      * @return Le vecteur tourné dans une nouvelle instance
+     *
+     * @throws IllegalArgumentException Quand l'instance est le vecteur nul
      */
     public Vecteur2D rotation(double angle) {
+        if (scalaire(this) < 1e-10) {
+            throw new IllegalArgumentException("Ne peut pas faire tourner le vecteur nul");
+        }
         double cosAngle = Math.cos(angle);
         double sinAngle = Math.sin(angle);
         return new Vecteur2D(x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle);
