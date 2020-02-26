@@ -4,9 +4,9 @@
 package fr.rob4.simulation.geometrie;
 
 /**
- * Cette classe représente un arc de cercle. C'est une portion de cercle. On
- * peut le manipuler grâce à 2 angles, la bisectrice de ces angles définissant
- * son orientation et son ouverture, la différence de ces 2 angles. Classe fille
+ * Cette classe reprÃ©sente un arc de cercle. C'est une portion de cercle. On
+ * peut le manipuler grÃ¢ce Ã  2 angles, la bisectrice de ces angles dÃ©finissant
+ * son orientation et son ouverture, la diffÃ©rence de ces 2 angles. Classe fille
  * de Cercle.
  * 
  * @author Florentin BEROUJON & Florian CORMEE
@@ -25,8 +25,8 @@ public class ArcDeCercle extends Cercle {
 	protected double ang2;
 
 	/**
-	 * Crée un arc de cercle à partir de son centre (Point2D), son diametre, et les
-	 * 2 angles définissant son ouverture et son orientation.
+	 * CrÃ©e un arc de cercle Ã  partir de son centre (Point2D), son diametre, et les
+	 * 2 angles dÃ©finissant son ouverture et son orientation.
 	 * 
 	 * @param p  Centre
 	 * @param d  Diametre
@@ -40,11 +40,11 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	/**
-	 * Crée un arc de cecle à partir des coordonnées de son centre, son diametre, et
-	 * les 2 angles définissant son ouverture et son orientatioon.
+	 * CrÃ©e un arc de cecle Ã  partir des coordonnÃ©es de son centre, son diametre, et
+	 * les 2 angles dÃ©finissant son ouverture et son orientatioon.
 	 * 
 	 * @param x  Abscisse du centre
-	 * @param y  Ordonnée du centre
+	 * @param y  OrdonnÃ©e du centre
 	 * @param d  Diametre
 	 * @param a1 1er angle
 	 * @param a2 2eme angle
@@ -67,7 +67,7 @@ public class ArcDeCercle extends Cercle {
 	 * @return Ouverture, un angle.
 	 */
 	public double getOuverture() {
-		return Math.max(ang1, ang2) - Math.min(ang1, ang2);
+		return Math.abs(ang1-ang2);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class ArcDeCercle extends Cercle {
 	 * @param o Nouvelle ouverture.
 	 */
 	public void setOuverture(double o) {
-		double mid = o / 2; // la moitié de la nouvelle ouverture
+		double mid = o / 2; // la moitiÃ© de la nouvelle ouverture
 		// On modifie les angles pour avoir la bonne ouverture autour de l'orientation
 		// actuelle
 		ang1 = getOrientation() + mid;
@@ -98,8 +98,8 @@ public class ArcDeCercle extends Cercle {
 	 * @param o Orientation, un angle.
 	 */
 	public void setOrientation(double o) {
-		double mid = getOuverture() / 2; // la moitié de l'ouverture actuelle
-		// On modofie les angles pour que l'ouverture soit la même autour de la
+		double mid = getOuverture() / 2; // la moitiÃ© de l'ouverture actuelle
+		// On modofie les angles pour que l'ouverture soit la mÃªme autour de la
 		// nouvelle orientation
 		ang1 = o + mid;
 		ang2 = o - mid;

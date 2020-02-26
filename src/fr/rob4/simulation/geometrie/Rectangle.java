@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Cette classe représente un rectangle. Il connait sa longueur et sa largeur.
+ * Cette classe reprÃ©sente un rectangle. Il connait sa longueur et sa largeur.
  * 
  * @author Florentin BEROUJON & Florian CORMEE
  * @version 0.0.1
@@ -13,7 +13,7 @@ import java.util.List;
  * @see Forme
  * @see Cercle
  * @see ArcDeCercle
- * @see Polygone s
+ * @see Polygone
  */
 public class Rectangle extends Forme {
 
@@ -22,7 +22,7 @@ public class Rectangle extends Forme {
 	protected double largeur;
 
 	/**
-	 * Crée un rectangle à partir de son centre, de sa longueur et de sa largeur.
+	 * CrÃ©e un rectangle Ã  partir de son centre, de sa longueur et de sa largeur.
 	 * 
 	 * @param p   Centre
 	 * @param lon Longeur
@@ -35,11 +35,11 @@ public class Rectangle extends Forme {
 	}
 
 	/**
-	 * Crée un rectangle à partir des coordonnées de son centre, de sa longueur et
+	 * CrÃ©e un rectangle Ã  partir des coordonnÃ©es de son centre, de sa longueur et
 	 * de sa largeur.
 	 * 
 	 * @param x   Abscisse du centre
-	 * @param y   Ordonnée du centre
+	 * @param y   OrdonnÃ©e du centre
 	 * @param lon Longeur
 	 * @param lar Largeur
 	 */
@@ -85,12 +85,6 @@ public class Rectangle extends Forme {
 		return largeur;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see fr.rob4.simulation.geometrie.Forme#rotation(double,
-	 * fr.rob4.simulation.geometrie.Point2D)
-	 */
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
