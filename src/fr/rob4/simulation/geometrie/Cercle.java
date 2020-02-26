@@ -67,5 +67,10 @@ public class Cercle extends Forme {
         // Cercle newCercle = new Cercle(new Point2D(centre.origine, newPos),diametre);
         return new Cercle(new Point2D(centre.origine, newPos), diametre);
     }
+    
+    @Override
+    public Rectangle getDimension() {
+    	return new Rectangle(centre, diametre, diametre);
+    }
 
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Cette classe représente un rectangle. Il connait sa longueur et sa largeur.
+ * Cette classe représente un rectangle. Il connait sa largeur et sa hauteur.
  * 
  * @author Florentin BEROUJON & Florian CORMEE
  * @version 0.0.1
@@ -18,78 +18,78 @@ import java.util.List;
 public class Rectangle extends Forme {
 
 	// Attributs
-	protected double longueur;
 	protected double largeur;
+	protected double hauteur;
 
 	/**
-	 * Crée un rectangle à partir de son centre, de sa longueur et de sa largeur.
+	 * Crée un rectangle à partir de son centre, de sa largeur et de sa hauteur.
 	 * 
 	 * @param p   Centre
-	 * @param lon Longeur
 	 * @param lar Largeur
+	 * @param h   hauteur
 	 */
-	public Rectangle(Point2D p, double lon, double lar) {
+	public Rectangle(Point2D p, double lar, double h) {
 		super(p);
-		longueur = lon;
 		largeur = lar;
+		hauteur = h;
 	}
 
 	/**
-	 * Crée un rectangle à partir des coordonnées de son centre, de sa longueur et
-	 * de sa largeur.
+	 * Crée un rectangle à partir des coordonnées de son centre, de sa largeur et de
+	 * sa hauteur.
 	 * 
 	 * @param x   Abscisse du centre
 	 * @param y   Ordonnée du centre
-	 * @param lon Longeur
 	 * @param lar Largeur
+	 * @param h   hauteur
 	 */
-	public Rectangle(double x, double y, double lon, double lar) {
+	public Rectangle(double x, double y, double lar, double h) {
 		super(x, y);
-		longueur = lon;
 		largeur = lar;
+		hauteur = h;
 	}
 
 	/**
 	 * Modifie la longeur du rectangle.
 	 *
-	 * @param longueur Nouvelle longeur.
-	 */
-	public void setLongueur(double longueur) {
-		this.longueur = longueur;
-	}
-
-	/**
-	 * Modifie la largeur du rectangle.
-	 * 
-	 * @param largeur Nouvelle largeur.
+	 * @param largeur Nouvelle longeur.
 	 */
 	public void setLargeur(double largeur) {
 		this.largeur = largeur;
 	}
 
 	/**
-	 * Obtient la longeur.
+	 * Modifie la hauteur du rectangle.
 	 * 
-	 * @return Longueur
+	 * @param hauteur Nouvelle hauteur.
 	 */
-	public double getLongueur() {
-		return longueur;
+	public void setHauteur(double hauteur) {
+		this.hauteur = hauteur;
 	}
 
 	/**
-	 * Obtient la largeur.
+	 * Obtient la longeur.
 	 * 
-	 * @return Largeur
+	 * @return largeur
 	 */
 	public double getLargeur() {
 		return largeur;
 	}
 
+	/**
+	 * Obtient la hauteur.
+	 * 
+	 * @return hauteur
+	 */
+	public double getHauteur() {
+		return hauteur;
+	}
+
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
-		double lon2 = longueur / 2;
-		double lar2 = largeur / 2;
+		double lon2 = largeur / 2;
+		double lar2 = hauteur / 2;
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, lar2))));
@@ -97,4 +97,8 @@ public class Rectangle extends Forme {
 		return new Polygone(centre, pointsRect).rotation(alpha, p);
 	}
 
+	@Override
+	public Rectangle getDimension() {
+		return this;
+	}
 }

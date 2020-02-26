@@ -93,4 +93,10 @@ public abstract class Forme {
 	 */
 	public abstract Forme rotation(double alpha, Point2D p);
 
+	/**
+	 * Obtient le Rectangle encadrant la forme.
+	 * 
+	 * @return Rectangle encadrant la forme.
+	 */
+	public abstract Rectangle getDimension();
 }

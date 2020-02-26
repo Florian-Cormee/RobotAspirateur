@@ -4,8 +4,18 @@
 package fr.rob4.simulation.geometrie;
 
 /**
- * @author flore
- *
+ * Cette classe représente un segment de droite délimité par 2 Point2D. Il peut
+ * également être manipulé à partir de son centre.
+ * 
+ * @author Florentin BEROUJON & Florian CORMEE
+ * @version 0.0.1
+ * @see Point2D
+ * @see Vecteur2D
+ * @see Forme
+ * @see Cercle
+ * @see ArcDeCercle
+ * @see Rectangle
+ * @see Polygone
  */
 public class Segment extends Forme {
 
@@ -91,15 +101,15 @@ public class Segment extends Forme {
 				+ Math.pow(c.diametre, 2);
 		double delta = Math.pow(beta, 2) - 4 * alpha * gamma;
 		// Conjecture
-		if (delta == 0) {
-			return null; // le cercle et est tangent au cercle
-		} else if (delta > 0 && alpha!=0) {
-			double t1 = (beta-Math.sqrt(delta))/(2*alpha);
-			double t2 = (beta+Math.sqrt(delta))/(2*alpha);
-			if(t1>=0 && t1<=1) {
+		if (delta == 0) { // le cercle et est tangent au cercle
+			return null;
+		} else if (delta > 0 && alpha != 0) {
+			double t1 = (beta - Math.sqrt(delta)) / (2 * alpha);
+			double t2 = (beta + Math.sqrt(delta)) / (2 * alpha);
+			if (t1 >= 0 && t1 <= 1) {
 				return new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1)));
 			}
-			if(t2>=0 && t2<=1) {
+			if (t2 >= 0 && t2 <= 1) {
 				return new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t2)));
 			}
 			return null;
@@ -111,4 +121,12 @@ public class Segment extends Forme {
 		return a.getPositionRelative(b).norme();
 	}
 
+	@Override
+	public Rectangle getDimension() {
+		Vecteur2D pa = a.getPositionAbsolue();
+		Vecteur2D pb = b.getPositionAbsolue();
+		double lar = Math.max(pa.x, pb.x) - Math.min(pa.x, pb.x);
+		double h = Math.max(pa.y, pb.y) - Math.min(pa.y, pb.y);
+		return new Rectangle(centre, lar, h);
+	}
 }
