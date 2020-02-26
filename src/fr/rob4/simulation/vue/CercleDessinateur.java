@@ -15,7 +15,7 @@ public class CercleDessinateur implements IDessinateur<Cercle> {
     public void dessine(Graphics2D graphics2D, double echelle, Cercle c) {
         Point2D centre = c.getCentre();
         Vecteur2D pos = centre.getPositionAbsolue();
-        double longueurD = c.getDiametre() * echelle;
+        double longueurD = c.getRayon() * echelle;
         int x = (int) (pos.getX() * echelle - (longueurD / 2));
         int y = (int) (pos.getY() * echelle - (longueurD / 2));
         int longueur = (int) longueurD;
