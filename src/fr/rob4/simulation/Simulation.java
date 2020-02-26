@@ -10,21 +10,29 @@ public class Simulation {
     public static final double T = 1e-2;
 
     protected List<IElement> elements;
+    protected ICollisionable bordures;
 
     /**
      * Crée une Simulation vide
+     *
+     * @param bordures Bordures de la zone de simulation
      */
-    public Simulation() {
-        elements = new ArrayList<>();
+    public Simulation(ICollisionable bordures) {
+        this.bordures = Objects.requireNonNull(bordures);
+        this.elements = new ArrayList<>();
+        this.elements.add(bordures);
     }
 
     /**
      * Crée une Simulation avec les éléments donnés
      *
+     * @param bordures Bordures de la zone de simulation
      * @param elements Les éléments à inclure dans la simulation
      */
-    public Simulation(Collection<? extends IElement> elements) {
+    public Simulation(ICollisionable bordures, Collection<? extends IElement> elements) {
+        this.bordures = Objects.requireNonNull(bordures);
         this.elements = new ArrayList<>(elements);
+        this.elements.add(bordures);
     }
 
     /**
@@ -91,6 +99,12 @@ public class Simulation {
         }
         return list;
     }
+
+    /**
+     * Obtient les bordures
+     * @return Les bordures
+     */
+    public ICollisionable getBordures() { return bordures;}
 
     /**
      * Obtient une vue non modifiable de la liste des éléments
