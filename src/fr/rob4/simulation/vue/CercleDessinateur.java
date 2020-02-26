@@ -5,17 +5,14 @@ import fr.rob4.simulation.geometrie.Point2D;
 import fr.rob4.simulation.geometrie.Vecteur2D;
 
 import java.awt.Graphics2D;
-import java.util.Objects;
 
-public class CercleDessinateur implements IDessinable {
-    private Cercle c;
+public class CercleDessinateur implements IDessinateur<Cercle> {
 
-    public CercleDessinateur(Cercle c) {
-        this.c = Objects.requireNonNull(c);
+    public CercleDessinateur() {
     }
 
     @Override
-    public void dessine(Graphics2D graphics2D, double echelle) {
+    public void dessine(Graphics2D graphics2D, double echelle, Cercle c) {
         Point2D centre = c.getCentre();
         Vecteur2D pos = centre.getPositionAbsolue();
         double longueurD = c.getDiametre() * echelle;
@@ -23,5 +20,10 @@ public class CercleDessinateur implements IDessinable {
         int y = (int) (pos.getY() * echelle - (longueurD / 2));
         int longueur = (int) longueurD;
         graphics2D.drawOval(x, y, longueur, longueur);
+    }
+
+    @Override
+    public Class<Cercle> getType() {
+        return Cercle.class;
     }
 }
