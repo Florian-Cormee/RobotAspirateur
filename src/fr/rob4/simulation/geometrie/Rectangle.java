@@ -87,6 +87,16 @@ public class Rectangle extends Forme {
 
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
+		
+		return toPolygone().rotation(alpha, p);
+	}
+
+	@Override
+	public Rectangle getDimension() {
+		return this;
+	}
+	
+	public Polygone toPolygone() {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = largeur / 2;
 		double lar2 = hauteur / 2;
@@ -94,11 +104,6 @@ public class Rectangle extends Forme {
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
-		return new Polygone(centre, pointsRect).rotation(alpha, p);
-	}
-
-	@Override
-	public Rectangle getDimension() {
-		return this;
+		return new Polygone(centre, pointsRect);
 	}
 }

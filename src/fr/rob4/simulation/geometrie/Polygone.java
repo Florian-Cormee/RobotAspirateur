@@ -81,9 +81,9 @@ public class Polygone extends Forme {
 	@Override
 	public Rectangle getDimension() {
 		double xMax = Double.NEGATIVE_INFINITY;
-		double xMin = Double.NEGATIVE_INFINITY;
+		double xMin = Double.POSITIVE_INFINITY;
 		double yMax = Double.NEGATIVE_INFINITY;
-		double yMin = Double.NEGATIVE_INFINITY;
+		double yMin = Double.POSITIVE_INFINITY;
 
 		for (Point2D p : points) {
 			Vecteur2D vTemp = p.getPositionAbsolue();
@@ -94,5 +94,21 @@ public class Polygone extends Forme {
 		}
 
 		return new Rectangle(centre, xMax - xMin, yMax - yMin);
+	}
+	
+	public List<Segment> getSegments(){
+		List<Segment> liste = new ArrayList<Segment>();
+		Point2D prem = points.get(0);
+		Point2D pt1 = prem;
+		//Point2D pt2 = points.get(1);
+		for( Point2D p : points) {
+			if( p.equals(prem)) {
+				continue;
+			}
+			liste.add(new Segment(pt1,p));
+			pt1 = p;
+		}
+		liste.add(new Segment(pt1,prem));
+		return liste;
 	}
 }
