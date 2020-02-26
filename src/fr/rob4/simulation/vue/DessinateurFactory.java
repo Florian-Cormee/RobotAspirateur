@@ -39,6 +39,7 @@ public class DessinateurFactory {
      *
      * @throws UnsupportedOperationException Quand il n'existe pas d'implémentation de dessinateur pour le type demandé
      */
+    @SuppressWarnings("unchecked")
     public <T> IDessinateur<T> createDessinateur(Class<T> c) {
         if (dessinateurMap.containsKey(c)) {
             return (IDessinateur<T>) dessinateurMap.get(c);
