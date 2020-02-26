@@ -3,6 +3,8 @@
  */
 package fr.rob4.simulation.geometrie;
 
+import fr.rob4.simulation.exception.NoIntersectionException;
+
 /**
  * Cette classe abstraite est une forme géometrique. Attribut de tous les
  * elements de la simulation.
@@ -65,6 +67,56 @@ public abstract class Forme {
 	 * @return true si les formes sont superposées, false sinon.
 	 */
 	public boolean estSupperposee(Forme f) {
+		// throw new UnsupportedOperationException();
+		if (this.getClass() == Cercle.class) {
+			return gereCercleSuperposition(f);
+		}
+		return false;
+	}
+
+	private boolean gereCercleSuperposition(Forme f) {
+		Cercle c = (Cercle) this;
+		if (f.getClass() == Cercle.class) {
+			Cercle c2 = (Cercle) f;
+			return centre.getPositionRelative(f.centre).norme() < c.rayon + c2.rayon;
+		}
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				s.intersecte(c);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Polygone pol = ((Rectangle) f).toPolygone();
+			for (Segment s : pol.getSegments()) {
+				try {
+					s.intersecte(c);
+					return true;
+				} catch (NoIntersectionException e) {
+					e.printStackTrace();
+					return false;
+				}
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			throw new UnsupportedOperationException();
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone pol = (Polygone) f;
+			for (Segment s : pol.getSegments()) {
+				try {
+					s.intersecte(c);
+					return true;
+				} catch (NoIntersectionException e) {
+					e.printStackTrace();
+				}
+			}
+			return false;
+		}		
 		throw new UnsupportedOperationException();
 	}
 
@@ -93,4 +145,10 @@ public abstract class Forme {
 	 */
 	public abstract Forme rotation(double alpha, Point2D p);
 
+	/**
+	 * Obtient le Rectangle encadrant la forme.
+	 * 
+	 * @return Rectangle encadrant la forme.
+	 */
+	public abstract Rectangle getDimension();
 }

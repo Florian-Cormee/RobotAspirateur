@@ -2,6 +2,11 @@ package fr.rob4.simulation.exception;
 
 import fr.rob4.simulation.geometrie.Point2D;
 
+/**
+ * 
+ * @author flore
+ *
+ */
 @SuppressWarnings("serial")
 public class NonRelatifException extends Exception {
     private Point2D point;
