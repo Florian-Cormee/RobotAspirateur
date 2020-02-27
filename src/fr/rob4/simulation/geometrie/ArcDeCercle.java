@@ -38,8 +38,8 @@ public class ArcDeCercle extends Cercle {
 	 */
 	public ArcDeCercle(Point2D p, double d, double a1, double a2) {
 		super(p, d);
-		ang1 = a1;
-		ang2 = a2;
+		ang1 = Outil.normalize_angle(a1);
+		ang2 = Outil.normalize_angle(a2);
 	}
 
 	/**

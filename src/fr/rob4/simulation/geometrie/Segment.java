@@ -118,6 +118,14 @@ public class Segment extends Forme {
 		throw new NoIntersectionException(this, "Ce segment n'a pas de collisions");
 	}
 
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de segment et un
+	 * autre segment mis en argument.
+	 * 
+	 * @param seg Segment avec lequel on teste les intersections
+	 * @return Point d'intersection.
+	 * @throws NoIntersectionException
+	 */
 	Point2D intersecte(Segment seg) throws NoIntersectionException {
 		Vecteur2D p = a.getPositionAbsolue();
 		Vecteur2D q = seg.a.getPositionAbsolue();
@@ -140,6 +148,14 @@ public class Segment extends Forme {
 		}
 	}
 
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de segment et un
+	 * cercle mis en argument.
+	 * 
+	 * @param c Cercle avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
 	List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		double dx = a.getPositionAbsolue().x - b.getPositionAbsolue().x;
@@ -174,6 +190,14 @@ public class Segment extends Forme {
 		throw new NoIntersectionException(this, "Il n\'y a pas d\'intersection.");
 	}
 
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de segment et un
+	 * polygone mis en argument.
+	 * 
+	 * @param pol Polygone avec lequel on teste les intersections
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		for (Segment s : pol.getSegments()) {
@@ -189,6 +213,14 @@ public class Segment extends Forme {
 		return liste;
 	}
 
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de segment et un
+	 * rectangle mis en argument.
+	 * 
+	 * @param r Rectangle avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
 			List<Point2D> liste = intersecte(r.toPolygone());
@@ -198,6 +230,14 @@ public class Segment extends Forme {
 		}
 	}
 
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de segment et un
+	 * arc de cercle mis en argument.
+	 * 
+	 * @param adc Arc de cercle avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
 	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
 		try {
 			List<Point2D> liste = intersecte(new Cercle(adc.centre, adc.rayon));
