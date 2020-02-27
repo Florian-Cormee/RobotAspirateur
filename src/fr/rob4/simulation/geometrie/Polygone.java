@@ -2,6 +2,8 @@ package fr.rob4.simulation.geometrie;
 
 import java.util.*;
 
+import fr.rob4.simulation.exception.NoIntersectionException;
+
 /**
  * Cette Classe repr�sente un polygone. Il peut avoir autant de point que
  * souhait�.
@@ -89,20 +91,121 @@ public class Polygone extends Forme {
 
 		return new Rectangle(centre, xMax - xMin, yMax - yMin);
 	}
-	
-	public List<Segment> getSegments(){
+
+	public List<Segment> getSegments() {
 		List<Segment> liste = new ArrayList<Segment>();
 		Point2D prem = points.get(0);
 		Point2D pt1 = prem;
-		//Point2D pt2 = points.get(1);
-		for( Point2D p : points) {
-			if( p.equals(prem)) {
+		// Point2D pt2 = points.get(1);
+		for (Point2D p : points) {
+			if (p.equals(prem)) {
 				continue;
 			}
-			liste.add(new Segment(pt1,p));
+			liste.add(new Segment(pt1, p));
 			pt1 = p;
 		}
-		liste.add(new Segment(pt1,prem));
+		liste.add(new Segment(pt1, prem));
 		return liste;
+	}
+
+	@Override
+	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+		// On teste d'abord si les formes sont assez proches
+		try {
+			getDimension().intersecte(f.getDimension());
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				s.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Cercle.class) {
+			Cercle c = (Cercle) f;
+			try {
+				c.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			ArcDeCercle adc = (ArcDeCercle) f;
+			try {
+				adc.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Rectangle r = (Rectangle) f;
+			try {
+				intersecte(r);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone pol = (Polygone) f;
+			try {
+				intersecte(pol);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		throw new NoIntersectionException(this, "Ce polygone n'a pas de collision. Ou la forme n'est pas connue.");
+	}
+
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance d'un polygone et
+	 * un polygone mis en argument.
+	 * 
+	 * @param pol Polygone avec lequel on test l'intersection.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
+		List<Point2D> liste = new ArrayList<Point2D>();
+		try {
+			for (Segment s : getSegments()) {
+				liste.addAll(s.intersecte(pol));
+			}
+			return liste;
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			throw new NoIntersectionException(this, "Pas d'intersection entre ce polygone et l'autre.");
+		}
+	}
+
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance d'un polygone et
+	 * un rectangle mis en argument.
+	 * 
+	 * @param r Rectangle avec lequel on teste l'intersection.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
+		try {
+			return intersecte(r.toPolygone());
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			throw new NoIntersectionException(this, "Pas d'intersection entre le polygone et le rectangle");
+		}
 	}
 }

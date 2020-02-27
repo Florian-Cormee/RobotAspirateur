@@ -128,6 +128,14 @@ public class ArcDeCercle extends Cercle {
 
 	@Override
 	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+		// On teste d'abord si les formes sont assez proches
+		try {
+			getDimension().intersecte(f.getDimension());
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+				
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
@@ -173,17 +181,18 @@ public class ArcDeCercle extends Cercle {
 			try {
 				intersecte(adc);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Cet arc de cercle n'a pas de collision.");
+		throw new NoIntersectionException(this,
+				"Cet arc de cercle n'a pas de collision. Ou la forme n'est pas connue.");
 	}
 
 	/**
-	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et un
-	 * polygone mis en argument.
+	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et
+	 * un polygone mis en argument.
 	 * 
 	 * @param pol Polygone avec lequel on teste les intersections.
 	 * @return Liste des points d'intersection
@@ -202,8 +211,8 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	/**
-	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et un
-	 * rectangle mis en argument.
+	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et
+	 * un rectangle mis en argument.
 	 * 
 	 * @param r Rectangle avec lequel on teste les intersections
 	 * @return Liste des points d'intersection
@@ -219,8 +228,8 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	/**
-	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et un
-	 * arc de cercle mis en argument.
+	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et
+	 * un arc de cercle mis en argument.
 	 * 
 	 * @param adc Arc de cercle avec lequel on teste les intersections.
 	 * @return Liste des points d'intersection.

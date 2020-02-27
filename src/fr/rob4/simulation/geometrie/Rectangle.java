@@ -3,6 +3,8 @@ package fr.rob4.simulation.geometrie;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.rob4.simulation.exception.NoIntersectionException;
+
 /**
  * Cette classe représente un rectangle. Il connait sa largeur et sa hauteur.
  * 
@@ -105,5 +107,86 @@ public class Rectangle extends Forme {
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
 		return new Polygone(centre, pointsRect);
+	}
+	
+	@Override
+	public boolean estSuperposee(Forme f) throws NoIntersectionException{
+		//On test d'abord si les formes sont assez proches
+		try {
+			getDimension().intersecte(f.getDimension());
+		}catch(NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				s.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Cercle.class) {
+			Cercle c = (Cercle) f;
+			try {
+				c.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			ArcDeCercle adc = (ArcDeCercle) f;
+			try {
+				adc.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone pol = (Polygone) f;
+			try {
+				pol.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Rectangle r = (Rectangle) f;
+			try {
+				intersecte(r);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		throw new NoIntersectionException(this,"Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
+		
+	}
+	
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de rectangle et un
+	 * autre rectangle mis en argument.
+	 * 
+	 * @param r Rectangle avec lequel on teste l'intersection.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException{
+		try {
+			return this.toPolygone().intersecte(r);
+		}catch(NoIntersectionException e) {
+			e.printStackTrace();
+			throw new NoIntersectionException(this,"Pas d'intersection entre ces deux rectangles.");
+		}
 	}
 }

@@ -81,6 +81,13 @@ public class Cercle extends Forme {
 
 	@Override
 	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+		// On teste d'abord si les formes sont assez proches
+		try {
+			getDimension().intersecte(f.getDimension());
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
 		if (f.getClass() == Cercle.class) {
 			Cercle c = (Cercle) f;
 			try {
@@ -131,7 +138,7 @@ public class Cercle extends Forme {
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce cercle n'a pas de collision");
+		throw new NoIntersectionException(this, "Ce cercle n'a pas de collision. Ou la forme n'est pas connue.");
 	}
 
 	/**

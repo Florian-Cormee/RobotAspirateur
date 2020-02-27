@@ -65,6 +65,14 @@ public class Segment extends Forme {
 
 	@Override
 	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+		// On teste d'abord si les formes sont assez proches
+		try {
+			getDimension().intersecte(f.getDimension());
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+				
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
@@ -110,12 +118,12 @@ public class Segment extends Forme {
 			try {
 				intersecte(adc);
 				return true;
-			}catch( NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce segment n'a pas de collisions");
+		throw new NoIntersectionException(this, "Ce segment n'a pas de collisions. Ou la forme n'est pas connue.");
 	}
 
 	/**
