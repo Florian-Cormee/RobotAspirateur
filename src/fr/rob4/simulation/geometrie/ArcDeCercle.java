@@ -3,6 +3,8 @@
  */
 package fr.rob4.simulation.geometrie;
 
+import fr.rob4.simulation.Outil;
+
 /**
  * Cette classe représente un arc de cercle. C'est une portion de cercle. On
  * peut le manipuler grâce à 2 angles, la bisectrice de ces angles définissant
@@ -26,7 +28,8 @@ public class ArcDeCercle extends Cercle {
 
 	/**
 	 * Crée un arc de cercle à partir de son centre (Point2D), son diametre, et les
-	 * 2 angles définissant son ouverture et son orientation.
+	 * 2 angles par rapport à l'axe des abscisses x, définissant son ouverture et
+	 * son orientation.
 	 * 
 	 * @param p  Centre
 	 * @param d  Diametre
@@ -41,7 +44,8 @@ public class ArcDeCercle extends Cercle {
 
 	/**
 	 * Crée un arc de cecle à partir des coordonnées de son centre, son diametre, et
-	 * les 2 angles définissant son ouverture et son orientatioon.
+	 * les 2 angles par rapport à l'axe des abscisses, définissant son ouverture et
+	 * son orientatioon.
 	 * 
 	 * @param x  Abscisse du centre
 	 * @param y  Ordonnée du centre
@@ -67,7 +71,10 @@ public class ArcDeCercle extends Cercle {
 	 * @return Ouverture, un angle.
 	 */
 	public double getOuverture() {
-		return Math.abs(ang1-ang2);
+		if( ang1 > ang2) {
+			return Math.PI*2 - ang1 + ang2;
+		}
+		return ang2 - ang1;
 	}
 
 	/**
@@ -76,7 +83,10 @@ public class ArcDeCercle extends Cercle {
 	 * @return Orientation, un angle.
 	 */
 	public double getOrientation() {
-		return getOuverture() / 2;
+		if (ang2 > ang1) {
+			return getOuverture() / 2;
+		}
+		return  Outil.normalize_angle((ang1+ang2)/2+Math.PI);
 	}
 
 	/**

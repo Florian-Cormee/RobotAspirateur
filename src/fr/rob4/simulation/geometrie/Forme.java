@@ -66,13 +66,16 @@ public abstract class Forme {
 	 * @param f Forme avec laquelle il fut tester la superposition.
 	 * @return true si les formes sont superposées, false sinon.
 	 */
-	public boolean estSupperposee(Forme f) {
+	public abstract boolean estSupperposee(Forme f) throws NoIntersectionException;// {
 		// throw new UnsupportedOperationException();
-		if (this.getClass() == Cercle.class) {
+		/*if (this.getClass() == Cercle.class) {
 			return gereCercleSuperposition(f);
 		}
+		if (this.getClass() == Rectangle.class) {
+			
+		}
 		return false;
-	}
+	}*/
 
 	private boolean gereCercleSuperposition(Forme f) {
 		Cercle c = (Cercle) this;

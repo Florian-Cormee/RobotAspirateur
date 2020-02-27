@@ -3,6 +3,9 @@
  */
 package fr.rob4.simulation.geometrie;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 /**
@@ -92,7 +95,8 @@ public class Segment extends Forme {
 	 * test.norme() < c.rayon) { return new Point2D(test); } } return null; }
 	 */
 
-	public Point2D intersecte(Cercle c) throws NoIntersectionException {
+	public List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
+		List<Point2D> liste = new ArrayList<Point2D>();
 		double dx = a.getPositionAbsolue().x - b.getPositionAbsolue().x;
 		double dy = a.getPositionAbsolue().y - b.getPositionAbsolue().y;
 		double xc = c.centre.getPositionAbsolue().x;
@@ -110,13 +114,18 @@ public class Segment extends Forme {
 			double t1 = (beta - Math.sqrt(delta)) / (2 * alpha);
 			double t2 = (beta + Math.sqrt(delta)) / (2 * alpha);
 			if (t1 >= 0 && t1 <= 1) {
-				return new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1)));
+				liste.add( new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1))));
 			}
 			if (t2 >= 0 && t2 <= 1) {
-				return new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t2)));
+				liste.add( new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t2))));
 			}
-			throw new NoIntersectionException(this, "L\'intersection ne se fait pas sur le segment.");
+			if( liste.size() == 0) {
+				throw new NoIntersectionException(this, "L\'intersection ne se fait pas sur le segment.");
+			}else {
+				return liste;
+			}
 		}
+		
 		throw new NoIntersectionException(this, "Il n\'y a pas d\'intersection.");
 	}
 
@@ -132,4 +141,14 @@ public class Segment extends Forme {
 		double h = Math.max(pa.y, pb.y) - Math.min(pa.y, pb.y);
 		return new Rectangle(centre, lar, h);
 	}
+
+	public Point2D getA() {
+		return a;
+	}
+
+	public Point2D getB() {
+		return b;
+	}
+	
+	
 }
