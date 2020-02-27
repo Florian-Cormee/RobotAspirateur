@@ -29,10 +29,7 @@ public class Polygone extends Forme {
 	 */
 	public Polygone(Point2D p, Collection<Point2D> cp) {
 		super(p);
-		Iterator<Point2D> it = cp.iterator();
-		while (it.hasNext()) {
-			points.add(it.next());
-		}
+		points = new ArrayList<Point2D>(cp);
 	}
 
 	/**
@@ -45,10 +42,7 @@ public class Polygone extends Forme {
 	 */
 	public Polygone(double x, double y, Collection<Point2D> cp) {
 		super(x, y);
-		Iterator<Point2D> it = cp.iterator();
-		while (it.hasNext()) {
-			points.add(it.next());
-		}
+		points = new ArrayList<Point2D>(cp);
 	}
 
 	/**

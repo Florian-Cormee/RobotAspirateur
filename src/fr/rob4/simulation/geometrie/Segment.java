@@ -63,7 +63,62 @@ public class Segment extends Forme {
 		return new Segment(a.rotation(alpha, p), b.rotation(alpha, p));
 	}
 
-	public Point2D intersecte(Segment seg) throws NoIntersectionException {
+	@Override
+	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				intersecte(s);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Cercle.class) {
+			Cercle c = (Cercle) f;
+			try {
+				intersecte(c);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Rectangle r = (Rectangle) f;
+			try {
+				intersecte(r);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone p = (Polygone) f;
+			try {
+				intersecte(p);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			ArcDeCercle adc = (ArcDeCercle) f;
+			try {
+				intersecte(adc);
+				return true;
+			}catch( NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		throw new NoIntersectionException(this, "Ce segment n'a pas de collisions");
+	}
+
+	Point2D intersecte(Segment seg) throws NoIntersectionException {
 		Vecteur2D p = a.getPositionAbsolue();
 		Vecteur2D q = seg.a.getPositionAbsolue();
 		Vecteur2D r = a.getPositionRelative(b);
@@ -85,17 +140,7 @@ public class Segment extends Forme {
 		}
 	}
 
-	/*
-	 * public Point2D instersecte(Cercle c) { Vecteur2D depart, arrivee; if(
-	 * a.getPositionRelative(c.centre).norme() >
-	 * b.getPositionRelative(c.centre).norme()){ depart = a.getPositionAbsolue();
-	 * arrivee = a.getPositionRelative(b); } else { depart = b.getPositionAbsolue();
-	 * arrivee = b.getPositionRelative(a); } double p; for( int i=0 ; i<100 ;i++) {
-	 * p = i/100; Vecteur2D test = depart.addition(arrivee).produit(p); if(
-	 * test.norme() < c.rayon) { return new Point2D(test); } } return null; }
-	 */
-
-	public List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
+	List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		double dx = a.getPositionAbsolue().x - b.getPositionAbsolue().x;
 		double dy = a.getPositionAbsolue().y - b.getPositionAbsolue().y;
@@ -114,21 +159,78 @@ public class Segment extends Forme {
 			double t1 = (beta - Math.sqrt(delta)) / (2 * alpha);
 			double t2 = (beta + Math.sqrt(delta)) / (2 * alpha);
 			if (t1 >= 0 && t1 <= 1) {
-				liste.add( new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1))));
+				liste.add(new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1))));
 			}
 			if (t2 >= 0 && t2 <= 1) {
-				liste.add( new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t2))));
+				liste.add(new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t2))));
 			}
-			if( liste.size() == 0) {
+			if (liste.size() == 0) {
 				throw new NoIntersectionException(this, "L\'intersection ne se fait pas sur le segment.");
-			}else {
+			} else {
 				return liste;
 			}
 		}
-		
+
 		throw new NoIntersectionException(this, "Il n\'y a pas d\'intersection.");
 	}
 
+	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
+		List<Point2D> liste = new ArrayList<Point2D>();
+		for (Segment s : pol.getSegments()) {
+			try {
+				liste.add(s.intersecte(this));
+			} catch (NoIntersectionException e) {
+				continue;
+			}
+		}
+		if (liste.size() == 0) {
+			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le polygone");
+		}
+		return liste;
+	}
+
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
+		try {
+			List<Point2D> liste = intersecte(r.toPolygone());
+			return liste;
+		} catch (NoIntersectionException e) {
+			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
+		}
+	}
+
+	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
+		try {
+			List<Point2D> liste = intersecte(new Cercle(adc.centre, adc.rayon));
+			Vecteur2D x = new Vecteur2D(1, 0);
+			for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+				Vecteur2D test = adc.centre.getPositionRelative(p);
+				if (adc.ang1 <= adc.ang2) {
+					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
+						liste.remove(p);
+					}
+				} else {
+					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
+						liste.remove(p);
+					}
+				}
+			}
+			if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
+										// intervalle.
+				throw new NoIntersectionException(this,
+						"L'intersection entre le segment et l'arc de cercle ne se fait pas sur l'arc de cercle.");
+			} else {
+				return liste;
+			}
+		} catch (NoIntersectionException e) {
+			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
+		}
+	}
+
+	/**
+	 * Obtient la distance/norme du segment.
+	 * 
+	 * @return La norme.
+	 */
 	public double norme() {
 		return a.getPositionRelative(b).norme();
 	}
@@ -149,6 +251,5 @@ public class Segment extends Forme {
 	public Point2D getB() {
 		return b;
 	}
-	
-	
+
 }

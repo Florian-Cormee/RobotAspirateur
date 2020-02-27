@@ -6,8 +6,6 @@ package fr.rob4.simulation.geometrie;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NoInitialContextException;
-
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 /**
@@ -82,7 +80,7 @@ public class Cercle extends Forme {
 	}
 
 	@Override
-	public boolean estSupperposee(Forme f) throws NoIntersectionException{
+	public boolean estSuperposee(Forme f) throws NoIntersectionException {
 		if (f.getClass() == Cercle.class) {
 			Cercle c = (Cercle) f;
 			try {
@@ -118,7 +116,7 @@ public class Cercle extends Forme {
 			try {
 				intersecte(adc);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -128,7 +126,7 @@ public class Cercle extends Forme {
 			try {
 				s.intersecte(this);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -136,7 +134,15 @@ public class Cercle extends Forme {
 		throw new NoIntersectionException(this, "Ce cercle n'a pas de collision");
 	}
 
-	private List<Point2D> intersecte(Cercle cercle) throws NoIntersectionException {
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de cercle et un
+	 * autre cercle mis en argument.
+	 * 
+	 * @param cercle Cercle avec lequel on test les collisions.
+	 * @return Liste de point2D étant des points d'interection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Cercle cercle) throws NoIntersectionException {
 		if (centre.getPositionRelative(cercle.centre).norme() <= rayon + cercle.rayon) {
 			List<Point2D> liste = new ArrayList<Point2D>();
 			Vecteur2D obsPos = cercle.centre.getPositionAbsolue();
@@ -171,15 +177,31 @@ public class Cercle extends Forme {
 		throw new NoIntersectionException(this, "Pas d'intersection entre les cercles.");
 	}
 
-	private List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de cercle et un
+	 * rectangle mis en argument.
+	 * 
+	 * @param r Rectangle avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		return intersecte(r.toPolygone());
 	}
 
-	private List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de cercle et un
+	 * polygone mis en argument.
+	 * 
+	 * @param pol Polygone avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		for (Segment s : pol.getSegments()) {
 			try {
-				liste = s.intersecte(this);
+				liste.addAll(s.intersecte(this));
 			} catch (NoIntersectionException e) {
 				continue;
 			}
@@ -190,23 +212,34 @@ public class Cercle extends Forme {
 		return liste;
 	}
 
-	private List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de cercle et un
+	 * arc de cercle mis en argument.
+	 * 
+	 * @param adc Arc de cercle avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
 		try {
 			List<Point2D> liste = intersecte(new Cercle(adc.centre, adc.rayon));
-			double angleMin = Math.min(adc.ang1, adc.ang2);
-			double angleMax = Math.max(adc.ang1, adc.ang2);
 			Vecteur2D x = new Vecteur2D(1, 0);
 			for (Point2D p : liste) {
 				Vecteur2D test = adc.centre.getPositionRelative(p);
-				if (test.angle(x) <= angleMin || test.angle(x) >= angleMax) {
-					liste.remove(p);
+				if (adc.ang1 <= adc.ang2) {
+					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
+						liste.remove(p);
+					}
+				} else {
+					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
+						liste.remove(p);
+					}
 				}
 			}
 			if (liste.size() == 0) {
 				throw new NoIntersectionException(this,
 						"L'intersection entre le cercle et l'arc de cercle ne se fait pas sur l'arc de cercle.");
-			}
-			else {
+			} else {
 				return liste;
 			}
 		} catch (NoIntersectionException e) {
