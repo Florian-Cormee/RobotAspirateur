@@ -3,7 +3,11 @@
  */
 package fr.rob4.simulation.geometrie;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.rob4.simulation.Outil;
+import fr.rob4.simulation.exception.NoIntersectionException;
 
 /**
  * Cette classe représente un arc de cercle. C'est une portion de cercle. On
@@ -71,8 +75,8 @@ public class ArcDeCercle extends Cercle {
 	 * @return Ouverture, un angle.
 	 */
 	public double getOuverture() {
-		if( ang1 > ang2) {
-			return Math.PI*2 - ang1 + ang2;
+		if (ang1 > ang2) {
+			return Math.PI * 2 - ang1 + ang2;
 		}
 		return ang2 - ang1;
 	}
@@ -86,7 +90,7 @@ public class ArcDeCercle extends Cercle {
 		if (ang2 > ang1) {
 			return getOuverture() / 2;
 		}
-		return  Outil.normalize_angle((ang1+ang2)/2+Math.PI);
+		return Outil.normalize_angle((ang1 + ang2) / 2 + Math.PI);
 	}
 
 	/**
@@ -122,4 +126,132 @@ public class ArcDeCercle extends Cercle {
 		return newADC;
 	}
 
+	@Override
+	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				s.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Cercle.class) {
+			Cercle c = (Cercle) f;
+			try {
+				c.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone p = (Polygone) f;
+			try {
+				intersecte(p);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Rectangle r = (Rectangle) f;
+			try {
+				intersecte(r);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			ArcDeCercle adc = (ArcDeCercle) f;
+			try {
+				intersecte(adc);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		throw new NoIntersectionException(this, "Cet arc de cercle n'a pas de collision.");
+	}
+
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et un
+	 * polygone mis en argument.
+	 * 
+	 * @param pol Polygone avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
+		List<Point2D> liste = new ArrayList<Point2D>();
+		for (Segment s : pol.getSegments()) {
+			liste.addAll(s.intersecte(this));
+		}
+		if (liste.size() == 0) {
+			throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le polygone.");
+		} else {
+			return liste;
+		}
+	}
+
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et un
+	 * rectangle mis en argument.
+	 * 
+	 * @param r Rectangle avec lequel on teste les intersections
+	 * @return Liste des points d'intersection
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
+		try {
+			List<Point2D> liste = intersecte(r.toPolygone());
+			return liste;
+		} catch (NoIntersectionException e) {
+			throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le rectangle.");
+		}
+	}
+
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et un
+	 * arc de cercle mis en argument.
+	 * 
+	 * @param adc Arc de cercle avec lequel on teste les intersections.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
+		try {
+			List<Point2D> liste = new Cercle(adc.centre, adc.rayon).intersecte(this);
+			Vecteur2D x = new Vecteur2D(1, 0);
+			for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+				Vecteur2D test = adc.centre.getPositionRelative(p);
+				if (adc.ang1 <= adc.ang2) {
+					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
+						liste.remove(p);
+					}
+				} else {
+					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
+						liste.remove(p);
+					}
+				}
+			}
+			if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
+										// intervalle.
+				throw new NoIntersectionException(this,
+						"L'intersection entre l'instance d'arc de cercle et l'autre arc de cercle ne se fait pas sur l'arc de cercle.");
+			} else {
+				return liste;
+			}
+		} catch (NoIntersectionException e) {
+			throw new NoIntersectionException(this,
+					"Pas d'intersection entre cet arc de cercle et l'autre arc de cercle.");
+		}
+	}
 }
