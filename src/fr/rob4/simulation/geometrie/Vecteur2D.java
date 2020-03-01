@@ -194,8 +194,12 @@ public class Vecteur2D implements Cloneable {
 		if (scalaire(this) < 1e-10) {
 			throw new IllegalArgumentException("Ne peut pas faire tourner le vecteur nul");
 		}
-		double cosAngle = Math.cos(angle);
-		double sinAngle = Math.sin(angle);
+		double cosAngle;
+		double sinAngle;
+		
+		cosAngle = (Math.cos(angle) < 1e-10) ? 0 : Math.cos(angle);
+		sinAngle = (Math.sin(angle) < 1e-10) ? 0 : Math.sin(angle);
+		
 		return new Vecteur2D(x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle);
 	}
 
