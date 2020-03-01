@@ -141,8 +141,17 @@ public class Point2D {
 	}
 
 	public Point2D rotation(double alpha, Point2D p) {
-		Vecteur2D posR = p.getPositionRelative(this);
-		Vecteur2D newPos = posR.rotation(alpha);
-		return deplace(newPos);
+		Vecteur2D posR;
+		Vecteur2D newPos;
+		if (p == null) {
+			posR = getPositionAbsolue();
+			newPos = posR.rotation(alpha);
+			return new Point2D(origine, origine.getPositionRelative(new Point2D(newPos)));
+		} else {
+			posR = p.getPositionRelative(this);
+			newPos = posR.rotation(alpha);
+			return new Point2D(origine,newPos);
+		}
+		//return new Point2D(origine, origine.getPositionRelative(new Point2D(newPos)));
 	}
 }
