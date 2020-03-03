@@ -14,7 +14,7 @@ import fr.rob4.simulation.exception.NonRelatifException;
  * @see Forme
  * @see NonRelatifException
  */
-public class Point2D {
+public class Point2D implements Cloneable {
     protected final Point2D origine;
     protected final Vecteur2D position;
 
