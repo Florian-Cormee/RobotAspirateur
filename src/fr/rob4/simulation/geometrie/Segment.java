@@ -250,15 +250,23 @@ public class Segment extends Forme {
 		try {
 			List<Point2D> liste = intersecte(new Cercle(adc.centre, adc.rayon));
 			Vecteur2D x = new Vecteur2D(1, 0);
-			for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+			//for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+			int i = 0;
+			Point2D p;
+			while (i < liste.size()) {
+				p = liste.get(i);
 				Vecteur2D test = adc.centre.getPositionRelative(p);
 				if (adc.ang1 <= adc.ang2) {
-					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
-						liste.remove(p);
+					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {	// si on delete p, il ne faut pas incrémenter i
+						liste.remove(i);
+					}else {														// si on garde p, on passe au point suivant
+						i++;
 					}
 				} else {
-					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
-						liste.remove(p);
+					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) { // si on delete p il ne faut pas incrémenter i
+						liste.remove(i);
+					}else {
+						i++;													// si on garde p, on passe au point suivant
 					}
 				}
 			}
