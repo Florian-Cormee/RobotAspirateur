@@ -166,22 +166,22 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
-		double dx = a.getPositionAbsolue().x - b.getPositionAbsolue().x;
-		double dy = a.getPositionAbsolue().y - b.getPositionAbsolue().y;
-		double xc = c.centre.getPositionAbsolue().x;
-		double yc = c.centre.getPositionAbsolue().y;
+		double dx = b.getPositionAbsolue().getX() - a.getPositionAbsolue().getX();
+		double dy = b.getPositionAbsolue().getY() - a.getPositionAbsolue().getY();
+		double xc = c.centre.getPositionAbsolue().getX();
+		double yc = c.centre.getPositionAbsolue().getY();
 
 		double alpha = Math.pow(dx, 2) + Math.pow(dy, 2);
-		double beta = 2 * (dx * (a.getPositionAbsolue().x - xc) + dy * (a.getPositionAbsolue().y - yc));
-		double gamma = Math.pow(a.getPositionAbsolue().x - xc, 2) + Math.pow(a.getPositionAbsolue().y - yc, 2)
-				+ Math.pow(c.rayon, 2);
+		double beta = 2 * (dx * (a.getPositionAbsolue().getX() - xc) + dy * (a.getPositionAbsolue().getY() - yc));
+		double gamma = Math.pow(a.getPositionAbsolue().getX() - xc, 2) + Math.pow(a.getPositionAbsolue().getY() - yc, 2)
+				- Math.pow(c.rayon, 2);
 		double delta = Math.pow(beta, 2) - 4 * alpha * gamma;
 		// Conjecture
 		if (delta == 0) { // le segment et est tangent au cercle
 			throw new NoIntersectionException(this, "le segment est tangent au cercle.");
 		} else if (delta > 0 && alpha != 0) {
-			double t1 = (beta - Math.sqrt(delta)) / (2 * alpha);
-			double t2 = (beta + Math.sqrt(delta)) / (2 * alpha);
+			double t1 = (-beta - Math.sqrt(delta)) / (2 * alpha);
+			double t2 = (-beta + Math.sqrt(delta)) / (2 * alpha);
 			if (t1 >= 0 && t1 <= 1) {
 				liste.add(new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1))));
 			}
