@@ -187,19 +187,11 @@ public class Vecteur2D implements Cloneable {
 	 * @param angle L'angle de rotation
 	 *
 	 * @return Le vecteur tourné dans une nouvelle instance
-	 *
-	 * @throws IllegalArgumentException Quand l'instance est le vecteur nul
 	 */
 	public Vecteur2D rotation(double angle) {
-		if (scalaire(this) < 1e-10) {
-			throw new IllegalArgumentException("Ne peut pas faire tourner le vecteur nul");
-		}
-		double cosAngle;
-		double sinAngle;
-		
-		cosAngle = (Math.cos(angle) < 1e-10) ? 0 : Math.cos(angle);
-		sinAngle = (Math.sin(angle) < 1e-10) ? 0 : Math.sin(angle);
-		
+		double cosAngle= Math.cos(angle);
+		double sinAngle= Math.sin(angle);
+				
 		return new Vecteur2D(x * cosAngle - y * sinAngle, y * cosAngle + x * sinAngle);
 	}
 
