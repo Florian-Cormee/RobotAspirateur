@@ -82,11 +82,9 @@ public class Vecteur2DTest {
         assertEquals(a.norme(), b.norme(), 1e-10);
         assertEquals(angle, a.angle(b), 1e-10);
 
-        try {
-            new Vecteur2D().rotation(10);
-            Assert.fail("Attendait une erreur");
-        } catch (Exception e) {
-        }
+        
+        assertEquals(new Vecteur2D(),new Vecteur2D().rotation(10));
+        
     }
 
     @Test

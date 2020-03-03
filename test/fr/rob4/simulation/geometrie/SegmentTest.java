@@ -31,6 +31,8 @@ class SegmentTest {
 	Point2D p2 = new Point2D(new Vecteur2D(2, 0));
 	Segment s = new Segment(p1, p2);
 	Segment sr = s.rotation(Math.PI/2, p1);
+	System.out.println(sr.getA());
+	System.out.println(sr.getB());
 	assertEquals(s.getA(), sr.getA());
 	p2 = new Point2D(new Vecteur2D(1, 1));
 	assertEquals(p2, sr.getB());
