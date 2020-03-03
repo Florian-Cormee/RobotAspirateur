@@ -1,8 +1,10 @@
 package fr.rob4.simulation.geometrie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -84,16 +86,25 @@ class SegmentTest {
     @Test
     void testIntersecteCercle() {
 	Cercle cercle = new Cercle(0, 0, 1);
-	Point2D a = new Point2D(new Vecteur2D(2, 0));
-	Point2D b = new Point2D(new Vecteur2D(-2, 0));
+	Point2D a = new Point2D(new Vecteur2D(1.1, 0));
+	Point2D b = new Point2D(new Vecteur2D(-1.1, 0));
 	Segment s = new Segment(a, b);
+	// Segment avec intersection
 	try {
 	    List<Point2D> l = s.intersecte(cercle);
 	    assertEquals(2, l.size());
-	    System.out.println(l);
+	    List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(1, 0)), new Point2D(new Vecteur2D(-1, 0)));
+	    assertTrue(l.containsAll(collPts));
 	} catch (NoIntersectionException e) {
 	    e.printStackTrace();
 	    fail();
+	}
+	// Segment tangent
+	s = new Segment(new Point2D(new Vecteur2D(-1, 1)), new Point2D(new Vecteur2D(1, 1)));
+	try {
+	    s.intersecte(cercle);
+	    fail();
+	} catch (NoIntersectionException e) {
 	}
 
     }
