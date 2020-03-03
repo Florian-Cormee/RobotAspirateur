@@ -2,14 +2,19 @@ package fr.rob4.simulation.exception;
 
 import fr.rob4.simulation.geometrie.Point2D;
 
+/**
+ * 
+ * @author flore
+ *
+ */
 @SuppressWarnings("serial")
 public class NonRelatifException extends Exception {
     private Point2D point;
 
     /**
-     * Cree l'exception a partir du point en coordonnees absolues
+     * Crée l'exception à partir du point en coordonnées absolues
      * 
-     * @param p Le point en coordonnees absolues
+     * @param p Le point en coordonnées absolues
      */
     public NonRelatifException(Point2D p) {
 	super();
@@ -17,11 +22,11 @@ public class NonRelatifException extends Exception {
     }
 
     /**
-     * Cree l'exception a partir du point en coordonnees absolues et d'un
+     * Crée l'exception à partir du point en coordonnées absolues et d'un
      * message
      * 
-     * @param p   Le point en coordonnees absolues
-     * @param msg Un message decrivant l'erreur
+     * @param p   Le point en coordonnées absolues
+     * @param msg Un message décrivant l'erreur
      */
     public NonRelatifException(Point2D p, String msg) {
 	super(msg);
@@ -29,9 +34,9 @@ public class NonRelatifException extends Exception {
     }
 
     /**
-     * Obtient le point en coordonnees absolues
+     * Obtient le point en coordonnées absolues
      * 
-     * @return Le point en coordonnees absolues
+     * @return Le point en coordonnées absolues
      */
     public Point2D getPoint() {
 	return point;

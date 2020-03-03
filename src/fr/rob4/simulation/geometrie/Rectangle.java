@@ -3,8 +3,10 @@ package fr.rob4.simulation.geometrie;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.rob4.simulation.exception.NoIntersectionException;
+
 /**
- * Cette classe représente un rectangle. Il connait sa longueur et sa largeur.
+ * Cette classe reprÃ©sente un rectangle. Il connait sa largeur et sa hauteur.
  * 
  * @author Florentin BEROUJON & Florian CORMEE
  * @version 0.0.1
@@ -13,94 +15,178 @@ import java.util.List;
  * @see Forme
  * @see Cercle
  * @see ArcDeCercle
- * @see Polygone s
+ * @see Polygone
  */
 public class Rectangle extends Forme {
 
 	// Attributs
-	protected double longueur;
 	protected double largeur;
+	protected double hauteur;
 
 	/**
-	 * Crée un rectangle à partir de son centre, de sa longueur et de sa largeur.
+	 * CrÃ©e un rectangle Ã  partir de son centre, de sa largeur et de sa hauteur.
 	 * 
 	 * @param p   Centre
-	 * @param lon Longeur
 	 * @param lar Largeur
+	 * @param h   hauteur
 	 */
-	public Rectangle(Point2D p, double lon, double lar) {
+	public Rectangle(Point2D p, double lar, double h) {
 		super(p);
-		longueur = lon;
 		largeur = lar;
+		hauteur = h;
 	}
 
 	/**
-	 * Crée un rectangle à partir des coordonnées de son centre, de sa longueur et
-	 * de sa largeur.
+	 * CrÃ©e un rectangle Ã  partir des coordonnÃ©es de son centre, de sa largeur et de
+	 * sa hauteur.
 	 * 
 	 * @param x   Abscisse du centre
-	 * @param y   Ordonnée du centre
-	 * @param lon Longeur
+	 * @param y   OrdonnÃ©e du centre
 	 * @param lar Largeur
+	 * @param h   hauteur
 	 */
-	public Rectangle(double x, double y, double lon, double lar) {
+	public Rectangle(double x, double y, double lar, double h) {
 		super(x, y);
-		longueur = lon;
 		largeur = lar;
+		hauteur = h;
 	}
 
 	/**
 	 * Modifie la longeur du rectangle.
 	 *
-	 * @param longueur Nouvelle longeur.
-	 */
-	public void setLongueur(double longueur) {
-		this.longueur = longueur;
-	}
-
-	/**
-	 * Modifie la largeur du rectangle.
-	 * 
-	 * @param largeur Nouvelle largeur.
+	 * @param largeur Nouvelle longeur.
 	 */
 	public void setLargeur(double largeur) {
 		this.largeur = largeur;
 	}
 
 	/**
-	 * Obtient la longeur.
+	 * Modifie la hauteur du rectangle.
 	 * 
-	 * @return Longueur
+	 * @param hauteur Nouvelle hauteur.
 	 */
-	public double getLongueur() {
-		return longueur;
+	public void setHauteur(double hauteur) {
+		this.hauteur = hauteur;
 	}
 
 	/**
-	 * Obtient la largeur.
+	 * Obtient la longeur.
 	 * 
-	 * @return Largeur
+	 * @return largeur
 	 */
 	public double getLargeur() {
 		return largeur;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Obtient la hauteur.
 	 * 
-	 * @see fr.rob4.simulation.geometrie.Forme#rotation(double,
-	 * fr.rob4.simulation.geometrie.Point2D)
+	 * @return hauteur
 	 */
+	public double getHauteur() {
+		return hauteur;
+	}
+
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
+		
+		return toPolygone().rotation(alpha, p);
+	}
+
+	@Override
+	public Rectangle getDimension() {
+		return this;
+	}
+	
+	public Polygone toPolygone() {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
-		double lon2 = longueur / 2;
-		double lar2 = largeur / 2;
+		double lon2 = largeur / 2;
+		double lar2 = hauteur / 2;
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
-		return new Polygone(centre, pointsRect).rotation(alpha, p);
+		return new Polygone(centre, pointsRect);
 	}
-
+	
+	@Override
+	public boolean estSuperposee(Forme f) throws NoIntersectionException{
+		//On test d'abord si les formes sont assez proches
+		try {
+			getDimension().intersecte(f.getDimension());
+		}catch(NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				s.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Cercle.class) {
+			Cercle c = (Cercle) f;
+			try {
+				c.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			ArcDeCercle adc = (ArcDeCercle) f;
+			try {
+				adc.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone pol = (Polygone) f;
+			try {
+				pol.intersecte(this);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Rectangle r = (Rectangle) f;
+			try {
+				intersecte(r);
+				return true;
+			}catch(NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		throw new NoIntersectionException(this,"Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
+		
+	}
+	
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de rectangle et un
+	 * autre rectangle mis en argument.
+	 * 
+	 * @param r Rectangle avec lequel on teste l'intersection.
+	 * @return Liste des points d'intersection.
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException{
+		try {
+			return this.toPolygone().intersecte(r);
+		}catch(NoIntersectionException e) {
+			e.printStackTrace();
+			throw new NoIntersectionException(this,"Pas d'intersection entre ces deux rectangles.");
+		}
+	}
 }
