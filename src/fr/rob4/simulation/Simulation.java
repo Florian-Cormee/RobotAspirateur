@@ -2,6 +2,7 @@ package fr.rob4.simulation;
 
 import fr.rob4.simulation.element.*;
 import fr.rob4.simulation.element.module.CapteurSalete;
+import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.*;
 
@@ -55,11 +56,16 @@ public class Simulation {
             for (int j = i ; j < collisionables.size() ; j++) {
                 ICollisionable collJ = collisionables.get(j);
                 // Test de la collision
-                if (collI.collisionne(collJ)) {
-                    // Chaque collisionable gère la collision avec l'autre
-                    collI.gereCollision(collJ);
-                    collJ.gereCollision(collI);
-                }
+                try {
+		    if (collI.collisionne(collJ)) {
+		        // Chaque collisionable gère la collision avec l'autre
+		        collI.gereCollision(collJ);
+		        collJ.gereCollision(collI);
+		    }
+		} catch (NoIntersectionException e) {
+		    // On ne sait pas détecter les collision entre ces éléments
+		    e.printStackTrace();
+		}
             }
         }
         /* Actualisation des éléments */

@@ -3,6 +3,7 @@ package fr.rob4.simulation.element.module;
 import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.Element;
 import fr.rob4.simulation.element.INettoyable;
+import fr.rob4.simulation.exception.NoIntersectionException;
 import fr.rob4.simulation.geometrie.Forme;
 
 import java.util.HashSet;
@@ -13,8 +14,8 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
     protected Set<INettoyable> nettoyables;
 
     /**
-     * Crée un CapteurSalete à partir de sa zone de détection
-     * @param forme La zone de détection
+     * Crï¿½e un CapteurSalete ï¿½ partir de sa zone de dï¿½tection
+     * @param forme La zone de dï¿½tection
      */
     public CapteurSalete(Forme forme) {
         super(forme);
@@ -26,9 +27,14 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
         List<INettoyable> nettoyables = simulation.getElements(INettoyable.class);
         this.nettoyables.clear();
         for (INettoyable nettoyable : nettoyables) {
-            if (forme.estSupperposee(nettoyable.getForme())) {
-                this.nettoyables.add(nettoyable);
-            }
+            try {
+		if (forme.estSuperposee(nettoyable.getForme())) {
+		    this.nettoyables.add(nettoyable);
+		}
+	    } catch (NoIntersectionException e) {
+		// On ne sait pas dÃ©terminer s'il y a superposition, on passe au suivant
+		e.printStackTrace();
+	    }
         }
     }
 
@@ -38,9 +44,9 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
     }
 
     /**
-     * Obtient l'ensemble des nettoyables qui sont détectées
+     * Obtient l'ensemble des nettoyables qui sont dï¿½tectï¿½es
      *
-     * @return L'ensemble des nettoyables qui sont détectées
+     * @return L'ensemble des nettoyables qui sont dï¿½tectï¿½es
      */
     public Set<INettoyable> getNettoyables() {
         return nettoyables;
