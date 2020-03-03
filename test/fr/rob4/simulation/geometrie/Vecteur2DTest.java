@@ -1,10 +1,10 @@
 package fr.rob4.simulation.geometrie;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Random;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 public class Vecteur2DTest {
@@ -37,7 +37,7 @@ public class Vecteur2DTest {
 	b = new Vecteur2D();
 	try {
 	    double res = b.angle(a);
-	    Assert.fail(String.format("Attendait une erreur a obtenu: %f", res));
+	    fail(String.format("Attendait une erreur a obtenu: %f", res));
 	} catch (Exception e) {
 	}
 
@@ -52,7 +52,7 @@ public class Vecteur2DTest {
 
 	try {
 	    new Vecteur2D().normalise();
-	    Assert.fail("Attendait une erreur");
+	    fail("Attendait une erreur");
 	} catch (Exception e) {
 	}
     }

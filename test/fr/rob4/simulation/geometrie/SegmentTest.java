@@ -95,7 +95,7 @@ class SegmentTest {
 	    e.printStackTrace();
 	    fail();
 	}
-	
+
     }
 
     @Test
