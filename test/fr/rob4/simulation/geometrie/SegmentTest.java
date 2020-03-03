@@ -84,8 +84,8 @@ class SegmentTest {
     @Test
     void testIntersecteCercle() {
 	Cercle cercle = new Cercle(0, 0, 1);
-	Point2D a = new Point2D(new Vecteur2D(1.1, 0));
-	Point2D b = new Point2D(new Vecteur2D(-1.1, 0));
+	Point2D a = new Point2D(new Vecteur2D(2, 0));
+	Point2D b = new Point2D(new Vecteur2D(-2, 0));
 	Segment s = new Segment(a, b);
 	try {
 	    List<Point2D> l = s.intersecte(cercle);
