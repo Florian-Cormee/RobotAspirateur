@@ -117,7 +117,7 @@ public class Polygone extends Forme {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
@@ -207,5 +207,19 @@ public class Polygone extends Forme {
 			e.printStackTrace();
 			throw new NoIntersectionException(this, "Pas d'intersection entre le polygone et le rectangle");
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Polygone polygone = (Polygone) o;
+		for (Point2D p : points) {
+			if (!polygone.points.contains(p))
+				return false;
+		}
+		return (points.size() == polygone.points.size()) && Objects.deepEquals(centre, polygone.centre);
 	}
 }
