@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Arrays;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ import fr.rob4.simulation.exception.NoIntersectionException;
 class SegmentTest {
 
 	@Test
-	void testEstSuperposee() {
+	void collisionne() {
 		fail("Not yet implemented");
 	}
 
@@ -128,7 +127,19 @@ class SegmentTest {
 
 	@Test
 	void testIntersecteRectangle() {
-		fail("Not yet implemented");
+		Rectangle r = new Rectangle(2, 1, 4, 2);
+		Segment s = new Segment(new Point2D(new Vecteur2D(2, 1)), new Point2D(new Vecteur2D(2, 3)));
+		
+		// intersection
+		try {
+			List<Point2D> l = s.intersecte(r);
+			assertEquals(1, l.size());
+			List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(2, 2)));
+			assertTrue(l.containsAll(collPts));
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@Test
@@ -177,9 +188,6 @@ class SegmentTest {
 			s.intersecte(adc);
 			fail();
 		} catch (NoIntersectionException e) {
-		} catch (ConcurrentModificationException e) {
-			e.printStackTrace();
-			fail();
 		}
 	}
 
