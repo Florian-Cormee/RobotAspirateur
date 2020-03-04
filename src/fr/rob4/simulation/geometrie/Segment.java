@@ -4,6 +4,7 @@
 package fr.rob4.simulation.geometrie;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
@@ -72,7 +73,7 @@ public class Segment extends Forme {
 			e.printStackTrace();
 			return false;
 		}
-				
+
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
@@ -250,23 +251,26 @@ public class Segment extends Forme {
 		try {
 			List<Point2D> liste = intersecte(new Cercle(adc.centre, adc.rayon));
 			Vecteur2D x = new Vecteur2D(1, 0);
-			//for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+			// for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans
+			// le bon intervalle d'angles.
 			int i = 0;
 			Point2D p;
 			while (i < liste.size()) {
 				p = liste.get(i);
 				Vecteur2D test = adc.centre.getPositionRelative(p);
 				if (adc.ang1 <= adc.ang2) {
-					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {	// si on delete p, il ne faut pas incrémenter i
+					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) { // si on delete p, il ne faut pas
+																				// incrémenter i
 						liste.remove(i);
-					}else {														// si on garde p, on passe au point suivant
+					} else { // si on garde p, on passe au point suivant
 						i++;
 					}
 				} else {
-					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) { // si on delete p il ne faut pas incrémenter i
+					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) { // si on delete p il ne faut pas
+																				// incrémenter i
 						liste.remove(i);
-					}else {
-						i++;													// si on garde p, on passe au point suivant
+					} else {
+						i++; // si on garde p, on passe au point suivant
 					}
 				}
 			}
@@ -308,4 +312,14 @@ public class Segment extends Forme {
 		return b;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Segment segment = (Segment) o;
+		return a.getPositionAbsolue().equals(segment.a.getPositionAbsolue())
+				&& b.getPositionAbsolue().equals(segment.b.getPositionAbsolue());
+	}
 }

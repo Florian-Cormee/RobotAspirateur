@@ -2,6 +2,7 @@ package fr.rob4.simulation.geometrie;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
 
@@ -89,7 +90,7 @@ public class Rectangle extends Forme {
 
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
-		
+
 		return toPolygone().rotation(alpha, p);
 	}
 
@@ -97,7 +98,18 @@ public class Rectangle extends Forme {
 	public Rectangle getDimension() {
 		return this;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Rectangle rectangle = (Rectangle) o;
+		return Objects.equals(centre, rectangle.centre) && (largeur == rectangle.largeur)
+				&& (hauteur == rectangle.hauteur);
+	}
+
 	public Polygone toPolygone() {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = largeur / 2;
@@ -108,23 +120,23 @@ public class Rectangle extends Forme {
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
 		return new Polygone(centre, pointsRect);
 	}
-	
+
 	@Override
-	public boolean collisionne(Forme f) throws NoIntersectionException{
-		//On test d'abord si les formes sont assez proches
+	public boolean collisionne(Forme f) throws NoIntersectionException {
+		// On test d'abord si les formes sont assez proches
 		try {
 			getDimension().intersecte(f.getDimension());
-		}catch(NoIntersectionException e) {
+		} catch (NoIntersectionException e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
 				s.intersecte(this);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -134,7 +146,7 @@ public class Rectangle extends Forme {
 			try {
 				c.intersecte(this);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -144,7 +156,7 @@ public class Rectangle extends Forme {
 			try {
 				adc.intersecte(this);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -154,7 +166,7 @@ public class Rectangle extends Forme {
 			try {
 				pol.intersecte(this);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
@@ -164,15 +176,15 @@ public class Rectangle extends Forme {
 			try {
 				intersecte(r);
 				return true;
-			}catch(NoIntersectionException e) {
+			} catch (NoIntersectionException e) {
 				e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this,"Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
-		
+		throw new NoIntersectionException(this, "Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
+
 	}
-	
+
 	/**
 	 * Obtient la liste de points d'intersection entre l'instance de rectangle et un
 	 * autre rectangle mis en argument.
@@ -181,12 +193,12 @@ public class Rectangle extends Forme {
 	 * @return Liste des points d'intersection.
 	 * @throws NoIntersectionException
 	 */
-	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException{
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
 			return this.toPolygone().intersecte(r);
-		}catch(NoIntersectionException e) {
+		} catch (NoIntersectionException e) {
 			e.printStackTrace();
-			throw new NoIntersectionException(this,"Pas d'intersection entre ces deux rectangles.");
+			throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
 		}
 	}
 }

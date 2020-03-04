@@ -5,6 +5,7 @@ package fr.rob4.simulation.geometrie;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
 
@@ -56,6 +57,16 @@ public class Cercle extends Forme {
 		} catch (CloneNotSupportedException e) {
 			return null;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Cercle cercle = (Cercle) o;
+		return Objects.equals(centre, cercle.centre) && (rayon == cercle.rayon);
 	}
 
 	/**
