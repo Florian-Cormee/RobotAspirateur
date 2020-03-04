@@ -110,7 +110,7 @@ public class Rectangle extends Forme {
 	}
 	
 	@Override
-	public boolean estSuperposee(Forme f) throws NoIntersectionException{
+	public boolean collisionne(Forme f) throws NoIntersectionException{
 		//On test d'abord si les formes sont assez proches
 		try {
 			getDimension().intersecte(f.getDimension());
