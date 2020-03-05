@@ -66,59 +66,7 @@ public abstract class Forme {
 	 * @param f Forme avec laquelle il fut tester la superposition.
 	 * @return true si les formes sont superposées, false sinon.
 	 */
-	public boolean estSupperposee(Forme f) {
-		// throw new UnsupportedOperationException();
-		if (this.getClass() == Cercle.class) {
-			return gereCercleSuperposition(f);
-		}
-		return false;
-	}
-
-	private boolean gereCercleSuperposition(Forme f) {
-		Cercle c = (Cercle) this;
-		if (f.getClass() == Cercle.class) {
-			Cercle c2 = (Cercle) f;
-			return centre.getPositionRelative(f.centre).norme() < c.rayon + c2.rayon;
-		}
-		if (f.getClass() == Segment.class) {
-			Segment s = (Segment) f;
-			try {
-				s.intersecte(c);
-				return true;
-			} catch (NoIntersectionException e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
-		if (f.getClass() == Rectangle.class) {
-			Polygone pol = ((Rectangle) f).toPolygone();
-			for (Segment s : pol.getSegments()) {
-				try {
-					s.intersecte(c);
-					return true;
-				} catch (NoIntersectionException e) {
-					e.printStackTrace();
-					return false;
-				}
-			}
-		}
-		if (f.getClass() == ArcDeCercle.class) {
-			throw new UnsupportedOperationException();
-		}
-		if (f.getClass() == Polygone.class) {
-			Polygone pol = (Polygone) f;
-			for (Segment s : pol.getSegments()) {
-				try {
-					s.intersecte(c);
-					return true;
-				} catch (NoIntersectionException e) {
-					e.printStackTrace();
-				}
-			}
-			return false;
-		}		
-		throw new UnsupportedOperationException();
-	}
+	public abstract boolean collisionne(Forme f) throws NoIntersectionException;
 
 	/**
 	 * Obtient une nouvelle forme identique à l'initiale tournée de alpha (en
