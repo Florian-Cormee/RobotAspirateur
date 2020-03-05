@@ -5,6 +5,7 @@ package fr.rob4.simulation.geometrie;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
 
@@ -57,6 +58,16 @@ public class Cercle extends Forme {
 			return null;
 		}
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Cercle cercle = (Cercle) o;
+		return Objects.equals(centre, cercle.centre) && (rayon == cercle.rayon);
+	}
 
 	/**
 	 * Obtient le rayon
@@ -80,7 +91,7 @@ public class Cercle extends Forme {
 	}
 
 	@Override
-	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+	public boolean collisionne(Forme f) throws NoIntersectionException {
 		// On teste d'abord si les formes sont assez proches
 		try {
 			getDimension().intersecte(f.getDimension());

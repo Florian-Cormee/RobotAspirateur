@@ -4,6 +4,7 @@
 package fr.rob4.simulation.geometrie;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.ArrayList;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
@@ -64,7 +65,7 @@ public class Segment extends Forme {
 	}
 
 	@Override
-	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+	public boolean collisionne(Forme f) throws NoIntersectionException {
 		// On teste d'abord si les formes sont assez proches
 		try {
 			getDimension().intersecte(f.getDimension());
@@ -72,7 +73,7 @@ public class Segment extends Forme {
 			e.printStackTrace();
 			return false;
 		}
-				
+
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
@@ -166,22 +167,22 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
-		double dx = a.getPositionAbsolue().x - b.getPositionAbsolue().x;
-		double dy = a.getPositionAbsolue().y - b.getPositionAbsolue().y;
-		double xc = c.centre.getPositionAbsolue().x;
-		double yc = c.centre.getPositionAbsolue().y;
+		double dx = b.getPositionAbsolue().getX() - a.getPositionAbsolue().getX();
+		double dy = b.getPositionAbsolue().getY() - a.getPositionAbsolue().getY();
+		double xc = c.centre.getPositionAbsolue().getX();
+		double yc = c.centre.getPositionAbsolue().getY();
 
 		double alpha = Math.pow(dx, 2) + Math.pow(dy, 2);
-		double beta = 2 * (dx * (a.getPositionAbsolue().x - xc) + dy * (a.getPositionAbsolue().y - yc));
-		double gamma = Math.pow(a.getPositionAbsolue().x - xc, 2) + Math.pow(a.getPositionAbsolue().y - yc, 2)
-				+ Math.pow(c.rayon, 2);
+		double beta = 2 * (dx * (a.getPositionAbsolue().getX() - xc) + dy * (a.getPositionAbsolue().getY() - yc));
+		double gamma = Math.pow(a.getPositionAbsolue().getX() - xc, 2) + Math.pow(a.getPositionAbsolue().getY() - yc, 2)
+				- Math.pow(c.rayon, 2);
 		double delta = Math.pow(beta, 2) - 4 * alpha * gamma;
 		// Conjecture
 		if (delta == 0) { // le segment et est tangent au cercle
 			throw new NoIntersectionException(this, "le segment est tangent au cercle.");
 		} else if (delta > 0 && alpha != 0) {
-			double t1 = (beta - Math.sqrt(delta)) / (2 * alpha);
-			double t2 = (beta + Math.sqrt(delta)) / (2 * alpha);
+			double t1 = (-beta - Math.sqrt(delta)) / (2 * alpha);
+			double t2 = (-beta + Math.sqrt(delta)) / (2 * alpha);
 			if (t1 >= 0 && t1 <= 1) {
 				liste.add(new Point2D(a.getPositionAbsolue().addition(a.getPositionRelative(b).produit(t1))));
 			}
@@ -250,15 +251,26 @@ public class Segment extends Forme {
 		try {
 			List<Point2D> liste = intersecte(new Cercle(adc.centre, adc.rayon));
 			Vecteur2D x = new Vecteur2D(1, 0);
-			for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+			// for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans
+			// le bon intervalle d'angles.
+			int i = 0;
+			Point2D p;
+			while (i < liste.size()) {
+				p = liste.get(i);
 				Vecteur2D test = adc.centre.getPositionRelative(p);
 				if (adc.ang1 <= adc.ang2) {
-					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
-						liste.remove(p);
+					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) { // si on delete p, il ne faut pas
+																				// incrémenter i
+						liste.remove(i);
+					} else { // si on garde p, on passe au point suivant
+						i++;
 					}
 				} else {
-					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
-						liste.remove(p);
+					if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) { // si on delete p il ne faut pas
+																				// incrémenter i
+						liste.remove(i);
+					} else {
+						i++; // si on garde p, on passe au point suivant
 					}
 				}
 			}
@@ -300,4 +312,14 @@ public class Segment extends Forme {
 		return b;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Segment segment = (Segment) o;
+		return a.getPositionAbsolue().equals(segment.a.getPositionAbsolue())
+				&& b.getPositionAbsolue().equals(segment.b.getPositionAbsolue());
+	}
 }

@@ -66,7 +66,7 @@ public abstract class Forme {
 	 * @param f Forme avec laquelle il fut tester la superposition.
 	 * @return true si les formes sont superposées, false sinon.
 	 */
-	public abstract boolean estSuperposee(Forme f) throws NoIntersectionException;
+	public abstract boolean collisionne(Forme f) throws NoIntersectionException;
 
 	/**
 	 * Obtient une nouvelle forme identique à l'initiale tournée de alpha (en

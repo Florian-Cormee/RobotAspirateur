@@ -5,6 +5,7 @@ package fr.rob4.simulation.geometrie;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.exception.NoIntersectionException;
@@ -127,7 +128,18 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	@Override
-	public boolean estSuperposee(Forme f) throws NoIntersectionException {
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		ArcDeCercle arcDeCercle = (ArcDeCercle) o;
+		return Objects.equals(centre, arcDeCercle.centre) && (rayon == arcDeCercle.rayon) && (ang1 == arcDeCercle.ang1)
+				&& (ang2 == arcDeCercle.ang2);
+	}
+
+	@Override
+	public boolean collisionne(Forme f) throws NoIntersectionException {
 		// On teste d'abord si les formes sont assez proches
 		try {
 			getDimension().intersecte(f.getDimension());
@@ -135,7 +147,7 @@ public class ArcDeCercle extends Cercle {
 			e.printStackTrace();
 			return false;
 		}
-				
+
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {
