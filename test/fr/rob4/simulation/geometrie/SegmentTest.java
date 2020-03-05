@@ -83,9 +83,11 @@ class SegmentTest {
 		// Intersection à l'extrémité
 		s2 = new Segment(c, b);
 		try {
-			s1.intersecte(s2);
-			fail();
+			Point2D inter = s1.intersecte(s2);
+			assertEquals(b,inter);
 		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
 		}
 	}
 
@@ -158,6 +160,7 @@ class SegmentTest {
 		// Segment avec intersection
 		Segment s = new Segment(new Point2D(new Vecteur2D(2, 1)), new Point2D(new Vecteur2D(2, 3)));
 		try {
+			System.out.println("test");
 			List<Point2D> l = s.intersecte(r);
 			assertEquals(1, l.size());
 			List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(2, 2)));
