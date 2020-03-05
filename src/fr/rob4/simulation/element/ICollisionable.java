@@ -1,34 +1,36 @@
 package fr.rob4.simulation.element;
 
+import fr.rob4.simulation.exception.NoIntersectionException;
 import fr.rob4.simulation.geometrie.Forme;
 
 public interface ICollisionable extends IElement {
     /**
-     * Prédicat d'une collision
+     * Prï¿½dicat d'une collision
      * <p>
-     * Test la superposition des formes de l'instance et de l'élément
+     * Test la superposition des formes de l'instance et de l'ï¿½lï¿½ment
      * </p>
      * <p>
-     * Le test doit être commutatif:
+     * Le test doit ï¿½tre commutatif:
      * <code>
      * a.collisionne(b) == b.collisionne(a)
      * </code>
      * </p>
      *
-     * @param element L'élément a tester
+     * @param element L'ï¿½lï¿½ment a tester
      *
      * @return {@code true} s'il y a collision sinon {@code false}
+     * @throws NoIntersectionException Quand on ne sait pas dÃ©terminer l'existance de points de collision
      */
-    default boolean collisionne(ICollisionable element) {
+    default boolean collisionne(ICollisionable element) throws NoIntersectionException {
         Forme thisForme = getForme();
         Forme elementForme = element.getForme();
-        return thisForme.estSupperposee(elementForme);
+        return thisForme.estSuperposee(elementForme);
     }
 
     /**
-     * Gère la collision avec l'élément
+     * Gï¿½re la collision avec l'ï¿½lï¿½ment
      *
-     * @param element L'élément avec lequel on collisionne
+     * @param element L'ï¿½lï¿½ment avec lequel on collisionne
      */
     void gereCollision(ICollisionable element);
 }

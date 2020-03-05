@@ -4,6 +4,7 @@ import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.Element;
 import fr.rob4.simulation.element.ICollisionable;
 import fr.rob4.simulation.element.Robot;
+import fr.rob4.simulation.exception.NoIntersectionException;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.geometrie.Point2D;
 import fr.rob4.simulation.geometrie.Vecteur2D;
@@ -25,10 +26,16 @@ public class CapteurLaser extends Element implements IModule<Double> {
         Point2D centre = forme.getCentre();
 
         for (ICollisionable collisionable : collisionables) {
-            if (!(collisionable instanceof Robot) && forme.estSupperposee(collisionable.getForme())) {
-                // On cherche les elements dans le rayon de mesure
-                continue;
-            }
+            try {
+		if (!(collisionable instanceof Robot) && forme.estSuperposee(collisionable.getForme())) {
+		    // On cherche les elements dans le rayon de mesure
+		    continue;
+		}
+	    } catch (NoIntersectionException e) {
+		e.printStackTrace();
+		// On ne sait pas déterminer s'il y a superposition donc on passe au suivant
+		continue;
+	    }
             // Calcul de la distance séparant le centre de l'obstacle et du
             // capteur
             Forme colForme = collisionable.getForme();
