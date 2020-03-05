@@ -211,7 +211,7 @@ public class Segment extends Forme {
 		for (Segment s : pol.getSegments()) {
 			try {
 				Point2D ptColl = s.intersecte(this);
-				if( liste.contains(ptColl)) {
+				if( !liste.contains(ptColl)) {
 					liste.add(ptColl);
 				}
 			} catch (NoIntersectionException e) {
