@@ -16,7 +16,14 @@ class SegmentTest {
 
 	@Test
 	void collisionne() {
-		fail("Not yet implemented");
+		Segment segment = new Segment(new Point2D(new Vecteur2D()), new Point2D(new Vecteur2D(2, 2)));
+		Rectangle r = new Rectangle(0, 0, 1, 1);
+		try {
+			assertTrue(segment.collisionne(r));
+		}catch (NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@Test
@@ -76,11 +83,9 @@ class SegmentTest {
 		// Intersection à l'extrémité
 		s2 = new Segment(c, b);
 		try {
-			Point2D inter = s1.intersecte(s2);
-			assertEquals(b, inter);
-		} catch (NoIntersectionException e) {
-			e.printStackTrace();
+			s1.intersecte(s2);
 			fail();
+		} catch (NoIntersectionException e) {
 		}
 	}
 
@@ -171,15 +176,19 @@ class SegmentTest {
 		}
 		
 		// Segment en contact
-		s = new Segment(new Point2D(new Vecteur2D(4,-1)), new Point2D(new Vecteur2D(4, 4)));
+		s = new Segment(new Point2D(new Vecteur2D(3, 3)), new Point2D(new Vecteur2D(5, 1)));
 		try {
-			List<Point2D> l = s.intersecte(r);
-			assertEquals(1, l.size());
-			List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(1, 2)));
-			assertTrue(l.containsAll(collPts));
-		} catch (NoIntersectionException e) {
-			e.printStackTrace();
+			s.intersecte(r);
 			fail();
+		} catch (NoIntersectionException e) {
+		}
+		
+		// Segment sans contact
+		s = new Segment(new Point2D(new Vecteur2D(0, 5)), new Point2D(new Vecteur2D(5, 5)));
+		try {
+			s.intersecte(r);
+			fail();
+		} catch (NoIntersectionException e) {
 		}
 	}
 
