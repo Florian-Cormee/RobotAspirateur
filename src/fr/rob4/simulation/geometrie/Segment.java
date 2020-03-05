@@ -4,7 +4,6 @@
 package fr.rob4.simulation.geometrie;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.ArrayList;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
