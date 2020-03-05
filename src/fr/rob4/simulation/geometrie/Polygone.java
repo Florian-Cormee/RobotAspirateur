@@ -222,4 +222,9 @@ public class Polygone extends Forme {
 		}
 		return (points.size() == polygone.points.size()) && Objects.deepEquals(centre, polygone.centre);
 	}
+
+	@Override
+	public String toString() {
+		return "Polygone [points=" + points + ", centre=" + centre + "]";
+	}
 }

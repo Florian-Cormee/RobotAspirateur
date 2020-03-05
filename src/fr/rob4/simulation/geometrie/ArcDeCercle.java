@@ -134,6 +134,11 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	@Override
+	public String toString() {
+		return "ArcDeCercle [ang1=" + ang1 + ", ang2=" + ang2 + ", rayon=" + rayon + ", centre=" + centre + "]";
+	}
+
+	@Override
 	public boolean collisionne(Forme f) throws NoIntersectionException {
 		// On teste d'abord si les formes sont assez proches
 		try {
