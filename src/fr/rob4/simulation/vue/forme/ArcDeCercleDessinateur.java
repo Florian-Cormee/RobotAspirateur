@@ -20,10 +20,11 @@ public class ArcDeCercleDessinateur implements IDessinateur<ArcDeCercle> {
         int x = (int) (positionAbsolue.getX() * echelle - rayon);
         int y = (int) (positionAbsolue.getY() * echelle - rayon);
         int longueur = (int) (rayon * 2);
-        // TODO
         // Calcule les angles de début et d'ouverture
         int angleDebut = (int) ((element.getOrientation() - element.getOuverture() / 2) * 180 / Math.PI);
         int angleOuverture = (int) (element.getOuverture() * 180 / Math.PI);
+        System.out.printf("Orientation: %.2f\n", element.getOrientation()*180/Math.PI);
+        System.out.printf("Angle début: %d\tAngle ouverture: %d\n", angleDebut,angleOuverture);
         // Trace l'arc de cercle
         if (rempli) {
             graphics2D.fillArc(x, y, longueur, longueur, angleDebut, angleOuverture);

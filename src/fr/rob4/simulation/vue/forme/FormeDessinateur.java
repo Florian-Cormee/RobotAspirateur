@@ -1,10 +1,13 @@
 package fr.rob4.simulation.vue.forme;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
-import fr.rob4.simulation.geometrie.*;
-import fr.rob4.simulation.vue.IDessinateur;
-
 import java.awt.Graphics2D;
+
+import fr.rob4.simulation.geometrie.ArcDeCercle;
+import fr.rob4.simulation.geometrie.Cercle;
+import fr.rob4.simulation.geometrie.Forme;
+import fr.rob4.simulation.geometrie.Polygone;
+import fr.rob4.simulation.geometrie.Rectangle;
+import fr.rob4.simulation.vue.IDessinateur;
 
 public class FormeDessinateur implements IDessinateur<Forme> {
     @Override
