@@ -210,12 +210,15 @@ public class Segment extends Forme {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		for (Segment s : pol.getSegments()) {
 			try {
-				liste.add(s.intersecte(this));
+				Point2D ptColl = s.intersecte(this);
+				if( liste.contains(ptColl)) {
+					liste.add(ptColl);
+				}
 			} catch (NoIntersectionException e) {
 				continue;
 			}
 		}
-		if (liste.size() == 0) {
+		if (liste.size() == 0) { // on vérifie si la liste est vide
 			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le polygone");
 		}
 		return liste;
@@ -231,7 +234,11 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
-			List<Point2D> liste = intersecte(r.toPolygone());
+			Polygone pol = r.toPolygone();
+			List<Point2D> liste = intersecte(pol);
+			if (a.inside(pol.getDimension()) == b.inside(pol.getDimension())) {
+				throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
+			}
 			return liste;
 		} catch (NoIntersectionException e) {
 			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");

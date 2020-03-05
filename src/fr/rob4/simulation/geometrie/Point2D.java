@@ -158,4 +158,23 @@ public class Point2D implements Cloneable {
 	}
 	return pRot;
     }
+    
+    public boolean inside(Rectangle r) {
+    	double xMax = Double.NEGATIVE_INFINITY;
+		double xMin = Double.POSITIVE_INFINITY;
+		double yMax = Double.NEGATIVE_INFINITY;
+		double yMin = Double.POSITIVE_INFINITY;
+		
+		for (Point2D p : r.toPolygone().getPoints()) {
+			Vecteur2D vTemp = p.getPositionAbsolue();
+			xMax = Math.max(xMax, vTemp.getX());
+			xMin = Math.min(xMin, vTemp.getX());
+			yMax = Math.max(yMax, vTemp.getY());
+			yMin = Math.min(yMin, vTemp.getY());
+		}
+		
+		double x = getPositionAbsolue().getX();
+		double y = getPositionAbsolue().getY();
+		return (x >= xMin && x <= xMax) && (y >= yMin && y <= yMax);
+    }
 }
