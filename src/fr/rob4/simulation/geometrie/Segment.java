@@ -211,7 +211,7 @@ public class Segment extends Forme {
 		for (Segment s : pol.getSegments()) {
 			try {
 				Point2D ptColl = s.intersecte(this);
-				if( !liste.contains(ptColl)) {
+				if (!liste.contains(ptColl)) {
 					liste.add(ptColl);
 				}
 			} catch (NoIntersectionException e) {
@@ -328,4 +328,10 @@ public class Segment extends Forme {
 		return a.getPositionAbsolue().equals(segment.a.getPositionAbsolue())
 				&& b.getPositionAbsolue().equals(segment.b.getPositionAbsolue());
 	}
+
+	@Override
+	public String toString() {
+		return "Segment [a=" + a + ", b=" + b + ", centre=" + centre + "]";
+	}
+
 }
