@@ -114,10 +114,10 @@ public class Rectangle extends Forme {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = largeur / 2;
 		double lar2 = hauteur / 2;
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, lar2))));
 		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
+		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, +lar2))));
+		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, +lar2))));
+		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
 		return new Polygone(centre, pointsRect);
 	}
 
