@@ -16,6 +16,7 @@ class SegmentTest {
 
 	@Test
 	void collisionne() {
+		fail();
 		Segment segment = new Segment(new Point2D(new Vecteur2D()), new Point2D(new Vecteur2D(2, 2)));
 		Rectangle r = new Rectangle(0, 0, 1, 1);
 		try {
