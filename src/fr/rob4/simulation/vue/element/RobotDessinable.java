@@ -66,6 +66,6 @@ public class RobotDessinable implements IRobot, IDessinable {
 
     @Override
     public void dessine(Graphics2D graphics2D, double echelle) {
-    // TODO
+	Forme forme = robot.getForme();
     }
 }

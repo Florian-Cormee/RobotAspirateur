@@ -27,7 +27,7 @@ public final class Main {
         ICollisionable bordures = new ObstacleDessinable(collisionable, Color.GRAY);
 
 //        INettoyable tache = new Tache(new Cercle(1.9, 1.9, 0.2));
-        INettoyable tache = new Tache(new ArcDeCercle(1, 0, 1, Math.PI/2, Math.PI));
+        INettoyable tache = new Tache(new ArcDeCercle(1, 0, 1, Math.PI/3, 3*Math.PI/2));
 //        Point2D p1 = new Point2D(new Vecteur2D());
 //        Point2D p2 = new Point2D(p1, new Vecteur2D(1, 0));
 //        Point2D p3 = new Point2D(p1, new Vecteur2D(0, 1));

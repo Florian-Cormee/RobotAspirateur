@@ -10,7 +10,7 @@ public final class GeometrieDessinateurFactory {
     }
 
     public IDessinateur<Forme> forme() {
-        return new FormeDessinateur();
+	return new FormeDessinateur();
     }
 
     /**
@@ -19,7 +19,7 @@ public final class GeometrieDessinateurFactory {
      * @return Un dessinateur de cercle
      */
     public IDessinateur<Cercle> cercle() {
-        return new CercleDessinateur();
+	return new CercleDessinateur();
     }
 
     /**
@@ -28,7 +28,7 @@ public final class GeometrieDessinateurFactory {
      * @return Un dessinateur d'arc de cercle
      */
     public IDessinateur<ArcDeCercle> arcDeCercle() {
-        return new ArcDeCercleDessinateur();
+	return new ArcDeCercleDessinateur();
     }
 
     /**
@@ -37,7 +37,7 @@ public final class GeometrieDessinateurFactory {
      * @return Un dessinateur de rectangle
      */
     public IDessinateur<Rectangle> rectangle() {
-        return new RectangleDessinateur();
+	return new RectangleDessinateur();
     }
 
     /**
@@ -46,6 +46,15 @@ public final class GeometrieDessinateurFactory {
      * @return Un dessinateur de poylgone
      */
     public IDessinateur<Polygone> polygone() {
-        return new PolygonDessinateur();
+	return new PolygonDessinateur();
+    }
+
+    /**
+     * Crée une nouvelle instance de dessinateur de segment
+     * 
+     * @return Un dessinateur de segment
+     */
+    public IDessinateur<Segment> segment() {
+	return new SegmentDessinateur();
     }
 }

@@ -27,9 +27,9 @@ public class ArcDeCercleDessinateur implements IDessinateur<ArcDeCercle> {
         System.out.printf("Angle début: %d\tAngle ouverture: %d\n", angleDebut,angleOuverture);
         // Trace l'arc de cercle
         if (rempli) {
-            graphics2D.fillArc(x, y, longueur, longueur, angleDebut, angleOuverture);
+            graphics2D.fillArc(x, y, longueur, longueur, -angleDebut, -angleOuverture);
         } else {
-            graphics2D.drawArc(x, y, longueur, longueur, angleDebut, angleOuverture);
+            graphics2D.drawArc(x, y, longueur, longueur, -angleDebut, -angleOuverture);
         }
 
     }
