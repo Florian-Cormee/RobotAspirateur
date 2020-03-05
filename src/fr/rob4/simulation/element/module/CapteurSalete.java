@@ -28,7 +28,7 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
         this.nettoyables.clear();
         for (INettoyable nettoyable : nettoyables) {
             try {
-		if (forme.estSuperposee(nettoyable.getForme())) {
+		if (forme.collisionne(nettoyable.getForme())) {
 		    this.nettoyables.add(nettoyable);
 		}
 	    } catch (NoIntersectionException e) {

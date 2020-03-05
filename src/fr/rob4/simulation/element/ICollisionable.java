@@ -24,7 +24,7 @@ public interface ICollisionable extends IElement {
     default boolean collisionne(ICollisionable element) throws NoIntersectionException {
         Forme thisForme = getForme();
         Forme elementForme = element.getForme();
-        return thisForme.estSuperposee(elementForme);
+        return thisForme.collisionne(elementForme);
     }
 
     /**
