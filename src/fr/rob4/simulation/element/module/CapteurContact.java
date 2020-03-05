@@ -24,7 +24,7 @@ public class CapteurContact extends Element implements IModule<Boolean> {
 	collision = false;
 	for (ICollisionable element : elements) {
 	    try {
-		collision = forme.estSuperposee(element.getForme());
+		collision = forme.collisionne(element.getForme());
 
 	    } catch (NoIntersectionException e) {
 	    }

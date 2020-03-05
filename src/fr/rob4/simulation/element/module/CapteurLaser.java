@@ -27,7 +27,7 @@ public class CapteurLaser extends Element implements IModule<Double> {
 
         for (ICollisionable collisionable : collisionables) {
             try {
-		if (!(collisionable instanceof Robot) && forme.estSuperposee(collisionable.getForme())) {
+		if (!(collisionable instanceof Robot) && forme.collisionne(collisionable.getForme())) {
 		    // On cherche les elements dans le rayon de mesure
 		    continue;
 		}
