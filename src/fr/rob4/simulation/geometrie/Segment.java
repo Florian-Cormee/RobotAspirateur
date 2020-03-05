@@ -148,7 +148,7 @@ public class Segment extends Forme {
 		} else {
 			double t = tempV.produitCroix(s) / tempD;
 			double u = tempV.produitCroix(r) / tempD;
-			if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)) { // Les 2 segments se croisent
+			if ((t > 0) && (t < 1) && (u > 0) && (u < 1)) { // Les 2 segments se croisent sauf aux extremités
 				return new Point2D(p.addition(r.produit(t)));
 			} else {
 				throw new NoIntersectionException(this, "L\'intersection ne se fait sur les segments");
