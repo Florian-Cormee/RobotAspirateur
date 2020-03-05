@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -122,20 +123,59 @@ class SegmentTest {
 
 	@Test
 	void testIntersectePolygone() {
-		fail("Not yet implemented");
+		List<Point2D> list = new ArrayList<Point2D>();
+		Point2D a = new Point2D(new Vecteur2D());
+		Point2D b = new Point2D(new Vecteur2D(2, 0));
+		Point2D c = new Point2D(new Vecteur2D(1, 2)); 
+		list.add(a);
+		list.add(b);
+		list.add(c);
+		Polygone pol = new Polygone(1, 1, list);
+		
+		// Segment avec intersection
+		Segment seg = new Segment(new Point2D(new Vecteur2D(1, 1)), new Point2D(new Vecteur2D(3, 1)));
+		try {
+			List<Point2D> l = seg.intersecte(pol);
+			assertEquals(1, l.size());
+			List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(1.5, 1)));
+			assertTrue(l.containsAll(collPts));
+		}catch (NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@Test
 	void testIntersecteRectangle() {
 		Rectangle r = new Rectangle(2, 1, 4, 2);
-		System.out.println(r.toPolygone().getPoints().toString());
-		Segment s = new Segment(new Point2D(new Vecteur2D(2, 1)), new Point2D(new Vecteur2D(2, 3)));
+		//System.out.println(r.toPolygone().getPoints().toString());
 		
-		// intersection
+		// Segment avec intersection
+		Segment s = new Segment(new Point2D(new Vecteur2D(2, 1)), new Point2D(new Vecteur2D(2, 3)));
 		try {
 			List<Point2D> l = s.intersecte(r);
 			assertEquals(1, l.size());
 			List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(2, 2)));
+			assertTrue(l.containsAll(collPts));
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+		// Segment tangent
+		s = new Segment(new Point2D(new Vecteur2D(4, -1)), new Point2D(new Vecteur2D(4, 4)));
+		try {
+			List<Point2D> l = s.intersecte(r);
+			fail(l.toString());
+		} catch (NoIntersectionException e) {
+		}
+		
+		// Segment en contact
+		s = new Segment(new Point2D(new Vecteur2D(4,-1)), new Point2D(new Vecteur2D(4, 4)));
+		try {
+			List<Point2D> l = s.intersecte(r);
+			assertEquals(1, l.size());
+			List<Point2D> collPts = Arrays.asList(new Point2D(new Vecteur2D(1, 2)));
 			assertTrue(l.containsAll(collPts));
 		} catch (NoIntersectionException e) {
 			e.printStackTrace();
