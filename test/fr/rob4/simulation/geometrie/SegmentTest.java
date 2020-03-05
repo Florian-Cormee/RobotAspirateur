@@ -128,6 +128,7 @@ class SegmentTest {
 	@Test
 	void testIntersecteRectangle() {
 		Rectangle r = new Rectangle(2, 1, 4, 2);
+		System.out.println(r.toPolygone().getPoints().toString());
 		Segment s = new Segment(new Point2D(new Vecteur2D(2, 1)), new Point2D(new Vecteur2D(2, 3)));
 		
 		// intersection
