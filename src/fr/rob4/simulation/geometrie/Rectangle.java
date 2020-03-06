@@ -119,10 +119,10 @@ public class Rectangle extends Forme {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = largeur / 2;
 		double lar2 = hauteur / 2;
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, +lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, +lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(lon2, lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));
 		return new Polygone(centre, pointsRect);
 	}
 
@@ -199,13 +199,13 @@ public class Rectangle extends Forme {
 	 * @throws NoIntersectionException
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
-		/*try {
+		try {
 			return this.toPolygone().intersecte(r);
 		} catch (NoIntersectionException e) {
 			e.printStackTrace();
 			throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
-		}*/
-		double dw1 = largeur/2;
+		}
+		/*double dw1 = largeur/2;
 		double dh1 = hauteur/2;
 		double dw2 = r.getLargeur()/2;
 		double dh2 = r.getHauteur()/2;
@@ -220,6 +220,6 @@ public class Rectangle extends Forme {
 			return liste;
 		}else {
 			throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
-		}
+		}*/
 	}
 }
