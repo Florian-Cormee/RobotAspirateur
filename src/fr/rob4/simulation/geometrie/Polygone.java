@@ -68,7 +68,7 @@ public class Polygone extends Forme {
 		Iterator<Point2D> it = points.iterator();
 		while (it.hasNext()) {
 			Point2D point = it.next();
-			Vecteur2D newPos = p.getPositionRelative(point.origine).rotation(alpha).addition(p.position);
+			Vecteur2D newPos = p.getPositionRelative(point).rotation(alpha).addition(p.position);
 			newPoints.add(new Point2D(point.origine, newPos));
 		}
 		return new Polygone(centre.clone(), newPoints);
@@ -181,9 +181,15 @@ public class Polygone extends Forme {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
+		List<Point2D> listPtColl;
 		try {
 			for (Segment s : getSegments()) {
-				liste.addAll(s.intersecte(pol));
+				listPtColl = s.intersecte(pol);
+				for (Point2D p : listPtColl) {
+					if (!liste.contains(p)) {
+						liste.add(p);
+					}
+				}
 			}
 			return liste;
 		} catch (NoIntersectionException e) {
