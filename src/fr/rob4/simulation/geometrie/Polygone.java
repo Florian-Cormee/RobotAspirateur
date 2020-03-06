@@ -182,18 +182,19 @@ public class Polygone extends Forme {
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		List<Point2D> listPtColl;
-		try {
-			for (Segment s : getSegments()) {
+		for (Segment s : getSegments()) {
+			try {
 				listPtColl = s.intersecte(pol);
 				for (Point2D p : listPtColl) {
 					if (!liste.contains(p)) {
 						liste.add(p);
 					}
 				}
-			}
+			}catch( NoIntersectionException e) {}
+		}
+		if (liste.size() != 0) {
 			return liste;
-		} catch (NoIntersectionException e) {
-			e.printStackTrace();
+		}else {
 			throw new NoIntersectionException(this, "Pas d'intersection entre ce polygone et l'autre.");
 		}
 	}
