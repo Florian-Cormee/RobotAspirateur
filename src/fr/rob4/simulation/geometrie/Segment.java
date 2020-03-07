@@ -3,6 +3,7 @@
  */
 package fr.rob4.simulation.geometrie;
 
+import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.ArrayList;
@@ -307,7 +308,7 @@ public class Segment extends Forme {
                 Point2D centreAdc = adc.getCentre();
                 Vecteur2D test = centreAdc.getPositionRelative(p);
                 // Angle entre le point et l'orientation de l'arc de cercle
-                double angle = test.angle(x) - adc.getOrientation();
+                double angle = Outil.normalize_angle(test.angle(x) - adc.getOrientation());
                 double ouverture = adc.getOuverture();
                 // Cette angle est dans l'intervalle d'ouverture
                 if (-ouverture / 2 >= angle || angle >= ouverture / 2) {
