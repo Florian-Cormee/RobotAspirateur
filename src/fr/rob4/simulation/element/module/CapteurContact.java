@@ -7,6 +7,7 @@ import fr.rob4.simulation.exception.NoIntersectionException;
 import fr.rob4.simulation.geometrie.Forme;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CapteurContact extends Element implements IModule<Boolean> {
     protected ICollisionable element;
@@ -45,4 +46,28 @@ public class CapteurContact extends Element implements IModule<Boolean> {
         return this.element != null;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.element);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        CapteurContact that = (CapteurContact) o;
+        return Objects.equals(this.element, that.element);
+    }
+
+    @Override
+    public String toString() {
+        return "CapteurContact{" + "element=" + this.element + ", super.toString=" + super.toString() + ']';
+    }
 }

@@ -13,4 +13,9 @@ public class Tache extends Element implements INettoyable {
         super(forme);
     }
 
+    @Override
+    public String toString() {
+        return "Tache[super.toString()=" + super.toString()+"]";
+    }
+
 }

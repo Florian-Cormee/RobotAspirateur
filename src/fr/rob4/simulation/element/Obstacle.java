@@ -17,4 +17,9 @@ public class Obstacle extends Element implements ICollisionable {
     public void gereCollision(ICollisionable element) {
         // Ne rien faire, l'obstacle est lié au bâti
     }
+
+    @Override
+    public String toString() {
+        return "Obstacle[toString=" + super.toString() + "]";
+    }
 }

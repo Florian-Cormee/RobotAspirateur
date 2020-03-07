@@ -123,4 +123,26 @@ public class Simulation {
     public List<IElement> getElements() {
         return Collections.unmodifiableList(this.elements);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.elements, this.bordures);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        Simulation that = (Simulation) o;
+        return this.elements.equals(that.elements) && this.bordures.equals(that.bordures);
+    }
+
+    @Override
+    public String toString() {
+        return "Simulation{" + "elements=" + this.elements + ", bordures=" + this.bordures + '}';
+    }
 }

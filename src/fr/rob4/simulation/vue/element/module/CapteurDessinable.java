@@ -11,6 +11,7 @@ import fr.rob4.simulation.vue.forme.GeometrieDessinateurFactory;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Objects;
 
 public class CapteurDessinable<T> implements IModule<T>, IDessinable {
     private IModule<T> capteur;
@@ -47,6 +48,28 @@ public class CapteurDessinable<T> implements IModule<T>, IDessinable {
     @Override
     public T getInfo() {
         return this.capteur.getInfo();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.capteur, this.plein);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        CapteurDessinable<?> that = (CapteurDessinable<?>) o;
+        return this.plein == that.plein && Objects.equals(this.capteur, that.capteur);
+    }
+
+    @Override
+    public String toString() {
+        return "CapteurDessinable{" + "capteur=" + this.capteur + ", plein=" + this.plein + '}';
     }
 
     @Override

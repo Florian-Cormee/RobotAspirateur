@@ -46,6 +46,11 @@ public class RobotDessinable extends Robot implements IDessinable {
     }
 
     @Override
+    public String toString() {
+        return "RobotDessinable{} " + super.toString();
+    }
+
+    @Override
     public void dessine(Graphics2D graphics2D, double echelle) {
         Color precColor = graphics2D.getColor();
         Stroke precStroke = graphics2D.getStroke();
