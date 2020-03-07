@@ -130,4 +130,35 @@ public class SimulationStdBuilder {
     public Simulation build() {
         return new Simulation(this.bordures, this.elements);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.elements, this.factory, this.bordures);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        SimulationStdBuilder builder = (SimulationStdBuilder) o;
+        return Objects.equals(this.elements, builder.elements) &&
+               Objects.equals(this.factory, builder.factory) &&
+               Objects.equals(this.bordures, builder.bordures);
+    }
+
+    @Override
+    public String toString() {
+        return "SimulationStdBuilder{" +
+               "elements=" +
+               elements +
+               ", factory=" +
+               factory +
+               ", bordures=" +
+               bordures +
+               '}';
+    }
 }
