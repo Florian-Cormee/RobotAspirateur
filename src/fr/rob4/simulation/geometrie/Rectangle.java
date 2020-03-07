@@ -54,14 +54,6 @@ public class Rectangle extends Forme {
 
 	@Override
 	public boolean collisionne(Forme f) throws NoIntersectionException {
-		// On test d'abord si les formes sont assez proches
-		try {
-			this.getDimension().intersecte(f.getDimension());
-		} catch (NoIntersectionException e) {
-			e.printStackTrace();
-			return false;
-		}
-
 		if (f.getClass() == Segment.class) {
 			Segment s = (Segment) f;
 			try {

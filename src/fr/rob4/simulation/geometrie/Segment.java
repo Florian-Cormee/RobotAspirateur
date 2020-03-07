@@ -53,15 +53,7 @@ public class Segment extends Forme {
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
-        // On teste d'abord si les formes sont assez proches
-        try {
-            this.getDimension().intersecte(f.getDimension());
-        } catch (NoIntersectionException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        if (f.getClass() == Segment.class) {
+       if (f.getClass() == Segment.class) {
             Segment s = (Segment) f;
             try {
                 this.intersecte(s);
@@ -279,9 +271,9 @@ public class Segment extends Forme {
         try {
             Polygone pol = r.toPolygone();
             List<Point2D> liste = this.intersecte(pol);
-            if (this.a.inside(pol.getDimension()) == this.b.inside(pol.getDimension())) {
+            /*if (this.a.inside(pol.getDimension()) == this.b.inside(pol.getDimension())) {
                 throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
-            }
+            }*/
             return liste;
         } catch (NoIntersectionException e) {
             throw new NoIntersectionException("Pas d'intersection entre le segment et le rectangle", e, this);
@@ -308,7 +300,7 @@ public class Segment extends Forme {
                 Point2D centreAdc = adc.getCentre();
                 Vecteur2D test = centreAdc.getPositionRelative(p);
                 // Angle entre le point et l'orientation de l'arc de cercle
-                double angle = Outil.normalize_angle(test.angle(x) - adc.getOrientation());
+                double angle = Outil.normalize_angle(x.angle(test) - adc.getOrientation());
                 double ouverture = adc.getOuverture();
                 // Cette angle est dans l'intervalle d'ouverture
                 if (-ouverture / 2 >= angle || angle >= ouverture / 2) {
