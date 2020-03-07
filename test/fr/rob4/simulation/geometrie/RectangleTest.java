@@ -13,7 +13,25 @@ class RectangleTest {
 
 	@Test
 	void testCollisionne() {
-		fail("Not yet implemented");
+		Rectangle rect = new Rectangle(0, 0, 2, 2);
+		
+		Segment seg = new Segment(new Point2D(new Vecteur2D(0, -2)), new Point2D(new Vecteur2D(1, 3)));
+		System.out.println(seg);
+		try {
+			System.out.println(seg.intersecte(rect));
+			assertTrue(rect.collisionne(seg));
+		}catch(NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
+		}
+		
+		Cercle cercle = new Cercle(0.5, -0.5, 1.4);
+		try {
+			assertTrue(rect.collisionne(cercle));
+		}catch(NoIntersectionException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@Test
