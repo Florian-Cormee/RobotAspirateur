@@ -46,12 +46,20 @@ public class Simulation {
      * </p>
      */
     protected void actualise() {
+        /* Actualisation des éléments */
+        List<IActuallisable> actuallisables = this.getElements(IActuallisable.class);
+        for (IActuallisable actuallisable : actuallisables) {
+            actuallisable.actualise(this);
+        }
         /* Gestion des collisions */
         List<ICollisionable> collisionables = this.getElements(ICollisionable.class);
         // Parcourt tout les couples de collisionables
         for (int i = 0 ; i < collisionables.size() ; i++) {
             ICollisionable collI = collisionables.get(i);
             for (int j = i ; j < collisionables.size() ; j++) {
+                if (i == j) {
+                    continue;
+                }
                 ICollisionable collJ = collisionables.get(j);
                 // Test de la collision
                 try {
@@ -65,11 +73,6 @@ public class Simulation {
                     e.printStackTrace();
                 }
             }
-        }
-        /* Actualisation des éléments */
-        List<IActuallisable> actuallisables = this.getElements(IActuallisable.class);
-        for (IActuallisable actuallisable : actuallisables) {
-            actuallisable.actualise(this);
         }
         /* Nettoyage */
         List<IRobot> robots = this.getElements(IRobot.class);

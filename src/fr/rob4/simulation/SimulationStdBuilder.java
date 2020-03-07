@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class SimulationStdBuilder  {
+public class SimulationStdBuilder {
     public static final double LARGEUR_PIECE = 4;
     public static final double HAUTEUR_PIECE = 4;
     public static final double DIAMETRE_ROBOT_STD = 0.34;
@@ -61,7 +61,7 @@ public class SimulationStdBuilder  {
     }
 
     private boolean estHorsZone(double x, double y, double largeur, double hauteur) {
-        return !(Math.abs(x) > (LARGEUR_PIECE - largeur) / 2) && !(Math.abs(y) > (HAUTEUR_PIECE - hauteur) / 2);
+        return (Math.abs(x) > (LARGEUR_PIECE - largeur) / 2) || (Math.abs(y) > (HAUTEUR_PIECE - hauteur) / 2);
     }
 
     private void ajouteElement(IElement element) {
@@ -106,8 +106,8 @@ public class SimulationStdBuilder  {
         // Création de la zone de détection du capteur de contact central
         Forme formeCapteurContact = new ArcDeCercle(centre,
                                                     DIAMETRE_ROBOT_STD / 2,
-                                                    (Math.PI - OUVERTURE_CAPTEUR_CONTACT_STD) / 2,
-                                                    (Math.PI + OUVERTURE_CAPTEUR_CONTACT_STD) / 2);
+                                                    -OUVERTURE_CAPTEUR_CONTACT_STD / 2,
+                                                    +OUVERTURE_CAPTEUR_CONTACT_STD / 2);
         // Création des capteurs de contact
         IModule<Boolean> capteurContactG = this.factory.capteurContact(formeCapteurContact);
         capteurContactG.rotation(orientation - OUVERTURE_CAPTEUR_CONTACT_STD - ESPACEMENT_CAPTEUR_CONTACT_STD, centre);

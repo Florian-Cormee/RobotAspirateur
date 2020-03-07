@@ -6,10 +6,23 @@ public interface IActuallisable extends IElement {
     /**
      * Actualise l'éléments
      * <p>
-     * L'actualisation a toujours lieu après la gestion des collisions.
+     * L'actualisation a toujours lieu avant la gestion des collisions.
      * </p>
      *
      * @param simulation La simulation qui demandant l'actualisation
      */
-    void actualise(Simulation simulation);
+    default void actualise(Simulation simulation) {
+        this.actualise(simulation, null);
+    }
+
+    /**
+     * Actualise l'éléments
+     * <p>
+     * L'actualisation a toujours lieu avant la gestion des collisions.
+     * </p>
+     *
+     * @param simulation La simulation qui demandant l'actualisation
+     * @param appeleur L'Objet demandant la mise à jour
+     */
+    void actualise(Simulation simulation, Object appeleur);
 }

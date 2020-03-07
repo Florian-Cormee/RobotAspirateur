@@ -24,9 +24,7 @@ public abstract class Element implements IDeplacable {
 
 
     public void translation(Vecteur2D deplacement) {
-        Point2D centre = this.forme.getCentre();
-        centre.deplace(deplacement);
-        this.forme.setCentre(centre);
-        //TODO utiliser une méthode déplace de forme
+        // Déplacement de la forme
+        this.forme = this.forme.deplace(deplacement);
     }
 }
