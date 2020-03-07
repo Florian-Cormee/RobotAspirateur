@@ -23,6 +23,7 @@ public class Robot extends Element implements IRobot {
     protected double ecartRoues;
     protected boolean nettoie;
     protected Point2D dernierePos;
+    protected double dernierTheta;
 
     /**
      * Crée un robot
@@ -128,7 +129,13 @@ public class Robot extends Element implements IRobot {
     }
 
     @Override
+    public Point2D getPosition() {
+        return this.forme.getCentre();
+    }
+
+    @Override
     public void translation(Vecteur2D deplacement) {
+        this.dernierePos = this.getPosition();
         super.translation(deplacement);
         for (IModule<?> module : this.modules) {
             module.translation(deplacement);
@@ -136,8 +143,13 @@ public class Robot extends Element implements IRobot {
     }
 
     @Override
-    public Point2D getPosition() {
-        return this.forme.getCentre();
+    public void rotation(double angle, Point2D centre) {
+        this.dernierTheta = this.theta;
+        super.rotation(angle, centre);
+        this.theta += angle;
+        for (IModule<?> module : this.modules) {
+            module.rotation(angle, centre);
+        }
     }
 
     @Override
@@ -145,32 +157,16 @@ public class Robot extends Element implements IRobot {
         return this.theta;
     }
 
-    /**
-     * Définit la nouvelle position
-     * <p>
-     * S'assure que la position soit non {@code null}<br>
-     * Sauvegarde la précédente position
-     *
-     * @param pos La nouvelle position
-     */
-    protected void setPosition(Point2D pos) {
-        Objects.requireNonNull(pos);
-        this.dernierePos = this.getPosition();
-        this.forme.setCentre(pos);
-    }
-
-    @Override
-    public void rotation(double angle, Point2D centre) {
-        super.rotation(angle, centre);
-        for (IModule<?> module : this.modules) {
-            module.rotation(angle, centre);
-        }
-    }
-
     @Override
     public void gereCollision(ICollisionable element) {
         // Annulation du dernier déplacement
-        this.setPosition(this.dernierePos);
+        if (this.dernierePos != null) {
+            Vecteur2D dernierePosAbsolue = this.dernierePos.getPositionAbsolue();
+            Vecteur2D positionAbsolue = this.getPosition().getPositionAbsolue();
+            Vecteur2D deplacementInv = dernierePosAbsolue.soustraction(positionAbsolue);
+            this.translation(deplacementInv);
+            this.rotation(this.dernierTheta - this.theta, this.getPosition());
+        }
     }
 
     @Override
