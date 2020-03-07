@@ -13,7 +13,7 @@ public final class Main {
     public static void main(String[] args) {
         ElementFactory factory = ElementFactory.getInstance();
         SimulationStdBuilder builder = new SimulationStdBuilder(factory);
-		builder.ajouteRobotStandard(0, 0, 0, new StrategieAleatoire());
+		builder.ajouteRobotStandard(1.82, 0, 0, new StrategieAleatoire());
 		Simulation s = builder.build();
         SimulationPanel dessinateur = new SimulationPanel(s);
 
