@@ -43,8 +43,8 @@ public class ArcDeCercle extends Cercle {
      */
     public ArcDeCercle(Point2D p, double r, double a1, double a2) {
         super(p, r);
-		this.ang1 = Outil.normalize_angle(a1);
-		this.ang2 = Outil.normalize_angle(a2);
+        this.ang1 = Outil.normalize_angle(a1);
+        this.ang2 = Outil.normalize_angle(a2);
     }
 
     /**
@@ -60,91 +60,15 @@ public class ArcDeCercle extends Cercle {
      */
     public ArcDeCercle(double x, double y, double r, double a1, double a2) {
         super(x, y, r);
-		this.ang1 = a1;
-		this.ang2 = a2;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || this.getClass() != o.getClass()) {
-			return false;
-		}
-        ArcDeCercle arcDeCercle = (ArcDeCercle) o;
-        return Objects.equals(this.centre,
-							  arcDeCercle.centre) && (this.rayon == arcDeCercle.rayon) && (this.ang1 == arcDeCercle.ang1) && (this.ang2 == arcDeCercle.ang2);
-    }
-
-    @Override
-    public String toString() {
-        return "ArcDeCercle [ang1=" + this.ang1 + ", ang2=" + this.ang2 + ", rayon=" + this.rayon + ", centre=" + this.centre + "]";
-    }
-
-    @Override
-    public ArcDeCercle rotation(double alpha, Point2D p) {
-        ArcDeCercle newADC = new ArcDeCercle(this.centre, this.rayon, this.ang1, this.ang2);
-        newADC.setOrientation(this.getOrientation() + alpha);
-        return newADC;
-    }
-
-    /**
-     * Obtient l'ouverture de l'arc de cercle.
-     *
-     * @return Ouverture, un angle.
-     */
-    public double getOuverture() {
-        if (this.ang1 > this.ang2) {
-            return Math.PI * 2 - this.ang1 + this.ang2;
-        }
-        return this.ang2 - this.ang1;
-    }
-
-    /**
-     * Modifie l'ouverture avec un nouvel angle d'ouverture.
-     *
-     * @param o Nouvelle ouverture.
-     */
-    public void setOuverture(double o) {
-        double mid = o / 2; // la moitié de la nouvelle ouverture
-        // On modifie les angles pour avoir la bonne ouverture autour de
-        // l'orientation
-        // actuelle
-		this.ang1 = Outil.normalize_angle(this.getOrientation() - mid);
-		this.ang2 = Outil.normalize_angle(this.getOrientation() + mid);
-    }
-
-    /**
-     * Obtient l'orientation de l'arc de cercle.
-     *
-     * @return Orientation, un angle.
-     */
-    public double getOrientation() {
-        if (this.ang2 > this.ang1) {
-            return (this.ang1 + this.ang2) / 2;
-        }
-        return Outil.normalize_angle((this.ang1 + this.ang2) / 2 + Math.PI);
-    }
-
-    /**
-     * Modifie l'orientation avec un nouvel angle.
-     *
-     * @param o Orientation, un angle.
-     */
-    public void setOrientation(double o) {
-        double mid = this.getOuverture() / 2; // la moitié de l'ouverture actuelle
-        // On modofie les angles pour que l'ouverture soit la même autour de la
-        // nouvelle orientation
-		this.ang1 = Outil.normalize_angle(o - mid);
-		this.ang2 = Outil.normalize_angle(o + mid);
+        this.ang1 = a1;
+        this.ang2 = a2;
     }
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
         // On teste d'abord si les formes sont assez proches
         try {
-			this.getDimension().intersecte(f.getDimension());
+            this.getDimension().intersecte(f.getDimension());
         } catch (NoIntersectionException e) {
             e.printStackTrace();
             return false;
@@ -173,7 +97,7 @@ public class ArcDeCercle extends Cercle {
         if (f.getClass() == Polygone.class) {
             Polygone p = (Polygone) f;
             try {
-				this.intersecte(p);
+                this.intersecte(p);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -183,7 +107,7 @@ public class ArcDeCercle extends Cercle {
         if (f.getClass() == Rectangle.class) {
             Rectangle r = (Rectangle) f;
             try {
-				this.intersecte(r);
+                this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -193,7 +117,7 @@ public class ArcDeCercle extends Cercle {
         if (f.getClass() == ArcDeCercle.class) {
             ArcDeCercle adc = (ArcDeCercle) f;
             try {
-				this.intersecte(adc);
+                this.intersecte(adc);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -202,6 +126,64 @@ public class ArcDeCercle extends Cercle {
         }
         throw new NoIntersectionException(this,
                                           "Cet arc de cercle n'a pas de collision. Ou la forme n'est pas connue.");
+    }
+
+    @Override
+    public ArcDeCercle rotation(double alpha, Point2D p) {
+        ArcDeCercle newADC = new ArcDeCercle(this.centre, this.rayon, this.ang1, this.ang2);
+        newADC.setOrientation(this.getOrientation() + alpha);
+        return newADC;
+    }
+
+    /**
+     * Obtient l'orientation de l'arc de cercle.
+     *
+     * @return Orientation, un angle.
+     */
+    public double getOrientation() {
+        if (this.ang2 > this.ang1) {
+            return (this.ang1 + this.ang2) / 2;
+        }
+        return Outil.normalize_angle((this.ang1 + this.ang2) / 2 + Math.PI);
+    }
+
+    /**
+     * Obtient l'ouverture de l'arc de cercle.
+     *
+     * @return Ouverture, un angle.
+     */
+    public double getOuverture() {
+        if (this.ang1 > this.ang2) {
+            return Math.PI * 2 - this.ang1 + this.ang2;
+        }
+        return this.ang2 - this.ang1;
+    }
+
+    /**
+     * Modifie l'ouverture avec un nouvel angle d'ouverture.
+     *
+     * @param o Nouvelle ouverture.
+     */
+    public void setOuverture(double o) {
+        double mid = o / 2; // la moitié de la nouvelle ouverture
+        // On modifie les angles pour avoir la bonne ouverture autour de
+        // l'orientation
+        // actuelle
+        this.ang1 = Outil.normalize_angle(this.getOrientation() - mid);
+        this.ang2 = Outil.normalize_angle(this.getOrientation() + mid);
+    }
+
+    /**
+     * Modifie l'orientation avec un nouvel angle.
+     *
+     * @param o Orientation, un angle.
+     */
+    public void setOrientation(double o) {
+        double mid = this.getOuverture() / 2; // la moitié de l'ouverture actuelle
+        // On modofie les angles pour que l'ouverture soit la même autour de la
+        // nouvelle orientation
+        this.ang1 = Outil.normalize_angle(o - mid);
+        this.ang2 = Outil.normalize_angle(o + mid);
     }
 
     /**
@@ -215,7 +197,9 @@ public class ArcDeCercle extends Cercle {
     List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
         List<Point2D> liste = new ArrayList<Point2D>();
         for (Segment s : pol.getSegments()) {
-            liste.addAll(s.intersecte(this));
+        	try {
+        		liste.addAll(s.intersecte(this));
+        	}catch (NoIntersectionException e) {}
         }
         if (liste.size() == 0) {
             throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le polygone.");
@@ -237,7 +221,7 @@ public class ArcDeCercle extends Cercle {
             List<Point2D> liste = this.intersecte(r.toPolygone());
             return liste;
         } catch (NoIntersectionException e) {
-            throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le rectangle.");
+            throw new NoIntersectionException("Pas d'intersection entre cet arc de cercle et le rectangle.", e, this);
         }
     }
 
@@ -270,13 +254,38 @@ public class ArcDeCercle extends Cercle {
                 // points n'étaient pas dans le bon
                 // intervalle.
                 throw new NoIntersectionException(this,
-                                                  "L'intersection entre l'instance d'arc de cercle et l'autre arc de cercle ne se fait pas sur l'arc de cercle.");
+                                                  "L'intersection entre l'instance d'arc de cercle et l'autre arc de " +
+                                                          "cercle ne se fait pas sur l'arc de cercle.");
             } else {
                 return liste;
             }
         } catch (NoIntersectionException e) {
-            throw new NoIntersectionException(this,
-                                              "Pas d'intersection entre cet arc de cercle et l'autre arc de cercle.");
+            throw new NoIntersectionException("Pas d'intersection entre cet arc de cercle et l'autre arc de cercle.",
+                                              e,
+                                              this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        ArcDeCercle arcDeCercle = (ArcDeCercle) o;
+        return Objects.equals(this.centre,
+                              arcDeCercle.centre) && (this.rayon == arcDeCercle.rayon) && (this.ang1 == arcDeCercle.ang1) && (this.ang2 == arcDeCercle.ang2);
+    }
+
+    @Override
+    public String toString() {
+        return "ArcDeCercle [ang1=" + this.ang1 + ", ang2=" + this.ang2 + ", rayon=" + this.rayon + ", centre=" + this.centre + "]";
+    }
+
+    @Override
+    public ArcDeCercle deplace(Vecteur2D v) {
+        return new ArcDeCercle(getCentre().deplace(v), getRayon(), ang1, ang2);
     }
 }
