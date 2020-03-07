@@ -23,5 +23,15 @@ public final class Main {
         frame.setSize(250, 250);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        while (true) {
+            s.actualise();
+            dessinateur.repaint();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
