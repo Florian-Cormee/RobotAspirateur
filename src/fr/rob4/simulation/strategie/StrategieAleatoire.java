@@ -1,19 +1,23 @@
 package fr.rob4.simulation.strategie;
 
+import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.IRobot;
+import fr.rob4.simulation.element.Robot;
 import fr.rob4.simulation.element.module.CapteurContact;
 
 import java.util.List;
 
 public class StrategieAleatoire implements IStrategie {
     private double angleCible;
+    private double distArr;
     private double kRot;
     private Etats etat;
 
     public StrategieAleatoire() {
         this.angleCible = 0;
+        this.distArr = 0;
         this.etat = Etats.AVANCE;
-        this.kRot = 0.5;
+        this.kRot = 0.05;
     }
 
     @Override
@@ -24,8 +28,8 @@ public class StrategieAleatoire implements IStrategie {
             for (CapteurContact cc : capteurContacts) {
                 // En cas de collision, on choisi une direction de fuite aléatoire
                 if (cc.getInfo()) {
-                    this.etat = Etats.TOURNE;
-                    this.angleCible = Math.random() * 2 * Math.PI;
+                    this.etat = Etats.RECUL;
+                    this.distArr = 0;
                 }
             }
         }
@@ -33,13 +37,19 @@ public class StrategieAleatoire implements IStrategie {
         if (this.etat == Etats.AVANCE) {
             // Déplace le robot en ligne droite
             robot.deplace(2, 2);
+        } else if (this.etat == Etats.RECUL) {
+            robot.deplace(-2, -2);
+            this.distArr += Robot.VITESSE_MAX * Simulation.T;
+            if (this.distArr > 0.05) {
+                this.angleCible = (Math.random() - 0.5) * 2 * Math.PI;
+                this.etat = Etats.TOURNE;
+            }
         } else if (this.etat == Etats.TOURNE) {
             // Fait tourner le robot jusqu'à l'orientation désirée
             double DeltaRoues = this.kRot * (this.angleCible - robot.getOrientation());
             robot.deplace(-DeltaRoues / 2, DeltaRoues / 2);
             if (Math.abs(this.angleCible - robot.getOrientation()) < 1e-1) {
                 this.etat = Etats.AVANCE;
-                this.angleCible = Double.NaN;
             }
         }
         return true;
@@ -65,7 +75,8 @@ public class StrategieAleatoire implements IStrategie {
 
     public enum Etats {
         TOURNE,
-        AVANCE
+        AVANCE,
+        RECUL
     }
 
 }
