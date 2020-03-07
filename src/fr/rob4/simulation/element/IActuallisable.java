@@ -4,9 +4,9 @@ import fr.rob4.simulation.Simulation;
 
 public interface IActuallisable extends IElement {
     /**
-     * Actualise l'éléments
+     * Actualise l'Ã©lÃ©ments
      * <p>
-     * L'actualisation a toujours lieu après la gestion des collisions.
+     * L'actualisation a toujours lieu aprÃ¨s la gestion des collisions.
      * </p>
      *
      * @param simulation La simulation qui demandant l'actualisation
