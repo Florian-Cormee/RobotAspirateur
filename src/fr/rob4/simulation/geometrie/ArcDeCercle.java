@@ -142,7 +142,7 @@ public class ArcDeCercle extends Cercle {
      */
     public double getOrientation() {
         if (this.ang2 > this.ang1) {
-            return (this.ang1 + this.ang2) / 2;
+            return Outil.normalize_angle((this.ang1 + this.ang2) / 2);
         }
         return Outil.normalize_angle((this.ang1 + this.ang2) / 2 + Math.PI);
     }
@@ -164,8 +164,10 @@ public class ArcDeCercle extends Cercle {
      *
      * @param o Nouvelle ouverture.
      */
-    public void setOuverture(double o) {
-        double mid = o / 2; // la moitié de la nouvelle ouverture
+    public void setOuverture(double o) throws IllegalArgumentException{
+    	double ouv = Math.abs(o);
+    	if( ouv < 0 || ouv > 2*Math.PI) throw new IllegalArgumentException("ADC : setOuverture(double o) ERROR");
+        double mid = ouv / 2; // la moitié de la nouvelle ouverture
         // On modifie les angles pour avoir la bonne ouverture autour de
         // l'orientation
         // actuelle
