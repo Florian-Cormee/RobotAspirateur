@@ -52,13 +52,6 @@ public class Cercle extends Forme {
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
-        // On teste d'abord si les formes sont assez proches
-        try {
-            this.getDimension().intersecte(f.getDimension());
-        } catch (NoIntersectionException e) {
-            e.printStackTrace();
-            return false;
-        }
         if (f.getClass() == Cercle.class) {
             Cercle c = (Cercle) f;
             try {
