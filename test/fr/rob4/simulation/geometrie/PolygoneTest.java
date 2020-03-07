@@ -17,7 +17,16 @@ class PolygoneTest {
 
 	@Test
 	void testGetDimension() {
-		fail("Not yet implemented");
+		Point2D a = new Point2D(new Vecteur2D());
+		Point2D b = new Point2D(new Vecteur2D(2, 0));
+		Point2D c = new Point2D(new Vecteur2D(1, 2));
+		List<Point2D> l = new ArrayList<Point2D>();
+		l.add(a);
+		l.add(b);
+		l.add(c);
+		Polygone pol = new Polygone(1, 1, l);
+		Rectangle r = new Rectangle(1, 1, 2, 2);
+		assertEquals(r,pol.getDimension());		
 	}
 
 	@Test
