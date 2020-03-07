@@ -197,7 +197,9 @@ public class ArcDeCercle extends Cercle {
     List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
         List<Point2D> liste = new ArrayList<Point2D>();
         for (Segment s : pol.getSegments()) {
-            liste.addAll(s.intersecte(this));
+        	try {
+        		liste.addAll(s.intersecte(this));
+        	}catch (NoIntersectionException e) {}
         }
         if (liste.size() == 0) {
             throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le polygone.");
