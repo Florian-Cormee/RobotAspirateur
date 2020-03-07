@@ -48,8 +48,8 @@ public class Rectangle extends Forme {
 	 */
 	public Rectangle(double x, double y, double lar, double h) {
 		super(x, y);
-		largeur = lar;
-		hauteur = h;
+		largeur = Math.abs(lar);
+		hauteur = Math.abs(h);
 	}
 
 	/**
@@ -110,14 +110,19 @@ public class Rectangle extends Forme {
 				&& (hauteur == rectangle.hauteur);
 	}
 
+	@Override
+	public String toString() {
+		return "Rectangle [largeur=" + largeur + ", hauteur=" + hauteur + ", centre=" + centre + "]";
+	}
+
 	public Polygone toPolygone() {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = largeur / 2;
 		double lar2 = hauteur / 2;
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(lon2, -lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, lar2))));
-		pointsRect.add(new Point2D(centre.origine, centre.position.addition(new Vecteur2D(-lon2, -lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(lon2, lar2))));
+		pointsRect.add(new Point2D(centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));
 		return new Polygone(centre, pointsRect);
 	}
 
@@ -200,5 +205,21 @@ public class Rectangle extends Forme {
 			e.printStackTrace();
 			throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
 		}
+		/*double dw1 = largeur/2;
+		double dh1 = hauteur/2;
+		double dw2 = r.getLargeur()/2;
+		double dh2 = r.getHauteur()/2;
+		
+		Vecteur2D posR = centre.getPositionRelative(r.getCentre());
+		if( posR.getX() < (dw1+dw2) && posR.getY() < (dh1+dh2)) {
+			List<Point2D> liste = new ArrayList<Point2D>();
+			Vecteur2D dy = posR.getY()>=0 ? new Vecteur2D(0, -dh2) : new Vecteur2D(0, dh2);
+			Vecteur2D dx = posR.getX()>=0 ? new Vecteur2D(-dw2, 0) : new Vecteur2D(dw2, 0);
+			liste.add(new Point2D(centre.getPositionAbsolue().addition(posR).addition(dy)));
+			liste.add(new Point2D(centre.getPositionAbsolue().addition(posR).addition(dx)));
+			return liste;
+		}else {
+			throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
+		}*/
 	}
 }

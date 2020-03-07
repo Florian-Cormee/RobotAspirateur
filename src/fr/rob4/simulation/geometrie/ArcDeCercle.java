@@ -37,12 +37,12 @@ public class ArcDeCercle extends Cercle {
 	 * son orientation.
 	 * 
 	 * @param p  Centre
-	 * @param d  Diametre
+	 * @param r  Rayon
 	 * @param a1 1er angle
 	 * @param a2 2eme angle
 	 */
-	public ArcDeCercle(Point2D p, double d, double a1, double a2) {
-		super(p, d);
+	public ArcDeCercle(Point2D p, double r, double a1, double a2) {
+		super(p, r);
 		ang1 = Outil.normalize_angle(a1);
 		ang2 = Outil.normalize_angle(a2);
 	}
@@ -54,21 +54,15 @@ public class ArcDeCercle extends Cercle {
 	 * 
 	 * @param x  Abscisse du centre
 	 * @param y  Ordonnée du centre
-	 * @param d  Diametre
+	 * @param r  Rayon
 	 * @param a1 1er angle
 	 * @param a2 2eme angle
 	 */
-	public ArcDeCercle(double x, double y, double d, double a1, double a2) {
-		super(x, y, d);
+	public ArcDeCercle(double x, double y, double r, double a1, double a2) {
+		super(x, y, r);
 		ang1 = a1;
 		ang2 = a2;
 	}
-
-	/*
-	 * public ArcDeCercle(Cercle c, double a1, double a2) { Cercle cercle =
-	 * c.clone(); centre = cercle.centre; diametre = cercle.diametre; ang1 = a1;
-	 * ang2 = a2; }
-	 */
 
 	/**
 	 * Obtient l'ouverture de l'arc de cercle.
@@ -89,7 +83,7 @@ public class ArcDeCercle extends Cercle {
 	 */
 	public double getOrientation() {
 		if (ang2 > ang1) {
-			return getOuverture() / 2;
+			return (ang1 + ang2) / 2;
 		}
 		return Outil.normalize_angle((ang1 + ang2) / 2 + Math.PI);
 	}
@@ -101,10 +95,11 @@ public class ArcDeCercle extends Cercle {
 	 */
 	public void setOuverture(double o) {
 		double mid = o / 2; // la moitié de la nouvelle ouverture
-		// On modifie les angles pour avoir la bonne ouverture autour de l'orientation
+		// On modifie les angles pour avoir la bonne ouverture autour de
+		// l'orientation
 		// actuelle
-		ang1 = getOrientation() + mid;
-		ang2 = getOrientation() - mid;
+		ang1 = Outil.normalize_angle(getOrientation() - mid);
+		ang2 = Outil.normalize_angle(getOrientation() + mid);
 	}
 
 	/**
@@ -116,8 +111,8 @@ public class ArcDeCercle extends Cercle {
 		double mid = getOuverture() / 2; // la moitié de l'ouverture actuelle
 		// On modofie les angles pour que l'ouverture soit la même autour de la
 		// nouvelle orientation
-		ang1 = o + mid;
-		ang2 = o - mid;
+		ang1 = Outil.normalize_angle(o - mid);
+		ang2 = Outil.normalize_angle(o + mid);
 	}
 
 	@Override
@@ -136,6 +131,11 @@ public class ArcDeCercle extends Cercle {
 		ArcDeCercle arcDeCercle = (ArcDeCercle) o;
 		return Objects.equals(centre, arcDeCercle.centre) && (rayon == arcDeCercle.rayon) && (ang1 == arcDeCercle.ang1)
 				&& (ang2 == arcDeCercle.ang2);
+	}
+
+	@Override
+	public String toString() {
+		return "ArcDeCercle [ang1=" + ang1 + ", ang2=" + ang2 + ", rayon=" + rayon + ", centre=" + centre + "]";
 	}
 
 	@Override
@@ -251,7 +251,8 @@ public class ArcDeCercle extends Cercle {
 		try {
 			List<Point2D> liste = new Cercle(adc.centre, adc.rayon).intersecte(this);
 			Vecteur2D x = new Vecteur2D(1, 0);
-			for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+			for (Point2D p : liste) { // on verifie pour tous les points s'ils
+				// sont dans le bon intervalle d'angles.
 				Vecteur2D test = adc.centre.getPositionRelative(p);
 				if (adc.ang1 <= adc.ang2) {
 					if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
@@ -263,8 +264,9 @@ public class ArcDeCercle extends Cercle {
 					}
 				}
 			}
-			if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
-										// intervalle.
+			if (liste.size() == 0) { // si la liste est vide, c'est que les
+				// points n'étaient pas dans le bon
+				// intervalle.
 				throw new NoIntersectionException(this,
 						"L'intersection entre l'instance d'arc de cercle et l'autre arc de cercle ne se fait pas sur l'arc de cercle.");
 			} else {
