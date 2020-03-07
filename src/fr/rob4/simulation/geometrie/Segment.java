@@ -6,6 +6,7 @@ package fr.rob4.simulation.geometrie;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -287,40 +288,53 @@ public class Segment extends Forme {
      *
      * @param adc Arc de cercle avec lequel on teste les intersections.
      * @return Liste des points d'intersection.
-     * @throws NoIntersectionException
+     * @throws NoIntersectionException Quand il n'y a pas d'intersection
      */
     List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
         try {
-            List<Point2D> liste = this.intersecte(new Cercle(adc.centre, adc.rayon));
+            List<Point2D> liste = this.intersecte((Cercle) adc);
+            Iterator<Point2D> iterator = liste.iterator();
             Vecteur2D x = new Vecteur2D(1, 0);
-            // for (Point2D p : liste) { // on verifie pour tous les points s'ils sont dans
-            // le bon intervalle d'angles.
-            int i = 0;
+            // On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
             Point2D p;
-            while (i < liste.size()) {
-                p = liste.get(i);
-                Vecteur2D test = adc.centre.getPositionRelative(p);
-                if (adc.ang1 <= adc.ang2) {
-                    if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) { // si on delete p, il ne faut pas
-                        // incrémenter i
-                        liste.remove(i);
-                    } else { // si on garde p, on passe au point suivant
-                        i++;
-                    }
-                } else {
-                    if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) { // si on delete p il ne faut pas
-                        // incrémenter i
-                        liste.remove(i);
-                    } else {
-                        i++; // si on garde p, on passe au point suivant
-                    }
+            while (iterator.hasNext()) {
+                p = iterator.next();
+                Point2D centreAdc = adc.getCentre();
+                Vecteur2D test = centreAdc.getPositionRelative(p);
+                // Angle entre le point et l'orientation de l'arc de cercle
+                double angle = test.angle(x) - adc.getOrientation();
+                double ouverture = adc.getOuverture();
+                // Cette angle est dans l'intervalle d'ouverture
+                if (-ouverture / 2 >= angle || angle >= ouverture / 2) {
+                    iterator.remove();
                 }
             }
+            //            int i = 0;
+            //            while (i < liste.size()) {
+            //                p = liste.get(i);
+            //                Vecteur2D test = adc.centre.getPositionRelative(p);
+            //                double angle = test.angle(x);
+            //                if (adc.ang1 <= adc.ang2) {
+            //                    if (angle < adc.ang1 || angle > adc.ang2) { // si on delete p, il ne faut pas
+            //                        // incrémenter i
+            //                        liste.remove(i);
+            //                    } else { // si on garde p, on passe au point suivant
+            //                        i++;
+            //                    }
+            //                } else {
+            //                    if (angle < adc.ang1 && angle > adc.ang2) { // si on delete p il ne faut pas
+            //                        // incrémenter i
+            //                        liste.remove(i);
+            //                    } else {
+            //                        i++; // si on garde p, on passe au point suivant
+            //                    }
+            //                }
+            //            }
             if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
                 // intervalle.
                 throw new NoIntersectionException(this,
-                                                  "L'intersection entre le segment et l'arc de cercle ne se fait pas " +
-														  "sur l'arc de cercle.");
+                                                  "L'intersection entre le segment et l'arc de cercle ne se fait" +
+                                                          " pas sur l'arc de cercle.");
             } else {
                 return liste;
             }
