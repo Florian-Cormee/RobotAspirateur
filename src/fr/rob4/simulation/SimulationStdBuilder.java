@@ -50,11 +50,7 @@ public class SimulationStdBuilder {
         if (this.estHorsZone(x, y, diametre, diametre)) {
             throw new IllegalArgumentException("Les coordonnées font sortir l'obstacle de la simulation");
         }
-        diametre = Math.abs(diametre);
-        if (diametre > DIAMETRE_ROBOT_STD) {
-            throw new IllegalArgumentException("La tache doit être plus petite que le robot");
-        }
-        // Crée la tache
+        // Crée l'obstacle
         Cercle forme = new Cercle(x, y, diametre / 2);
         ICollisionable tache = this.factory.obstacle(forme);
         this.ajouteElement(tache);
@@ -105,7 +101,7 @@ public class SimulationStdBuilder {
         IModule<Boolean> capteurSalete = this.factory.capteurSalete(formeCapteurSalete);
         // Création de la zone de détection du capteur de contact central
         Forme formeCapteurContact = new ArcDeCercle(centre,
-                                                    DIAMETRE_ROBOT_STD / 2,
+                                                    DIAMETRE_ROBOT_STD / 2 + 0.01,
                                                     -OUVERTURE_CAPTEUR_CONTACT_STD / 2,
                                                     +OUVERTURE_CAPTEUR_CONTACT_STD / 2);
         // Création des capteurs de contact
@@ -122,6 +118,11 @@ public class SimulationStdBuilder {
         if (this.estHorsZone(x, y, diametre, diametre)) {
             throw new IllegalArgumentException("Les coordonnées font sortir la tache de la simulation");
         }
+        diametre = Math.abs(diametre);
+        if (diametre > DIAMETRE_ROBOT_STD) {
+            throw new IllegalArgumentException("La tache doit être plus petite que le robot");
+        }
+        // Crée la tache
         Cercle forme = new Cercle(x, y, diametre / 2);
         INettoyable tache = this.factory.tache(forme);
         this.ajouteElement(tache);

@@ -22,6 +22,7 @@ public class StrategieAleatoire implements IStrategie {
 
     @Override
     public boolean decide(IRobot robot) {
+        robot.setNettoie(true);
         if (this.etat != Etats.TOURNE) {
             // Vérifie s'il y a une collision
             List<CapteurContact> capteurContacts = robot.getModules(CapteurContact.class);
