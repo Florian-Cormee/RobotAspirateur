@@ -52,6 +52,9 @@ public class Simulation {
         for (int i = 0 ; i < collisionables.size() ; i++) {
             ICollisionable collI = collisionables.get(i);
             for (int j = i ; j < collisionables.size() ; j++) {
+                if (i == j) {
+                    continue;
+                }
                 ICollisionable collJ = collisionables.get(j);
                 // Test de la collision
                 try {
