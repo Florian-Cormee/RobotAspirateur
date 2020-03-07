@@ -61,7 +61,7 @@ public class SimulationStdBuilder  {
     }
 
     private boolean estHorsZone(double x, double y, double largeur, double hauteur) {
-        return !(Math.abs(x) > (LARGEUR_PIECE - largeur) / 2) && !(Math.abs(y) > (HAUTEUR_PIECE - hauteur) / 2);
+        return (Math.abs(x) > (LARGEUR_PIECE - largeur) / 2) || (Math.abs(y) > (HAUTEUR_PIECE - hauteur) / 2);
     }
 
     private void ajouteElement(IElement element) {
