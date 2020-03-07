@@ -150,14 +150,23 @@ public class Polygone extends Forme {
         Point2D clone = this.centre.clone();
         return new Polygone(clone, newPoints);
     }
-    
+
     @Override
     public Polygone deplace(Vecteur2D v) {
-    	List<Point2D> newL = new ArrayList<Point2D>();
-    	for (Point2D p : getPoints()) {
-    		newL.add(p.deplace(v));
-    	}
-    	return new Polygone(getCentre().deplace(v), newL);
+        List<Point2D> newL = new ArrayList<Point2D>();
+        for (Point2D p : getPoints()) {
+            newL.add(p.deplace(v));
+        }
+        return new Polygone(getCentre().deplace(v), newL);
+    }
+
+    /**
+     * Obtient la liste des sommets.
+     *
+     * @return Liste des sommets.
+     */
+    public List<Point2D> getPoints() {
+        return Collections.unmodifiableList(this.points);
     }
 
     @Override
@@ -170,21 +179,12 @@ public class Polygone extends Forme {
         }
         Polygone polygone = (Polygone) o;
         return Objects.deepEquals(this.points.toArray(), polygone.points.toArray()) && Objects.equals(this.centre,
-																									  polygone.centre);
+                                                                                                      polygone.centre);
     }
 
     @Override
     public String toString() {
         return "Polygone [points=" + this.points + ", centre=" + this.centre + "]";
-    }
-
-    /**
-     * Obtient la liste des sommets.
-     *
-     * @return Liste des sommets.
-     */
-    public List<Point2D> getPoints() {
-        return Collections.unmodifiableList(this.points);
     }
 
     public List<Segment> getSegments() {
@@ -219,7 +219,7 @@ public class Polygone extends Forme {
             return this.intersecte(polygone);
         } catch (NoIntersectionException e) {
             e.printStackTrace();
-            throw new NoIntersectionException(this, "Pas d'intersection entre le polygone et le rectangle");
+            throw new NoIntersectionException("Pas d'intersection entre le polygone et le rectangle", e, this);
         }
     }
 

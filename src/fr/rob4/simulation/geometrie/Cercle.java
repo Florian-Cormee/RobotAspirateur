@@ -35,7 +35,7 @@ public class Cercle extends Forme {
      */
     public Cercle(Point2D p, double d) {
         super(p);
-		this.rayon = d;
+        this.rayon = d;
     }
 
     /**
@@ -47,14 +47,14 @@ public class Cercle extends Forme {
      */
     public Cercle(double x, double y, double d) {
         super(x, y);
-		this.rayon = d;
+        this.rayon = d;
     }
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
         // On teste d'abord si les formes sont assez proches
         try {
-			this.getDimension().intersecte(f.getDimension());
+            this.getDimension().intersecte(f.getDimension());
         } catch (NoIntersectionException e) {
             e.printStackTrace();
             return false;
@@ -62,7 +62,7 @@ public class Cercle extends Forme {
         if (f.getClass() == Cercle.class) {
             Cercle c = (Cercle) f;
             try {
-				this.intersecte(c);
+                this.intersecte(c);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -72,7 +72,7 @@ public class Cercle extends Forme {
         if (f.getClass() == Rectangle.class) {
             Rectangle r = (Rectangle) f;
             try {
-				this.intersecte(r);
+                this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -82,7 +82,7 @@ public class Cercle extends Forme {
         if (f.getClass() == Polygone.class) {
             Polygone g = (Polygone) f;
             try {
-				this.intersecte(g);
+                this.intersecte(g);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -92,7 +92,7 @@ public class Cercle extends Forme {
         if (f.getClass() == ArcDeCercle.class) {
             ArcDeCercle adc = (ArcDeCercle) f;
             try {
-				this.intersecte(adc);
+                this.intersecte(adc);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -113,6 +113,11 @@ public class Cercle extends Forme {
     }
 
     @Override
+    public Rectangle getDimension() {
+        return new Rectangle(this.centre, this.rayon * 2, this.rayon * 2);
+    }
+
+    @Override
     public Cercle rotation(double alpha, Point2D p) {
         Vecteur2D newPos = p.getPositionRelative(this.centre).rotation(alpha).addition(p.position);
         // Cercle newCercle = new Cercle(new Point2D(centre.origine, newPos),rayon);
@@ -120,8 +125,8 @@ public class Cercle extends Forme {
     }
 
     @Override
-    public Rectangle getDimension() {
-        return new Rectangle(this.centre, this.rayon * 2, this.rayon * 2);
+    public Cercle deplace(Vecteur2D v) {
+        return new Cercle(getCentre().deplace(v), rayon);
     }
 
     /**
@@ -228,23 +233,24 @@ public class Cercle extends Forme {
             }
             if (liste.size() == 0) {
                 throw new NoIntersectionException(this,
-                                                  "L'intersection entre le cercle et l'arc de cercle ne se fait pas sur l'arc de cercle.");
+                                                  "L'intersection entre le cercle et l'arc de cercle ne se fait pas " +
+                                                          "sur l'arc de cercle.");
             } else {
                 return liste;
             }
         } catch (NoIntersectionException e) {
-            throw new NoIntersectionException(this, "Pas d'intersection entre le cercle et l'arc de cercle");
+            throw new NoIntersectionException("Pas d'intersection entre le cercle et l'arc de cercle", e, this);
         }
     }
 
     @Override
     public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || this.getClass() != o.getClass()) {
-			return false;
-		}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
         Cercle cercle = (Cercle) o;
         return Objects.equals(this.centre, cercle.centre) && (this.rayon == cercle.rayon);
     }
@@ -270,10 +276,5 @@ public class Cercle extends Forme {
      */
     public double getRayon() {
         return this.rayon;
-    }
-    
-    @Override
-    public Cercle deplace(Vecteur2D v) {
-    	return new Cercle(getCentre().deplace(v), rayon);
     }
 }

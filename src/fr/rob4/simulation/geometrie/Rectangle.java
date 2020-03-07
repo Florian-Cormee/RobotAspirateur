@@ -33,8 +33,8 @@ public class Rectangle extends Forme {
      */
     public Rectangle(Point2D p, double lar, double h) {
         super(p);
-		this.largeur = lar;
-		this.hauteur = h;
+        this.largeur = lar;
+        this.hauteur = h;
     }
 
     /**
@@ -48,15 +48,15 @@ public class Rectangle extends Forme {
      */
     public Rectangle(double x, double y, double lar, double h) {
         super(x, y);
-		this.largeur = Math.abs(lar);
-		this.hauteur = Math.abs(h);
+        this.largeur = Math.abs(lar);
+        this.hauteur = Math.abs(h);
     }
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
         // On test d'abord si les formes sont assez proches
         try {
-			this.getDimension().intersecte(f.getDimension());
+            this.getDimension().intersecte(f.getDimension());
         } catch (NoIntersectionException e) {
             e.printStackTrace();
             return false;
@@ -105,7 +105,7 @@ public class Rectangle extends Forme {
         if (f.getClass() == Rectangle.class) {
             Rectangle r = (Rectangle) f;
             try {
-				this.intersecte(r);
+                this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
                 e.printStackTrace();
@@ -131,7 +131,7 @@ public class Rectangle extends Forme {
             return this.toPolygone().intersecte(r);
         } catch (NoIntersectionException e) {
             e.printStackTrace();
-            throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
+            throw new NoIntersectionException("Pas d'intersection entre ces deux rectangles.", e, this);
         }
 		/*double dw1 = largeur/2;
 		double dh1 = hauteur/2;
@@ -162,6 +162,11 @@ public class Rectangle extends Forme {
         return this.toPolygone().rotation(alpha, p);
     }
 
+    @Override
+    public Rectangle deplace(Vecteur2D v) {
+        return new Rectangle(getCentre().deplace(v), largeur, hauteur);
+    }
+
     public Polygone toPolygone() {
         List<Point2D> pointsRect = new ArrayList<Point2D>();
         double lon2 = this.largeur / 2;
@@ -175,15 +180,15 @@ public class Rectangle extends Forme {
 
     @Override
     public boolean equals(Object o) {
-		if (this == o) {
-			return true;
-		}
-		if (o == null || this.getClass() != o.getClass()) {
-			return false;
-		}
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
         Rectangle rectangle = (Rectangle) o;
         return Objects.equals(this.centre,
-							  rectangle.centre) && (this.largeur == rectangle.largeur) && (this.hauteur == rectangle.hauteur);
+                              rectangle.centre) && (this.largeur == rectangle.largeur) && (this.hauteur == rectangle.hauteur);
     }
 
     @Override
@@ -225,10 +230,5 @@ public class Rectangle extends Forme {
      */
     public void setLargeur(double largeur) {
         this.largeur = largeur;
-    }
-    
-    @Override
-    public Rectangle deplace(Vecteur2D v) {
-    	return new Rectangle(getCentre().deplace(v), largeur, hauteur);
     }
 }
