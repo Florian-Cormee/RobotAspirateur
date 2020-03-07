@@ -39,16 +39,6 @@ public class Polygone extends Forme {
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
-        // On teste d'abord si les formes sont assez proches
-        try {
-            Rectangle dimension = f.getDimension();
-            Rectangle thisDimension = this.getDimension();
-            thisDimension.intersecte(dimension);
-        } catch (NoIntersectionException e) {
-            e.printStackTrace();
-            return false;
-        }
-
         if (f.getClass() == Segment.class) {
             Segment s = (Segment) f;
             try {
