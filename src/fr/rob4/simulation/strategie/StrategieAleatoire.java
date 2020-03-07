@@ -18,13 +18,15 @@ public class StrategieAleatoire implements IStrategie {
 
     @Override
     public boolean decide(IRobot robot) {
-        // Vérifie s'il y a une collision
-        List<CapteurContact> capteurContacts = robot.getModules(CapteurContact.class);
-        for (CapteurContact cc : capteurContacts) {
-            // En cas de collision, on choisi une direction de fuite aléatoire
-            if (cc.getInfo()) {
-                this.etat = Etats.TOURNE;
-                this.angleCible = Math.random() * 2 * Math.PI;
+        if (this.etat != Etats.TOURNE) {
+            // Vérifie s'il y a une collision
+            List<CapteurContact> capteurContacts = robot.getModules(CapteurContact.class);
+            for (CapteurContact cc : capteurContacts) {
+                // En cas de collision, on choisi une direction de fuite aléatoire
+                if (cc.getInfo()) {
+                    this.etat = Etats.TOURNE;
+                    this.angleCible = Math.random() * 2 * Math.PI;
+                }
             }
         }
 

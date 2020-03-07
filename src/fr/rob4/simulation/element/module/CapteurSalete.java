@@ -9,6 +9,7 @@ import fr.rob4.simulation.geometrie.Forme;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 public class CapteurSalete extends Element implements IModule<Boolean> {
@@ -59,4 +60,28 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
         return Collections.unmodifiableSet(this.nettoyables);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.nettoyables);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        CapteurSalete that = (CapteurSalete) o;
+        return this.nettoyables.equals(that.nettoyables);
+    }
+
+    @Override
+    public String toString() {
+        return "CapteurSalete[" + "nettoyables=" + this.nettoyables + ", super.toString()=" + super.toString() + "]";
+    }
 }

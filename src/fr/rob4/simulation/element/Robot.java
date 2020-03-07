@@ -64,7 +64,7 @@ public class Robot extends Element implements IRobot {
     public void actualise(Simulation simulation, Object appeleur) {
         this.strategie.decide(this);
         for (IModule<?> module : this.modules) {
-            module.actualise(simulation);
+            module.actualise(simulation, this);
         }
     }
 
@@ -129,17 +129,17 @@ public class Robot extends Element implements IRobot {
     }
 
     @Override
-    public Point2D getPosition() {
-        return this.forme.getCentre();
-    }
-
-    @Override
     public void translation(Vecteur2D deplacement) {
         this.dernierePos = this.getPosition();
         super.translation(deplacement);
         for (IModule<?> module : this.modules) {
             module.translation(deplacement);
         }
+    }
+
+    @Override
+    public Point2D getPosition() {
+        return this.forme.getCentre();
     }
 
     @Override
@@ -170,8 +170,49 @@ public class Robot extends Element implements IRobot {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(),
+                            this.modules,
+                            this.strategie,
+                            this.theta,
+                            this.ecartRoues,
+                            this.nettoie,
+                            this.dernierePos,
+                            this.dernierTheta);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        Robot robot = (Robot) o;
+        return Double.compare(robot.theta, this.theta) == 0 &&
+               Double.compare(robot.ecartRoues, this.ecartRoues) == 0 &&
+               this.nettoie == robot.nettoie &&
+               Double.compare(robot.dernierTheta, this.dernierTheta) == 0 &&
+               Objects.equals(this.modules, robot.modules) &&
+               Objects.equals(this.strategie, robot.strategie) &&
+               Objects.equals(this.dernierePos, robot.dernierePos);
+    }
+
+    @Override
     public String toString() {
-        return "Robot [modules=" + this.modules + ", strategie=" + this.strategie + ", theta=" + this.theta + ", " +
-                       "toString()=" + super.toString() + "]";
+        return "Robot [modules=" +
+               this.modules +
+               ", strategie=" +
+               this.strategie +
+               ", theta=" +
+               this.theta +
+               ", " +
+               "toString()=" +
+               super.toString() +
+               "]";
     }
 }
