@@ -12,6 +12,7 @@ import fr.rob4.simulation.geometrie.Vecteur2D;
 import fr.rob4.simulation.strategie.IStrategie;
 import fr.rob4.simulation.vue.IDessinable;
 import fr.rob4.simulation.vue.IDessinateur;
+import fr.rob4.simulation.vue.element.module.CapteurDessinable;
 import fr.rob4.simulation.vue.forme.GeometrieDessinateurFactory;
 
 import java.awt.BasicStroke;
@@ -101,6 +102,8 @@ public class RobotDessinable implements IRobot, IDessinable {
         for (IModule<?> module : this.robot.getModules()) {
             if (module instanceof IDessinable) {
                 ((IDessinable) module).dessine(graphics2D, echelle);
+            }else{
+                new CapteurDessinable<>(module, false);
             }
         }
     }
