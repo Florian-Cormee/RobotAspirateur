@@ -344,7 +344,7 @@ public class Segment extends Forme {
                 return liste;
             }
         } catch (NoIntersectionException e) {
-            throw new NoIntersectionException("Pas d'intersection entre le segment et le rectangle", e, this);
+            throw new NoIntersectionException("Pas d'intersection entre le segment et l'arc de cercle.", e, this);
         }
     }
 
