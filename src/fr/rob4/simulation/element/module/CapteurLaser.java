@@ -20,7 +20,7 @@ public class CapteurLaser extends Element implements IModule<Double> {
     }
 
     @Override
-    public void actualise(Simulation simulation) {
+    public void actualise(Simulation simulation, Object appeleur) {
         List<ICollisionable> collisionables = simulation.getElements(ICollisionable.class);
         this.distance = Double.POSITIVE_INFINITY;
         Point2D centre = this.forme.getCentre();

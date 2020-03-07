@@ -61,7 +61,7 @@ public class Robot extends Element implements IRobot {
      * Actualise les modules puis la strategie
      */
     @Override
-    public void actualise(Simulation simulation) {
+    public void actualise(Simulation simulation, Object appeleur) {
         this.strategie.decide(this);
         for (IModule<?> module : this.modules) {
             module.actualise(simulation);

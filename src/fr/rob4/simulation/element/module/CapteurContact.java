@@ -17,12 +17,15 @@ public class CapteurContact extends Element implements IModule<Boolean> {
     }
 
     @Override
-    public void actualise(Simulation simulation) {
+    public void actualise(Simulation simulation, Object appeleur) {
         List<ICollisionable> elements = simulation.getElements(ICollisionable.class);
         // Cherche parmis les éléments collisionable un avec lequel l'instance
         // se superpose
         this.collision = false;
         for (ICollisionable element : elements) {
+            if (element.equals(appeleur)) {
+                continue;
+            }
             try {
                 Forme forme = element.getForme();
                 this.collision = this.forme.collisionne(forme);
