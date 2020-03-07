@@ -99,4 +99,14 @@ public abstract class Forme {
      * @return Résultat de la rotation dans une nouvelle instance.
      */
     public abstract Forme rotation(double alpha, Point2D p);
+    
+    /**
+     * Obtient une nouvelle forme identique à l'instance déplacé d'un vecteur v;
+     * <p>
+     * Note: L'instance n'est pas modifiée.
+     * 
+     * @param v Vecteur de déplacement.
+     * @return Résultat du mouvement de translation par le vecteur v.
+     */
+    public abstract Forme deplace(Vecteur2D v);
 }

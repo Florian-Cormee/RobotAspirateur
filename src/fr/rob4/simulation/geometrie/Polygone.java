@@ -152,21 +152,12 @@ public class Polygone extends Forme {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public Polygone deplace(Vecteur2D v) {
+        List<Point2D> newL = new ArrayList<Point2D>();
+        for (Point2D p : getPoints()) {
+            newL.add(p.deplace(v));
         }
-        if (o == null || this.getClass() != o.getClass()) {
-            return false;
-        }
-        Polygone polygone = (Polygone) o;
-        return Objects.deepEquals(this.points.toArray(), polygone.points.toArray()) && Objects.equals(this.centre,
-																									  polygone.centre);
-    }
-
-    @Override
-    public String toString() {
-        return "Polygone [points=" + this.points + ", centre=" + this.centre + "]";
+        return new Polygone(getCentre().deplace(v), newL);
     }
 
     /**
@@ -176,6 +167,24 @@ public class Polygone extends Forme {
      */
     public List<Point2D> getPoints() {
         return Collections.unmodifiableList(this.points);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        Polygone polygone = (Polygone) o;
+        return Objects.deepEquals(this.points.toArray(), polygone.points.toArray()) && Objects.equals(this.centre,
+                                                                                                      polygone.centre);
+    }
+
+    @Override
+    public String toString() {
+        return "Polygone [points=" + this.points + ", centre=" + this.centre + "]";
     }
 
     public List<Segment> getSegments() {
@@ -210,7 +219,7 @@ public class Polygone extends Forme {
             return this.intersecte(polygone);
         } catch (NoIntersectionException e) {
             e.printStackTrace();
-            throw new NoIntersectionException(this, "Pas d'intersection entre le polygone et le rectangle");
+            throw new NoIntersectionException("Pas d'intersection entre le polygone et le rectangle", e, this);
         }
     }
 

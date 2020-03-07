@@ -134,6 +134,11 @@ public class Segment extends Forme {
     }
 
     @Override
+    public Segment deplace(Vecteur2D v) {
+        return new Segment(a.deplace(v), b.deplace(v));
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -278,7 +283,7 @@ public class Segment extends Forme {
             }
             return liste;
         } catch (NoIntersectionException e) {
-            throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
+            throw new NoIntersectionException("Pas d'intersection entre le segment et le rectangle", e, this);
         }
     }
 
@@ -339,7 +344,7 @@ public class Segment extends Forme {
                 return liste;
             }
         } catch (NoIntersectionException e) {
-            throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
+            throw new NoIntersectionException("Pas d'intersection entre le segment et le rectangle", e, this);
         }
     }
 
