@@ -75,7 +75,7 @@ public class ArcDeCercle extends Cercle {
                 s.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -85,7 +85,7 @@ public class ArcDeCercle extends Cercle {
                 c.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -95,7 +95,7 @@ public class ArcDeCercle extends Cercle {
                 this.intersecte(p);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -105,7 +105,7 @@ public class ArcDeCercle extends Cercle {
                 this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -115,7 +115,7 @@ public class ArcDeCercle extends Cercle {
                 this.intersecte(adc);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
