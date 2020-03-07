@@ -105,7 +105,7 @@ public class SimulationStdBuilder {
         IModule<Boolean> capteurSalete = this.factory.capteurSalete(formeCapteurSalete);
         // Création de la zone de détection du capteur de contact central
         Forme formeCapteurContact = new ArcDeCercle(centre,
-                                                    DIAMETRE_ROBOT_STD / 2,
+                                                    DIAMETRE_ROBOT_STD / 2 + 0.01,
                                                     -OUVERTURE_CAPTEUR_CONTACT_STD / 2,
                                                     +OUVERTURE_CAPTEUR_CONTACT_STD / 2);
         // Création des capteurs de contact
