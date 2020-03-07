@@ -53,7 +53,7 @@ public class SimulationPanel extends JPanel {
         Dimension dimension = this.getSize();
         double largeur = dimension.getWidth();
         double hauteur = dimension.getHeight();
-        graphics2D.translate((int) (largeur / 2), (int) (hauteur / 2));
+        graphics2D.translate(Math.round(largeur / 2), Math.round(hauteur / 2));
         // Inverse le sens de l'axe des ordonnées
         graphics2D.scale(1, -1);
         // Dessine chaque element
@@ -77,8 +77,8 @@ public class SimulationPanel extends JPanel {
         Forme forme = bordures.getForme();
         Rectangle r = forme.getDimension();
         // Calcule l'échelle en p/mètre sur les 2 axes
-        double echelleH = d.getHeight() / r.getHauteur();
-        double echelleV = d.getWidth() / r.getLargeur();
+        double echelleH = (d.getHeight() + 5) / r.getHauteur();
+        double echelleV = (d.getWidth() + 5) / r.getLargeur();
         // Retourne la plus petite des deux
         return Math.min(echelleH, echelleV);
     }
