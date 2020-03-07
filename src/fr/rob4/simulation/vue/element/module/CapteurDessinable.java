@@ -23,8 +23,8 @@ public class CapteurDessinable<T> implements IModule<T>, IDessinable {
     }
 
     @Override
-    public void actualise(Simulation simulation) {
-        this.capteur.actualise(simulation);
+    public void actualise(Simulation simulation, Object appeleur) {
+        this.capteur.actualise(simulation, appeleur);
     }
 
     @Override
