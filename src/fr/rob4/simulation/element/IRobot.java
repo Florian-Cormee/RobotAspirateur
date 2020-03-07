@@ -1,13 +1,14 @@
 package fr.rob4.simulation.element;
 
 import fr.rob4.simulation.element.module.IModule;
+import fr.rob4.simulation.geometrie.Point2D;
 import fr.rob4.simulation.strategie.IStrategie;
 
 import java.util.List;
 
 public interface IRobot extends ICollisionable, IActuallisable {
     /**
-     * Déplace en fonction des distances parcourues par les roues
+     * DÃ©place en fonction des distances parcourues par les roues
      *
      * @param dG La distance parcourue par la roue gauche
      * @param dD La distance parcourue par la roue droite
@@ -22,14 +23,14 @@ public interface IRobot extends ICollisionable, IActuallisable {
     public List<IModule<?>> getModules();
 
     /**
-     * Obtient une liste des modules du type demandé
+     * Obtient une liste des modules du type demandï¿½
      *
      * @param <T> Le type de module
      * @param c   La class du type de module
      *
-     * @return Une liste des modules du type demandé (vide s'il n'y en a pas)
+     * @return Une liste des modules du type demandï¿½ (vide s'il n'y en a pas)
      */
-    public <T extends IModule<?>> List<T> getModules(Class<T> c);
+    public <T extends IModule<?>> List<T> getModules(Class<? extends T> c);
 
     /**
      * Obtient la strategie suivie
@@ -39,7 +40,7 @@ public interface IRobot extends ICollisionable, IActuallisable {
     public IStrategie getStrategie();
 
     /**
-     * Obtient l'état du module de nettoyage
+     * Obtient l'ï¿½tat du module de nettoyage
      *
      * @return {@code true} pour que le nettoyage ait lieu sinon {@code false}
      */
@@ -51,4 +52,19 @@ public interface IRobot extends ICollisionable, IActuallisable {
      * @param etat {@code true} pour que le nettoyage ait lieu sinon {@code false}
      */
     public void setNettoie(boolean etat);
+    
+
+    /**
+     * Obtient la position
+     *
+     * @return La position
+     */
+    public Point2D getPosition();
+    
+    /**
+     * Obtient l'orientation
+     * 
+     * @return L'orientation (en radians)
+     */
+    public double getOrientation();
 }

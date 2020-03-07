@@ -1,10 +1,19 @@
 package fr.rob4.simulation;
 
-import fr.rob4.simulation.element.*;
+import fr.rob4.simulation.element.IActuallisable;
+import fr.rob4.simulation.element.ICollisionable;
+import fr.rob4.simulation.element.IElement;
+import fr.rob4.simulation.element.INettoyable;
+import fr.rob4.simulation.element.IRobot;
 import fr.rob4.simulation.element.module.CapteurSalete;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 public class Simulation {
     /** Période d'échantillonage (en secondes) */
@@ -12,17 +21,6 @@ public class Simulation {
 
     protected List<IElement> elements;
     protected ICollisionable bordures;
-
-    /**
-     * Crée une Simulation vide
-     *
-     * @param bordures Bordures de la zone de simulation
-     */
-    public Simulation(ICollisionable bordures) {
-        this.bordures = Objects.requireNonNull(bordures);
-        this.elements = new ArrayList<>();
-        this.elements.add(bordures);
-    }
 
     /**
      * Crée une Simulation avec les éléments donnés
@@ -49,7 +47,7 @@ public class Simulation {
      */
     protected void actualise() {
         /* Gestion des collisions */
-        List<ICollisionable> collisionables = getElements(ICollisionable.class);
+        List<ICollisionable> collisionables = this.getElements(ICollisionable.class);
         // Parcourt tout les couples de collisionables
         for (int i = 0 ; i < collisionables.size() ; i++) {
             ICollisionable collI = collisionables.get(i);
@@ -57,24 +55,24 @@ public class Simulation {
                 ICollisionable collJ = collisionables.get(j);
                 // Test de la collision
                 try {
-		    if (collI.collisionne(collJ)) {
-		        // Chaque collisionable gère la collision avec l'autre
-		        collI.gereCollision(collJ);
-		        collJ.gereCollision(collI);
-		    }
-		} catch (NoIntersectionException e) {
-		    // On ne sait pas détecter les collision entre ces éléments
-		    e.printStackTrace();
-		}
+                    if (collI.collisionne(collJ)) {
+                        // Chaque collisionable gère la collision avec l'autre
+                        collI.gereCollision(collJ);
+                        collJ.gereCollision(collI);
+                    }
+                } catch (NoIntersectionException e) {
+                    // On ne sait pas détecter les collision entre ces éléments
+                    e.printStackTrace();
+                }
             }
         }
         /* Actualisation des éléments */
-        List<IActuallisable> actuallisables = getElements(IActuallisable.class);
+        List<IActuallisable> actuallisables = this.getElements(IActuallisable.class);
         for (IActuallisable actuallisable : actuallisables) {
             actuallisable.actualise(this);
         }
         /* Nettoyage */
-        List<IRobot> robots = getElements(IRobot.class);
+        List<IRobot> robots = this.getElements(IRobot.class);
         for (IRobot robot : robots) {
             // Test que le robot nettoie
             if (robot.isNettoie()) {
@@ -82,7 +80,7 @@ public class Simulation {
                 List<CapteurSalete> capteurSaletes = robot.getModules(CapteurSalete.class);
                 for (CapteurSalete capteur : capteurSaletes) {
                     Set<INettoyable> nettoyables = capteur.getNettoyables();
-                    elements.removeAll(nettoyables);
+                    this.elements.removeAll(nettoyables);
                 }
             }
         }
@@ -96,11 +94,12 @@ public class Simulation {
      *
      * @return Une liste contenant tous les éléments du type demandé (vide si il n'y en a aucun)
      */
-    public <T extends IElement> List<T> getElements(Class<T> c) {
+    public <T extends IElement> List<T> getElements(Class<? extends T> c) {
         List<T> list = new ArrayList<>();
-        for (IElement element : elements) {
+        for (IElement element : this.elements) {
             if (c.isInstance(element)) {
-                list.add(c.cast(element));
+                T elementCast = c.cast(element);
+                list.add(elementCast);
             }
         }
         return list;
@@ -108,9 +107,10 @@ public class Simulation {
 
     /**
      * Obtient les bordures
+     *
      * @return Les bordures
      */
-    public ICollisionable getBordures() { return bordures;}
+    public ICollisionable getBordures() { return this.bordures;}
 
     /**
      * Obtient une vue non modifiable de la liste des éléments
@@ -118,6 +118,6 @@ public class Simulation {
      * @return Une vue non modifiable de la liste des éléments
      */
     public List<IElement> getElements() {
-        return Collections.unmodifiableList(elements);
+        return Collections.unmodifiableList(this.elements);
     }
 }
