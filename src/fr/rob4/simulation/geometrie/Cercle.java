@@ -271,4 +271,9 @@ public class Cercle extends Forme {
     public double getRayon() {
         return this.rayon;
     }
+    
+    @Override
+    public Cercle deplace(Vecteur2D v) {
+    	return new Cercle(getCentre().deplace(v), rayon);
+    }
 }

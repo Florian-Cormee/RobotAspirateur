@@ -150,6 +150,15 @@ public class Polygone extends Forme {
         Point2D clone = this.centre.clone();
         return new Polygone(clone, newPoints);
     }
+    
+    @Override
+    public Polygone deplace(Vecteur2D v) {
+    	List<Point2D> newL = new ArrayList<Point2D>();
+    	for (Point2D p : getPoints()) {
+    		newL.add(p.deplace(v));
+    	}
+    	return new Polygone(getCentre().deplace(v), newL);
+    }
 
     @Override
     public boolean equals(Object o) {

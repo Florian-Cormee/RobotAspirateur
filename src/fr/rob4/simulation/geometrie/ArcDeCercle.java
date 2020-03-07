@@ -139,6 +139,11 @@ public class ArcDeCercle extends Cercle {
 		this.ang1 = Outil.normalize_angle(o - mid);
 		this.ang2 = Outil.normalize_angle(o + mid);
     }
+    
+    @Override
+    public ArcDeCercle deplace(Vecteur2D v) {
+    	return new ArcDeCercle(getCentre().deplace(v), getRayon(), ang1, ang2);
+    }
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {

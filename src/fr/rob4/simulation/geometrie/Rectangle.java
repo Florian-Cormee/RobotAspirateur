@@ -226,4 +226,9 @@ public class Rectangle extends Forme {
     public void setLargeur(double largeur) {
         this.largeur = largeur;
     }
+    
+    @Override
+    public Rectangle deplace(Vecteur2D v) {
+    	return new Rectangle(getCentre().deplace(v), largeur, hauteur);
+    }
 }

@@ -337,5 +337,10 @@ public class Segment extends Forme {
     public double norme() {
         return this.a.getPositionRelative(this.b).norme();
     }
+    
+    @Override
+    public Segment deplace(Vecteur2D v) {
+    	return new Segment(a.deplace(v), b.deplace(v));
+    }
 
 }
