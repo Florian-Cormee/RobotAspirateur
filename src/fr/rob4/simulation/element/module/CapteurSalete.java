@@ -5,7 +5,6 @@ import fr.rob4.simulation.element.Element;
 import fr.rob4.simulation.element.INettoyable;
 import fr.rob4.simulation.exception.NoIntersectionException;
 import fr.rob4.simulation.geometrie.Forme;
-import fr.rob4.simulation.geometrie.Point2D;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -26,10 +25,13 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
     }
 
     @Override
-    public void actualise(Simulation simulation) {
+    public void actualise(Simulation simulation, Object appeleur) {
         List<INettoyable> nettoyables = simulation.getElements(INettoyable.class);
         this.nettoyables.clear();
         for (INettoyable nettoyable : nettoyables) {
+            if (nettoyable.equals(appeleur)) {
+                continue;
+            }
             try {
                 Forme forme = nettoyable.getForme();
                 if (this.forme.collisionne(forme)) {
@@ -46,7 +48,6 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
     public Boolean getInfo() {
         return this.nettoyables.size() > 0;
     }
-
 
 
     /**
