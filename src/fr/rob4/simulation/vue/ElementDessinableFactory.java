@@ -10,7 +10,8 @@ import fr.rob4.simulation.strategie.IStrategie;
 import fr.rob4.simulation.vue.element.NettoyableDessinable;
 import fr.rob4.simulation.vue.element.ObstacleDessinable;
 import fr.rob4.simulation.vue.element.RobotDessinable;
-import fr.rob4.simulation.vue.element.module.CapteurDessinable;
+import fr.rob4.simulation.vue.element.module.CapteurContactDessinable;
+import fr.rob4.simulation.vue.element.module.CapteurSaleteDessinable;
 
 import java.awt.Color;
 import java.util.Objects;
@@ -24,14 +25,12 @@ public class ElementDessinableFactory extends ElementFactory {
 
     @Override
     public IModule<Boolean> capteurContact(Forme forme) {
-        IModule<Boolean> capteurContact = this.factoryBasique.capteurContact(forme);
-        return new CapteurDessinable<>(capteurContact, false);
+        return new CapteurContactDessinable(forme);
     }
 
     @Override
     public IModule<Boolean> capteurSalete(Forme forme) {
-        IModule<Boolean> capteurSalete = this.factoryBasique.capteurSalete(forme);
-        return new CapteurDessinable<>(capteurSalete, true);
+        return new CapteurSaleteDessinable(forme);
     }
 
     @Override
