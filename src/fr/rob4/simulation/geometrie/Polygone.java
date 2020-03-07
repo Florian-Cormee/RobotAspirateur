@@ -45,7 +45,7 @@ public class Polygone extends Forme {
                 s.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -55,7 +55,7 @@ public class Polygone extends Forme {
                 c.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -65,7 +65,7 @@ public class Polygone extends Forme {
                 adc.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -75,7 +75,7 @@ public class Polygone extends Forme {
                 this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -85,7 +85,7 @@ public class Polygone extends Forme {
                 this.intersecte(pol);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }

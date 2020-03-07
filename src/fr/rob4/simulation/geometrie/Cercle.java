@@ -35,9 +35,9 @@ public class Cercle extends Forme {
      * @param p Centre
      * @param d rayon
      */
-    public Cercle(Point2D p, double d) {
+    public Cercle(Point2D p, double r) {
         super(p);
-        this.rayon = d;
+        this.rayon = r;
     }
 
     /**
@@ -47,9 +47,9 @@ public class Cercle extends Forme {
      * @param y Ordonnée du centre.
      * @param d rayon
      */
-    public Cercle(double x, double y, double d) {
+    public Cercle(double x, double y, double r) {
         super(x, y);
-        this.rayon = d;
+        this.rayon = r;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Cercle extends Forme {
                 this.intersecte(c);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -70,7 +70,7 @@ public class Cercle extends Forme {
                 this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -80,7 +80,7 @@ public class Cercle extends Forme {
                 this.intersecte(g);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -90,7 +90,7 @@ public class Cercle extends Forme {
                 this.intersecte(adc);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -100,7 +100,7 @@ public class Cercle extends Forme {
                 s.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
