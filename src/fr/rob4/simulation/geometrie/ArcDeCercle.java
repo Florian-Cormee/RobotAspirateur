@@ -7,6 +7,7 @@ import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -231,17 +232,19 @@ public class ArcDeCercle extends Cercle {
         try {
             List<Point2D> liste = new Cercle(adc.centre, adc.rayon).intersecte(this);
             Vecteur2D x = new Vecteur2D(1, 0);
-            for (Point2D p : liste) { // on verifie pour tous les points s'ils
-                // sont dans le bon intervalle d'angles.
-                Vecteur2D test = adc.centre.getPositionRelative(p);
-                if (adc.ang1 <= adc.ang2) {
-                    if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
-                        liste.remove(p);
-                    }
-                } else {
-                    if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
-                        liste.remove(p);
-                    }
+            Iterator<Point2D> iterator = liste.iterator();
+            // On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+            Point2D p;
+            while (iterator.hasNext()) {
+                p = iterator.next();
+                Point2D centreAdc = adc.getCentre();
+                Vecteur2D test = centreAdc.getPositionRelative(p);
+                // Angle entre le point et l'orientation de l'arc de cercle
+                double angle = Outil.normalize_angle(x.angle(test) - adc.getOrientation());
+                double ouverture = adc.getOuverture();
+                // Cette angle est dans l'intervalle d'ouverture
+                if (-ouverture / 2 >= angle || angle >= ouverture / 2) {
+                    iterator.remove();
                 }
             }
             if (liste.size() == 0) { // si la liste est vide, c'est que les

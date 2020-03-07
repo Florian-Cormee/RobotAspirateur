@@ -300,7 +300,7 @@ public class Segment extends Forme {
                 Point2D centreAdc = adc.getCentre();
                 Vecteur2D test = centreAdc.getPositionRelative(p);
                 // Angle entre le point et l'orientation de l'arc de cercle
-                double angle = Outil.normalize_angle(test.angle(x) - adc.getOrientation());
+                double angle = Outil.normalize_angle(x.angle(test) - adc.getOrientation());
                 double ouverture = adc.getOuverture();
                 // Cette angle est dans l'intervalle d'ouverture
                 if (-ouverture / 2 >= angle || angle >= ouverture / 2) {

@@ -3,9 +3,11 @@
  */
 package fr.rob4.simulation.geometrie;
 
+import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -212,7 +214,22 @@ public class Cercle extends Forme {
         try {
             List<Point2D> liste = this.intersecte(new Cercle(adc.centre, adc.rayon));
             Vecteur2D x = new Vecteur2D(1, 0);
-            for (Point2D p : liste) {
+            Iterator<Point2D> iterator = liste.iterator();
+            // On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+            Point2D p;
+            while (iterator.hasNext()) {
+                p = iterator.next();
+                Point2D centreAdc = adc.getCentre();
+                Vecteur2D test = centreAdc.getPositionRelative(p);
+                // Angle entre le point et l'orientation de l'arc de cercle
+                double angle = Outil.normalize_angle(x.angle(test) - adc.getOrientation());
+                double ouverture = adc.getOuverture();
+                // Cette angle est dans l'intervalle d'ouverture
+                if (-ouverture / 2 >= angle || angle >= ouverture / 2) {
+                    iterator.remove();
+                }
+            }
+            /*for (Point2D p : liste) {
                 Vecteur2D test = adc.centre.getPositionRelative(p);
                 if (adc.ang1 <= adc.ang2) {
                     if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
@@ -223,7 +240,7 @@ public class Cercle extends Forme {
                         liste.remove(p);
                     }
                 }
-            }
+            }*/
             if (liste.size() == 0) {
                 throw new NoIntersectionException(this,
                                                   "L'intersection entre le cercle et l'arc de cercle ne se fait pas " +
