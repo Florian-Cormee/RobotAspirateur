@@ -124,7 +124,7 @@ public class Vecteur2D implements Cloneable {
             return false;
         }
         Vecteur2D vecteur2D = (Vecteur2D) o;
-        return this.equals(vecteur2D, 1e-20);
+        return this.equals(vecteur2D, 1e-10);
     }
 
     @Override
