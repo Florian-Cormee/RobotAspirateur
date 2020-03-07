@@ -1,6 +1,6 @@
 package fr.rob4.simulation.vue.element;
 
-import fr.rob4.simulation.element.ICollisionable;
+import fr.rob4.simulation.element.Obstacle;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.vue.IDessinable;
 import fr.rob4.simulation.vue.IDessinateur;
@@ -10,14 +10,19 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
+import java.util.Objects;
 
-public class ObstacleDessinable implements ICollisionable, IDessinable {
-    private ICollisionable collisionable;
+public class ObstacleDessinable extends Obstacle implements IDessinable {
     private Color couleur;
 
-    public ObstacleDessinable(ICollisionable collisionable, Color couleur) {
-        this.collisionable = collisionable;
-        this.couleur = couleur;
+    /**
+     * Crée un obstacle à partir de sa forme.
+     *
+     * @param forme La forme ne peut pas être <code>null</code>
+     */
+    public ObstacleDessinable(Forme forme, Color couleur) {
+        super(forme);
+        this.couleur = Objects.requireNonNull(couleur);
     }
 
     @Override
@@ -27,21 +32,11 @@ public class ObstacleDessinable implements ICollisionable, IDessinable {
         graphics2D.setColor(this.couleur);
         graphics2D.setStroke(new BasicStroke(2));
 
-        Forme forme = this.collisionable.getForme();
         IDessinateur<Forme> dessinateur = GeometrieDessinateurFactory.instance.forme();
-        dessinateur.dessine(graphics2D, echelle, false, forme);
+        dessinateur.dessine(graphics2D, echelle, false, this.forme);
 
         graphics2D.setColor(precCouleur);
         graphics2D.setStroke(precStroke);
     }
 
-    @Override
-    public void gereCollision(ICollisionable element) {
-        this.collisionable.gereCollision(element);
-    }
-
-    @Override
-    public Forme getForme() {
-        return this.collisionable.getForme();
-    }
 }

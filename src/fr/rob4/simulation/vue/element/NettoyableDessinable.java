@@ -1,6 +1,6 @@
 package fr.rob4.simulation.vue.element;
 
-import fr.rob4.simulation.element.INettoyable;
+import fr.rob4.simulation.element.Tache;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.vue.IDessinable;
 import fr.rob4.simulation.vue.IDessinateur;
@@ -8,14 +8,14 @@ import fr.rob4.simulation.vue.forme.GeometrieDessinateurFactory;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Objects;
 
-public class NettoyableDessinable implements INettoyable, IDessinable {
-    private INettoyable collisionable;
+public class NettoyableDessinable extends Tache implements IDessinable {
     private Color couleur;
 
-    public NettoyableDessinable(INettoyable nettoyable, Color couleur) {
-        this.collisionable = nettoyable;
-        this.couleur = couleur;
+    public NettoyableDessinable(Forme forme, Color couleur) {
+        super(forme);
+        this.couleur = Objects.requireNonNull(couleur);
     }
 
     @Override
@@ -23,15 +23,9 @@ public class NettoyableDessinable implements INettoyable, IDessinable {
         Color precCouleur = graphics2D.getColor();
         graphics2D.setColor(this.couleur);
 
-        Forme forme = this.collisionable.getForme();
         IDessinateur<Forme> dessinateur = GeometrieDessinateurFactory.instance.forme();
-        dessinateur.dessine(graphics2D, echelle, true, forme);
+        dessinateur.dessine(graphics2D, echelle, true, this.forme);
 
         graphics2D.setColor(precCouleur);
-    }
-
-    @Override
-    public Forme getForme() {
-        return this.collisionable.getForme();
     }
 }

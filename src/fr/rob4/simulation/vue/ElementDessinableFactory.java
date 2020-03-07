@@ -14,13 +14,11 @@ import fr.rob4.simulation.vue.element.module.CapteurContactDessinable;
 import fr.rob4.simulation.vue.element.module.CapteurSaleteDessinable;
 
 import java.awt.Color;
-import java.util.Objects;
+import java.util.Arrays;
 
 public class ElementDessinableFactory extends ElementFactory {
-    private ElementFactory factoryBasique;
 
-    public ElementDessinableFactory(ElementFactory factoryBasique) {
-        this.factoryBasique = Objects.requireNonNull(factoryBasique);
+    public ElementDessinableFactory() {
     }
 
     @Override
@@ -35,8 +33,7 @@ public class ElementDessinableFactory extends ElementFactory {
 
     @Override
     public ICollisionable obstacle(Forme forme) {
-        ICollisionable obstacle = this.factoryBasique.obstacle(forme);
-        return new ObstacleDessinable(obstacle, Color.BLACK);
+        return new ObstacleDessinable(forme, Color.BLACK);
     }
 
     @Override
@@ -45,13 +42,11 @@ public class ElementDessinableFactory extends ElementFactory {
                         double orientation,
                         double ecartRoues,
                         IModule<?>... modules) {
-        IRobot robot = this.factoryBasique.robot(forme, strategie, orientation, ecartRoues, modules);
-        return new RobotDessinable(robot);
+        return new RobotDessinable(forme, Arrays.asList(modules), strategie, orientation, ecartRoues);
     }
 
     @Override
     public INettoyable tache(Forme forme) {
-        INettoyable tache = this.factoryBasique.tache(forme);
-        return new NettoyableDessinable(tache, Color.GRAY);
+        return new NettoyableDessinable(forme, Color.GRAY);
     }
 }

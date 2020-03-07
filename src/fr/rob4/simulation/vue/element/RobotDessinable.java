@@ -1,8 +1,6 @@
 package fr.rob4.simulation.vue.element;
 
-import fr.rob4.simulation.Simulation;
-import fr.rob4.simulation.element.ICollisionable;
-import fr.rob4.simulation.element.IRobot;
+import fr.rob4.simulation.element.Robot;
 import fr.rob4.simulation.element.module.IModule;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.geometrie.Point2D;
@@ -19,59 +17,32 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
-import java.util.List;
-import java.util.Objects;
+import java.util.Collection;
+import java.util.Collections;
 
-public class RobotDessinable implements IRobot, IDessinable {
-    private IRobot robot;
+public class RobotDessinable extends Robot implements IDessinable {
 
-    public RobotDessinable(IRobot robot) {
-        this.robot = Objects.requireNonNull(robot);
-    }
-
-    @Override
-    public void actualise(Simulation simulation, Object appeleur) {
-        this.robot.actualise(simulation, appeleur);
-    }
-
-    @Override
-    public void deplace(double dG, double dD) {
-        this.robot.deplace(dG, dD);
-    }
-
-    @Override
-    public List<IModule<?>> getModules() {
-        return this.robot.getModules();
-    }
-
-    @Override
-    public <T extends IModule<?>> List<T> getModules(Class<? extends T> c) {
-        return this.robot.getModules(c);
-    }
-
-    @Override
-    public IStrategie getStrategie() {
-        return this.robot.getStrategie();
-    }
-
-    @Override
-    public boolean isNettoie() {
-        return this.robot.isNettoie();
-    }
-
-    @Override
-    public void setNettoie(boolean etat) {
-        this.robot.setNettoie(etat);
-    }
-
-    @Override
-    public Point2D getPosition() {
-        return this.robot.getPosition();
-    }
-
-    @Override
-    public double getOrientation() {
-        return this.robot.getOrientation();
+    /**
+     * Crée un robot
+     * <p>
+     * S'assure que les arguments, hormis la collection de capteurs, ne sont pas
+     * {@code null} et normalise le vecteur direction donné. <br/>
+     * Une collection de capteur {@code null} crée une liste de capteurs vide
+     *
+     * @param forme      La forme
+     * @param modules    Les modules embarqués
+     * @param strategie  La strategie que adopté
+     * @param theta      L'angle initial
+     * @param ecartRoues La distance en mètres séparant les roues
+     *
+     * @see Collections#emptyList()
+     */
+    public RobotDessinable(Forme forme,
+                           Collection<? extends IModule<?>> modules,
+                           IStrategie strategie,
+                           double theta,
+                           double ecartRoues) {
+        super(forme, modules, strategie, theta, ecartRoues);
     }
 
     @Override
@@ -80,18 +51,16 @@ public class RobotDessinable implements IRobot, IDessinable {
         Stroke precStroke = graphics2D.getStroke();
 
         graphics2D.setColor(Color.PINK);
-        Forme forme = this.robot.getForme();
         IDessinateur<Forme> formeDess = GeometrieDessinateurFactory.instance.forme();
-        formeDess.dessine(graphics2D, echelle, true, forme);
+        formeDess.dessine(graphics2D, echelle, true, this.forme);
 
         graphics2D.setColor(Color.WHITE);
         graphics2D.setStroke(new BasicStroke(2));
-        double orientation = this.robot.getOrientation();
-        Rectangle dim = forme.getDimension();
-        Point2D centre = forme.getCentre();
+        Rectangle dim = this.forme.getDimension();
+        Point2D centre = this.forme.getCentre();
         double longueur = Math.min(dim.getHauteur(), dim.getLargeur()) / 2;
         Point2D extremite = new Point2D(centre, new Vecteur2D(longueur, 0));
-        extremite = extremite.rotationOrigine(orientation);
+        extremite = extremite.rotationOrigine(this.theta);
         Segment direction = new Segment(centre, extremite);
         IDessinateur<Segment> segDess = GeometrieDessinateurFactory.instance.segment();
         segDess.dessine(graphics2D, echelle, false, direction);
@@ -99,22 +68,12 @@ public class RobotDessinable implements IRobot, IDessinable {
         graphics2D.setColor(precColor);
         graphics2D.setStroke(precStroke);
 
-        for (IModule<?> module : this.robot.getModules()) {
+        for (IModule<?> module : this.getModules()) {
             if (module instanceof IDessinable) {
                 ((IDessinable) module).dessine(graphics2D, echelle);
             } else {
                 new CapteurDessinable<>(module, false);
             }
         }
-    }
-
-    @Override
-    public void gereCollision(ICollisionable element) {
-        this.robot.gereCollision(element);
-    }
-
-    @Override
-    public Forme getForme() {
-        return this.robot.getForme();
     }
 }
