@@ -61,10 +61,10 @@ public class Robot extends Element implements IRobot {
      * Actualise les modules puis la strategie
      */
     @Override
-    public void actualise(Simulation simulation) {
+    public void actualise(Simulation simulation, Object appeleur) {
         this.strategie.decide(this);
         for (IModule<?> module : this.modules) {
-            module.actualise(simulation);
+            module.actualise(simulation, this);
         }
     }
 
@@ -129,17 +129,17 @@ public class Robot extends Element implements IRobot {
     }
 
     @Override
-    public Point2D getPosition() {
-        return this.forme.getCentre();
-    }
-
-    @Override
     public void translation(Vecteur2D deplacement) {
         this.dernierePos = this.getPosition();
         super.translation(deplacement);
         for (IModule<?> module : this.modules) {
             module.translation(deplacement);
         }
+    }
+
+    @Override
+    public Point2D getPosition() {
+        return this.forme.getCentre();
     }
 
     @Override
