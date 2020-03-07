@@ -139,7 +139,7 @@ class SegmentTest {
 		list.add(a);
 		list.add(b);
 		list.add(c);
-		Polygone pol = new Polygone(1, 1, list);
+		Polygone pol = new Polygone(list);
 
 		// Segment avec intersection
 		Segment seg = new Segment(new Point2D(new Vecteur2D(1, 1)), new Point2D(new Vecteur2D(3, 1)));
