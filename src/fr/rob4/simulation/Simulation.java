@@ -46,6 +46,11 @@ public class Simulation {
      * </p>
      */
     protected void actualise() {
+        /* Actualisation des éléments */
+        List<IActuallisable> actuallisables = this.getElements(IActuallisable.class);
+        for (IActuallisable actuallisable : actuallisables) {
+            actuallisable.actualise(this);
+        }
         /* Gestion des collisions */
         List<ICollisionable> collisionables = this.getElements(ICollisionable.class);
         // Parcourt tout les couples de collisionables
@@ -68,11 +73,6 @@ public class Simulation {
                     e.printStackTrace();
                 }
             }
-        }
-        /* Actualisation des éléments */
-        List<IActuallisable> actuallisables = this.getElements(IActuallisable.class);
-        for (IActuallisable actuallisable : actuallisables) {
-            actuallisable.actualise(this);
         }
         /* Nettoyage */
         List<IRobot> robots = this.getElements(IRobot.class);
