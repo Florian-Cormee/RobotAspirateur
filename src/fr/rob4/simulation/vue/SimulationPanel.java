@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @SuppressWarnings("serial")
 public class SimulationPanel extends JPanel {
-    private Simulation simulation;
+    private final Simulation simulation;
 
     /**
      * Crée un JPanel représentant graphiquement la simulation
@@ -26,6 +26,23 @@ public class SimulationPanel extends JPanel {
      */
     public SimulationPanel(Simulation simulation) {
         this.simulation = Objects.requireNonNull(simulation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.simulation);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        SimulationPanel that = (SimulationPanel) o;
+        return this.simulation.equals(that.simulation);
     }
 
     @Override
@@ -89,5 +106,10 @@ public class SimulationPanel extends JPanel {
             dessinateur.dessine(graphics2D, echelle, false, contoure);
             graphics2D.setColor(precCouleur);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "SimulationPanel{" + "simulation=" + this.simulation + "} " + super.toString();
     }
 }

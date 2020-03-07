@@ -24,4 +24,9 @@ public class CapteurContactDessinable extends CapteurContact implements IDessina
 
         graphics2D.setColor(c);
     }
+
+    @Override
+    public String toString() {
+        return "CapteurContactDessinable{} " + super.toString();
+    }
 }

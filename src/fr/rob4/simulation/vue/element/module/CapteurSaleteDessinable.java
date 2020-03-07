@@ -29,4 +29,9 @@ public class CapteurSaleteDessinable extends CapteurSalete implements IDessinabl
 
         graphics2D.setColor(c);
     }
+
+    @Override
+    public String toString() {
+        return "CapteurSaleteDessinable{} " + super.toString();
+    }
 }

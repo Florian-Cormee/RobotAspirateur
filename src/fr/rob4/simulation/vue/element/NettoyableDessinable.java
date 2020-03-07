@@ -28,4 +28,29 @@ public class NettoyableDessinable extends Tache implements IDessinable {
 
         graphics2D.setColor(precCouleur);
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.couleur);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+        NettoyableDessinable that = (NettoyableDessinable) o;
+        return Objects.equals(this.couleur, that.couleur);
+    }
+
+    @Override
+    public String toString() {
+        return "NettoyableDessinable{" + "couleur=" + this.couleur + "} " + super.toString();
+    }
 }
