@@ -1,6 +1,5 @@
 package fr.rob4.simulation;
 
-import fr.rob4.simulation.element.BasiqueElementFactory;
 import fr.rob4.simulation.element.ICollisionable;
 import fr.rob4.simulation.element.INettoyable;
 import fr.rob4.simulation.element.IRobot;
@@ -23,8 +22,7 @@ public abstract class ElementFactory {
         if (instance == null) {
             synchronized (ElementFactory.class) {
                 if (instance == null) {
-                    ElementFactory factoryBasique = new BasiqueElementFactory();
-                    instance = new ElementDessinableFactory(factoryBasique);
+                    instance = new ElementDessinableFactory();
                 }
             }
         }
