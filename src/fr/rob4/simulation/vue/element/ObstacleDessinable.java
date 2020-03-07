@@ -26,11 +26,11 @@ public class ObstacleDessinable implements ICollisionable, IDessinable {
         Stroke precStroke = graphics2D.getStroke();
         graphics2D.setColor(this.couleur);
         graphics2D.setStroke(new BasicStroke(5));
-        
+
         Forme forme = this.collisionable.getForme();
         IDessinateur<Forme> dessinateur = GeometrieDessinateurFactory.instance.forme();
         dessinateur.dessine(graphics2D, echelle, false, forme);
-        
+
         graphics2D.setColor(precCouleur);
         graphics2D.setStroke(precStroke);
     }

@@ -5,7 +5,7 @@ import fr.rob4.simulation.geometrie.Polygone;
 import fr.rob4.simulation.geometrie.Vecteur2D;
 import fr.rob4.simulation.vue.IDessinateur;
 
-import java.awt.*;
+import java.awt.Graphics2D;
 import java.util.List;
 
 public class PolygonDessinateur implements IDessinateur<Polygone> {
@@ -19,7 +19,7 @@ public class PolygonDessinateur implements IDessinateur<Polygone> {
         int[] xs = new int[npoints];
         int[] ys = new int[npoints];
         // Calcule la position de chaque point en pixel
-        for (int i = 0; i < npoints; i++) {
+        for (int i = 0 ; i < npoints ; i++) {
             Vecteur2D positionAbsolue = points.get(i).getPositionAbsolue();
             xs[i] = (int) (positionAbsolue.getX() * echelle);
             ys[i] = (int) (positionAbsolue.getY() * echelle);

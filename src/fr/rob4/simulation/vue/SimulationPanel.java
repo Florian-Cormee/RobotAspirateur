@@ -19,6 +19,11 @@ import java.util.Objects;
 public class SimulationPanel extends JPanel {
     private Simulation simulation;
 
+    /**
+     * Crée un JPanel représentant graphiquement la simulation
+     *
+     * @param simulation La simulation à représenter
+     */
     public SimulationPanel(Simulation simulation) {
         this.simulation = Objects.requireNonNull(simulation);
     }
@@ -33,35 +38,26 @@ public class SimulationPanel extends JPanel {
         double hauteur = dimension.getHeight();
         graphics2D.translate((int) (largeur / 2), (int) (hauteur / 2));
         // Inverse le sens de l'axe des ordonnées
-        graphics2D.scale(1,-1);
+        graphics2D.scale(1, -1);
         // Dessine chaque element
         List<IElement> elements = this.simulation.getElements();
         double echelle = this.echelle();
         for (IElement e : elements) {
             System.out.printf("Dessine '%s'\n", e);
-            if (e instanceof IDessinable) {
-                // L'element est dessinable
-                ((IDessinable) e).dessine(graphics2D, echelle);
-            } else {
-                // L'élément n'est pas dessinable
-                System.err.printf("Ne peut pas dessiner '%s'\n", e);
-                // Dessine le contour de la forme en rouge
-                IDessinateur<Rectangle> dessinateur = GeometrieDessinateurFactory.instance.rectangle();
-                Forme forme = e.getForme();
-                Rectangle contoure = forme.getDimension();
-                Color precCouleur = graphics2D.getColor();
-                graphics2D.setColor(Color.RED);
-                dessinateur.dessine(graphics2D, echelle, false, contoure);
-                graphics2D.setColor(precCouleur);
-            }
+            this.dessineElement(e, graphics2D, echelle);
         }
         g.dispose();
     }
 
+    /**
+     * Calcule l'échelle pour convertir les mètres en pixels
+     *
+     * @return L'échelle de conversion des mètres en pixels (en pixels/mètres)
+     */
     private double echelle() {
-        Dimension d = getSize();
+        Dimension d = this.getSize();
         // Obtient les dimensions de la simulation
-        ICollisionable bordures = simulation.getBordures();
+        ICollisionable bordures = this.simulation.getBordures();
         Forme forme = bordures.getForme();
         Rectangle r = forme.getDimension();
         // Calcule l'échelle en p/mètre sur les 2 axes
@@ -69,5 +65,30 @@ public class SimulationPanel extends JPanel {
         double echelleV = d.getWidth() / r.getLargeur();
         // Retourne la plus petite des deux
         return Math.min(echelleH, echelleV);
+    }
+
+    /**
+     * Dessine un élément sur le JPanel
+     *
+     * @param e          L'élément à dessiner
+     * @param graphics2D L'outils de dessin
+     * @param echelle    L'échelle de conversion en pixel/mètres
+     */
+    private void dessineElement(IElement e, Graphics2D graphics2D, double echelle) {
+        if (e instanceof IDessinable) {
+            // L'element est dessinable
+            ((IDessinable) e).dessine(graphics2D, echelle);
+        } else {
+            // L'élément n'est pas dessinable
+            System.err.printf("Ne peut pas dessiner '%s'\n", e);
+            // Dessine le contour de la forme en rouge
+            IDessinateur<Rectangle> dessinateur = GeometrieDessinateurFactory.instance.rectangle();
+            Forme forme = e.getForme();
+            Rectangle contoure = forme.getDimension();
+            Color precCouleur = graphics2D.getColor();
+            graphics2D.setColor(Color.RED);
+            dessinateur.dessine(graphics2D, echelle, false, contoure);
+            graphics2D.setColor(precCouleur);
+        }
     }
 }

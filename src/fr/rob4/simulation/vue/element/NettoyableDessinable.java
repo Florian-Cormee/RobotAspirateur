@@ -22,11 +22,11 @@ public class NettoyableDessinable implements INettoyable, IDessinable {
     public void dessine(Graphics2D graphics2D, double echelle) {
         Color precCouleur = graphics2D.getColor();
         graphics2D.setColor(this.couleur);
-        
+
         Forme forme = this.collisionable.getForme();
         IDessinateur<Forme> dessinateur = GeometrieDessinateurFactory.instance.forme();
         dessinateur.dessine(graphics2D, echelle, true, forme);
-        
+
         graphics2D.setColor(precCouleur);
     }
 

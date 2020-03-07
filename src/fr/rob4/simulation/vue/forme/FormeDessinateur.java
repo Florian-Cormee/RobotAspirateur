@@ -1,13 +1,13 @@
 package fr.rob4.simulation.vue.forme;
 
-import java.awt.Graphics2D;
-
 import fr.rob4.simulation.geometrie.ArcDeCercle;
 import fr.rob4.simulation.geometrie.Cercle;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.geometrie.Polygone;
 import fr.rob4.simulation.geometrie.Rectangle;
 import fr.rob4.simulation.vue.IDessinateur;
+
+import java.awt.Graphics2D;
 
 public class FormeDessinateur implements IDessinateur<Forme> {
     @Override

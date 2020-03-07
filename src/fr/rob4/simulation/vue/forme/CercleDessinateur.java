@@ -17,7 +17,7 @@ public class CercleDessinateur implements IDessinateur<Cercle> {
         double rayon = c.getRayon() * echelle;
         int x = (int) (pos.getX() * echelle - rayon);
         int y = (int) (pos.getY() * echelle - rayon);
-        int longueur = (int) rayon*2;
+        int longueur = (int) rayon * 2;
         if (rempli) {
             graphics2D.fillOval(x, y, longueur, longueur);
         } else {
