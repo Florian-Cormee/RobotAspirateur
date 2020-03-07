@@ -50,11 +50,7 @@ public class SimulationStdBuilder {
         if (this.estHorsZone(x, y, diametre, diametre)) {
             throw new IllegalArgumentException("Les coordonnées font sortir l'obstacle de la simulation");
         }
-        diametre = Math.abs(diametre);
-        if (diametre > DIAMETRE_ROBOT_STD) {
-            throw new IllegalArgumentException("La tache doit être plus petite que le robot");
-        }
-        // Crée la tache
+        // Crée l'obstacle
         Cercle forme = new Cercle(x, y, diametre / 2);
         ICollisionable tache = this.factory.obstacle(forme);
         this.ajouteElement(tache);
@@ -122,6 +118,11 @@ public class SimulationStdBuilder {
         if (this.estHorsZone(x, y, diametre, diametre)) {
             throw new IllegalArgumentException("Les coordonnées font sortir la tache de la simulation");
         }
+        diametre = Math.abs(diametre);
+        if (diametre > DIAMETRE_ROBOT_STD) {
+            throw new IllegalArgumentException("La tache doit être plus petite que le robot");
+        }
+        // Crée la tache
         Cercle forme = new Cercle(x, y, diametre / 2);
         INettoyable tache = this.factory.tache(forme);
         this.ajouteElement(tache);
