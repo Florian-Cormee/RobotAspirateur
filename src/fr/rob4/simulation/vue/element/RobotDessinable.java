@@ -30,8 +30,8 @@ public class RobotDessinable implements IRobot, IDessinable {
     }
 
     @Override
-    public void actualise(Simulation simulation) {
-        this.robot.actualise(simulation);
+    public void actualise(Simulation simulation, Object appeleur) {
+        this.robot.actualise(simulation, appeleur);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class RobotDessinable implements IRobot, IDessinable {
         for (IModule<?> module : this.robot.getModules()) {
             if (module instanceof IDessinable) {
                 ((IDessinable) module).dessine(graphics2D, echelle);
-            }else{
+            } else {
                 new CapteurDessinable<>(module, false);
             }
         }
