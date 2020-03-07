@@ -43,7 +43,6 @@ public class SimulationPanel extends JPanel {
         List<IElement> elements = this.simulation.getElements();
         double echelle = this.echelle();
         for (IElement e : elements) {
-            System.out.printf("Dessine '%s'\n", e);
             this.dessineElement(e, graphics2D, echelle);
         }
         g.dispose();
