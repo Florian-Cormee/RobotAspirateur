@@ -7,6 +7,7 @@ import fr.rob4.simulation.element.IRobot;
 import fr.rob4.simulation.element.module.IModule;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.strategie.IStrategie;
+import fr.rob4.simulation.vue.ElementDessinableFactory;
 
 public abstract class ElementFactory {
     private static ElementFactory instance;
@@ -22,7 +23,8 @@ public abstract class ElementFactory {
         if (instance == null) {
             synchronized (ElementFactory.class) {
                 if (instance == null) {
-                    instance = new BasiqueElementFactory();
+                    ElementFactory factoryBasique = new BasiqueElementFactory();
+                    instance = new ElementDessinableFactory(factoryBasique);
                 }
             }
         }
