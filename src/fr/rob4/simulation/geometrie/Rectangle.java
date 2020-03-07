@@ -20,215 +20,214 @@ import java.util.Objects;
  */
 public class Rectangle extends Forme {
 
-    // Attributs
-    protected double largeur;
-    protected double hauteur;
+	// Attributs
+	protected double largeur;
+	protected double hauteur;
 
-    /**
-     * Crée un rectangle à partir de son centre, de sa largeur et de sa hauteur.
-     *
-     * @param p   Centre
-     * @param lar Largeur
-     * @param h   hauteur
-     */
-    public Rectangle(Point2D p, double lar, double h) {
-        super(p);
-        this.largeur = lar;
-        this.hauteur = h;
-    }
+	/**
+	 * Crée un rectangle à partir de son centre, de sa largeur et de sa hauteur.
+	 *
+	 * @param p   Centre
+	 * @param lar Largeur
+	 * @param h   hauteur
+	 */
+	public Rectangle(Point2D p, double lar, double h) {
+		super(p);
+		this.largeur = lar;
+		this.hauteur = h;
+	}
 
-    /**
-     * Crée un rectangle à partir des coordonnées de son centre, de sa largeur et de
-     * sa hauteur.
-     *
-     * @param x   Abscisse du centre
-     * @param y   Ordonnée du centre
-     * @param lar Largeur
-     * @param h   hauteur
-     */
-    public Rectangle(double x, double y, double lar, double h) {
-        super(x, y);
-        this.largeur = Math.abs(lar);
-        this.hauteur = Math.abs(h);
-    }
+	/**
+	 * Crée un rectangle à partir des coordonnées de son centre, de sa largeur et de
+	 * sa hauteur.
+	 *
+	 * @param x   Abscisse du centre
+	 * @param y   Ordonnée du centre
+	 * @param lar Largeur
+	 * @param h   hauteur
+	 */
+	public Rectangle(double x, double y, double lar, double h) {
+		super(x, y);
+		this.largeur = Math.abs(lar);
+		this.hauteur = Math.abs(h);
+	}
 
-    @Override
-    public boolean collisionne(Forme f) throws NoIntersectionException {
-        // On test d'abord si les formes sont assez proches
-        try {
-            this.getDimension().intersecte(f.getDimension());
-        } catch (NoIntersectionException e) {
-            e.printStackTrace();
-            return false;
-        }
+	@Override
+	public boolean collisionne(Forme f) throws NoIntersectionException {
+		// On test d'abord si les formes sont assez proches
+		try {
+			this.getDimension().intersecte(f.getDimension());
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			return false;
+		}
 
-        if (f.getClass() == Segment.class) {
-            Segment s = (Segment) f;
-            try {
-                s.intersecte(this);
-                return true;
-            } catch (NoIntersectionException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (f.getClass() == Cercle.class) {
-            Cercle c = (Cercle) f;
-            try {
-                c.intersecte(this);
-                return true;
-            } catch (NoIntersectionException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (f.getClass() == ArcDeCercle.class) {
-            ArcDeCercle adc = (ArcDeCercle) f;
-            try {
-                adc.intersecte(this);
-                return true;
-            } catch (NoIntersectionException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (f.getClass() == Polygone.class) {
-            Polygone pol = (Polygone) f;
-            try {
-                pol.intersecte(this);
-                return true;
-            } catch (NoIntersectionException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        if (f.getClass() == Rectangle.class) {
-            Rectangle r = (Rectangle) f;
-            try {
-                this.intersecte(r);
-                return true;
-            } catch (NoIntersectionException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        throw new NoIntersectionException(this, "Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
+		if (f.getClass() == Segment.class) {
+			Segment s = (Segment) f;
+			try {
+				s.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Cercle.class) {
+			Cercle c = (Cercle) f;
+			try {
+				c.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == ArcDeCercle.class) {
+			ArcDeCercle adc = (ArcDeCercle) f;
+			try {
+				adc.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Polygone.class) {
+			Polygone pol = (Polygone) f;
+			try {
+				pol.intersecte(this);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		if (f.getClass() == Rectangle.class) {
+			Rectangle r = (Rectangle) f;
+			try {
+				this.intersecte(r);
+				return true;
+			} catch (NoIntersectionException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		throw new NoIntersectionException(this, "Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
 
-    }
+	}
 
-    /**
-     * Obtient la liste de points d'intersection entre l'instance de rectangle et un
-     * autre rectangle mis en argument.
-     *
-     * @param r Rectangle avec lequel on teste l'intersection.
-     *
-     * @return Liste des points d'intersection.
-     *
-     * @throws NoIntersectionException
-     */
-    List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
-        try {
-            return this.toPolygone().intersecte(r);
-        } catch (NoIntersectionException e) {
-            e.printStackTrace();
-            throw new NoIntersectionException("Pas d'intersection entre ces deux rectangles.", e, this);
-        }
-		/*double dw1 = largeur/2;
-		double dh1 = hauteur/2;
-		double dw2 = r.getLargeur()/2;
-		double dh2 = r.getHauteur()/2;
+	/**
+	 * Obtient la liste de points d'intersection entre l'instance de rectangle et un
+	 * autre rectangle mis en argument.
+	 *
+	 * @param r Rectangle avec lequel on teste l'intersection.
+	 *
+	 * @return Liste des points d'intersection.
+	 *
+	 * @throws NoIntersectionException
+	 */
+	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
+		try {
+			return this.toPolygone().intersecte(r);
+		} catch (NoIntersectionException e) {
+			e.printStackTrace();
+			throw new NoIntersectionException("Pas d'intersection entre ces deux rectangles.", e, this);
+		}
+		/*
+		 * double dw1 = largeur/2; double dh1 = hauteur/2; double dw2 =
+		 * r.getLargeur()/2; double dh2 = r.getHauteur()/2;
+		 * 
+		 * Vecteur2D posR = centre.getPositionRelative(r.getCentre()); if( posR.getX() <
+		 * (dw1+dw2) && posR.getY() < (dh1+dh2)) { List<Point2D> liste = new
+		 * ArrayList<Point2D>(); Vecteur2D dy = posR.getY()>=0 ? new Vecteur2D(0, -dh2)
+		 * : new Vecteur2D(0, dh2); Vecteur2D dx = posR.getX()>=0 ? new Vecteur2D(-dw2,
+		 * 0) : new Vecteur2D(dw2, 0); liste.add(new
+		 * Point2D(centre.getPositionAbsolue().addition(posR).addition(dy)));
+		 * liste.add(new
+		 * Point2D(centre.getPositionAbsolue().addition(posR).addition(dx))); return
+		 * liste; }else { throw new NoIntersectionException(this,
+		 * "Pas d'intersection entre ces deux rectangles."); }
+		 */
+	}
 
-		Vecteur2D posR = centre.getPositionRelative(r.getCentre());
-		if( posR.getX() < (dw1+dw2) && posR.getY() < (dh1+dh2)) {
-			List<Point2D> liste = new ArrayList<Point2D>();
-			Vecteur2D dy = posR.getY()>=0 ? new Vecteur2D(0, -dh2) : new Vecteur2D(0, dh2);
-			Vecteur2D dx = posR.getX()>=0 ? new Vecteur2D(-dw2, 0) : new Vecteur2D(dw2, 0);
-			liste.add(new Point2D(centre.getPositionAbsolue().addition(posR).addition(dy)));
-			liste.add(new Point2D(centre.getPositionAbsolue().addition(posR).addition(dx)));
-			return liste;
-		}else {
-			throw new NoIntersectionException(this, "Pas d'intersection entre ces deux rectangles.");
-		}*/
-    }
+	@Override
+	public Rectangle getDimension() {
+		return this;
+	}
 
-    @Override
-    public Rectangle getDimension() {
-        return this;
-    }
+	@Override
+	public Polygone rotation(double alpha, Point2D p) {
 
-    @Override
-    public Polygone rotation(double alpha, Point2D p) {
+		return this.toPolygone().rotation(alpha, p);
+	}
 
-        return this.toPolygone().rotation(alpha, p);
-    }
+	@Override
+	public Rectangle deplace(Vecteur2D v) {
+		return new Rectangle(getCentre().deplace(v), largeur, hauteur);
+	}
 
-    @Override
-    public Rectangle deplace(Vecteur2D v) {
-        return new Rectangle(getCentre().deplace(v), largeur, hauteur);
-    }
+	public Polygone toPolygone() {
+		List<Point2D> pointsRect = new ArrayList<Point2D>();
+		double lon2 = this.largeur / 2;
+		double lar2 = this.hauteur / 2;
+		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
+		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, lar2))));
+		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, lar2))));
+		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));
+		return new Polygone(pointsRect);
+	}
 
-    public Polygone toPolygone() {
-        List<Point2D> pointsRect = new ArrayList<Point2D>();
-        double lon2 = this.largeur / 2;
-        double lar2 = this.hauteur / 2;
-        pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
-        pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, lar2))));
-        pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, lar2))));
-        pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));
-        return new Polygone(this.centre, pointsRect);
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || this.getClass() != o.getClass()) {
+			return false;
+		}
+		Rectangle rectangle = (Rectangle) o;
+		return Objects.equals(this.centre, rectangle.centre) && (this.largeur == rectangle.largeur)
+				&& (this.hauteur == rectangle.hauteur);
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || this.getClass() != o.getClass()) {
-            return false;
-        }
-        Rectangle rectangle = (Rectangle) o;
-        return Objects.equals(this.centre,
-                              rectangle.centre) && (this.largeur == rectangle.largeur) && (this.hauteur == rectangle.hauteur);
-    }
+	@Override
+	public String toString() {
+		return "Rectangle [largeur=" + this.largeur + ", hauteur=" + this.hauteur + ", centre=" + this.centre + "]";
+	}
 
-    @Override
-    public String toString() {
-        return "Rectangle [largeur=" + this.largeur + ", hauteur=" + this.hauteur + ", centre=" + this.centre + "]";
-    }
+	/**
+	 * Obtient la hauteur.
+	 *
+	 * @return hauteur
+	 */
+	public double getHauteur() {
+		return this.hauteur;
+	}
 
-    /**
-     * Obtient la hauteur.
-     *
-     * @return hauteur
-     */
-    public double getHauteur() {
-        return this.hauteur;
-    }
+	/**
+	 * Modifie la hauteur du rectangle.
+	 *
+	 * @param hauteur Nouvelle hauteur.
+	 */
+	public void setHauteur(double hauteur) {
+		this.hauteur = hauteur;
+	}
 
-    /**
-     * Modifie la hauteur du rectangle.
-     *
-     * @param hauteur Nouvelle hauteur.
-     */
-    public void setHauteur(double hauteur) {
-        this.hauteur = hauteur;
-    }
+	/**
+	 * Obtient la longeur.
+	 *
+	 * @return largeur
+	 */
+	public double getLargeur() {
+		return this.largeur;
+	}
 
-    /**
-     * Obtient la longeur.
-     *
-     * @return largeur
-     */
-    public double getLargeur() {
-        return this.largeur;
-    }
-
-    /**
-     * Modifie la longeur du rectangle.
-     *
-     * @param largeur Nouvelle longeur.
-     */
-    public void setLargeur(double largeur) {
-        this.largeur = largeur;
-    }
+	/**
+	 * Modifie la longeur du rectangle.
+	 *
+	 * @param largeur Nouvelle longeur.
+	 */
+	public void setLargeur(double largeur) {
+		this.largeur = largeur;
+	}
 }

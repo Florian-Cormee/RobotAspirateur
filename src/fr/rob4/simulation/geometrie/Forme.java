@@ -60,15 +60,6 @@ public abstract class Forme {
     }
 
     /**
-     * Modifie le centre.
-     *
-     * @param centre Le nouveau centre.
-     */
-    public void setCentre(Point2D centre) {
-        this.centre = centre;
-    }
-
-    /**
      * Obtient le Rectangle encadrant la forme.
      *
      * @return Rectangle encadrant la forme.
