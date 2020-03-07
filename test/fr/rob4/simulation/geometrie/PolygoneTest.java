@@ -14,7 +14,51 @@ class PolygoneTest {
 
 	@Test
 	void testCollisionne() {
-		fail("Not yet implemented");
+		Point2D a = new Point2D(new Vecteur2D());
+		Point2D b = new Point2D(new Vecteur2D(1, -2));
+		Point2D c = new Point2D(new Vecteur2D(2, 0));
+		Point2D d = new Point2D(new Vecteur2D(1, 2));
+		List<Point2D> l = new ArrayList<Point2D>();
+		l.add(a);
+		l.add(b);
+		l.add(c);
+		l.add(d);
+		Polygone pol = new Polygone(l);
+
+		Cercle cercle = new Cercle(c, 1.0);
+		try {
+			assertTrue(pol.collisionne(cercle));
+		} catch (NoIntersectionException e) {
+			fail();
+		}
+		
+		ArcDeCercle adc = new ArcDeCercle(c, 1, Math.PI/2, Math.PI);
+		try {
+			assertTrue(pol.collisionne(adc));
+		} catch (NoIntersectionException e) {
+			fail();
+		}
+		
+		Segment seg = new Segment(new Point2D(new Vecteur2D(1, 0)), new Point2D(new Vecteur2D(2, 2)));
+		try {
+			assertTrue(pol.collisionne(seg));
+		} catch (NoIntersectionException e) {
+			fail();
+		}
+		
+		Rectangle rect = new Rectangle(2, 0, 2, 2);
+		try {
+			assertTrue(pol.collisionne(rect));
+		} catch (NoIntersectionException e) {
+			fail();
+		}
+		
+		Polygone p = new Polygone(Arrays.asList(new Point2D(new Vecteur2D(3, -1)), new Point2D(new Vecteur2D(1, 0)), new Point2D(new Vecteur2D(4, 2))));
+		try {
+			assertTrue(pol.collisionne(p));
+		} catch (NoIntersectionException e) {
+			fail();
+		}
 	}
 
 	@Test
@@ -59,7 +103,7 @@ class PolygoneTest {
 		l.add(c);
 		Polygone pol = new Polygone(l);
 
-		Polygone polR = pol.rotation(Math.PI/2, a);
+		Polygone polR = pol.rotation(Math.PI / 2, a);
 
 		List<Point2D> liste = Arrays.asList(a, new Point2D(new Vecteur2D(0, 2)), new Point2D(new Vecteur2D(-2, 1)));
 		assertTrue(polR.getPoints().containsAll(liste));
