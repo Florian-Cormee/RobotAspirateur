@@ -68,7 +68,7 @@ public class Polygone extends Forme {
 		Iterator<Point2D> it = points.iterator();
 		while (it.hasNext()) {
 			Point2D point = it.next();
-			Vecteur2D newPos = p.getPositionRelative(point.origine).rotation(alpha).addition(p.position);
+			Vecteur2D newPos = p.getPositionRelative(point).rotation(alpha).addition(p.position);
 			newPoints.add(new Point2D(point.origine, newPos));
 		}
 		return new Polygone(centre.clone(), newPoints);
@@ -181,13 +181,20 @@ public class Polygone extends Forme {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
-		try {
-			for (Segment s : getSegments()) {
-				liste.addAll(s.intersecte(pol));
-			}
+		List<Point2D> listPtColl;
+		for (Segment s : getSegments()) {
+			try {
+				listPtColl = s.intersecte(pol);
+				for (Point2D p : listPtColl) {
+					if (!liste.contains(p)) {
+						liste.add(p);
+					}
+				}
+			}catch( NoIntersectionException e) {}
+		}
+		if (liste.size() != 0) {
 			return liste;
-		} catch (NoIntersectionException e) {
-			e.printStackTrace();
+		}else {
 			throw new NoIntersectionException(this, "Pas d'intersection entre ce polygone et l'autre.");
 		}
 	}
@@ -221,5 +228,10 @@ public class Polygone extends Forme {
 				return false;
 		}
 		return (points.size() == polygone.points.size()) && Objects.deepEquals(centre, polygone.centre);
+	}
+
+	@Override
+	public String toString() {
+		return "Polygone [points=" + points + ", centre=" + centre + "]";
 	}
 }

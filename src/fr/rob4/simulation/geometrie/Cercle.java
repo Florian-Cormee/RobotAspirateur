@@ -69,6 +69,11 @@ public class Cercle extends Forme {
 		return Objects.equals(centre, cercle.centre) && (rayon == cercle.rayon);
 	}
 
+	@Override
+	public String toString() {
+		return "Cercle [rayon=" + rayon + ", centre=" + centre + "]";
+	}
+
 	/**
 	 * Obtient le rayon
 	 * 

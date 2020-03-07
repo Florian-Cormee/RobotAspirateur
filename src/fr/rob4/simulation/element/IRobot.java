@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IRobot extends ICollisionable, IActuallisable {
     /**
-     * D�place en fonction des distances parcourues par les roues
+     * Déplace en fonction des distances parcourues par les roues
      *
      * @param dG La distance parcourue par la roue gauche
      * @param dD La distance parcourue par la roue droite
@@ -30,7 +30,7 @@ public interface IRobot extends ICollisionable, IActuallisable {
      *
      * @return Une liste des modules du type demand� (vide s'il n'y en a pas)
      */
-    public <T extends IModule<?>> List<T> getModules(Class<T> c);
+    public <T extends IModule<?>> List<T> getModules(Class<? extends T> c);
 
     /**
      * Obtient la strategie suivie

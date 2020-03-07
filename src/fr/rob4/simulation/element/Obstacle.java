@@ -4,6 +4,11 @@ import fr.rob4.simulation.geometrie.Forme;
 
 public class Obstacle extends Element implements ICollisionable {
 
+    /**
+     * Crée un obstacle à partir de sa forme.
+     *
+     * @param forme La forme ne peut pas être <code>null</code>
+     */
     public Obstacle(Forme forme) {
         super(forme);
     }

@@ -4,7 +4,6 @@
 package fr.rob4.simulation.geometrie;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.ArrayList;
 
 import fr.rob4.simulation.exception.NoIntersectionException;
@@ -149,7 +148,7 @@ public class Segment extends Forme {
 		} else {
 			double t = tempV.produitCroix(s) / tempD;
 			double u = tempV.produitCroix(r) / tempD;
-			if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)) { // Les 2 segments se croisent
+			if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)) { // Les 2 segments se croisent sauf aux extremités
 				return new Point2D(p.addition(r.produit(t)));
 			} else {
 				throw new NoIntersectionException(this, "L\'intersection ne se fait sur les segments");
@@ -211,12 +210,15 @@ public class Segment extends Forme {
 		List<Point2D> liste = new ArrayList<Point2D>();
 		for (Segment s : pol.getSegments()) {
 			try {
-				liste.add(s.intersecte(this));
+				Point2D ptColl = s.intersecte(this);
+				if (!liste.contains(ptColl)) {
+					liste.add(ptColl);
+				}
 			} catch (NoIntersectionException e) {
 				continue;
 			}
 		}
-		if (liste.size() == 0) {
+		if (liste.size() == 0) { // on vérifie si la liste est vide
 			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le polygone");
 		}
 		return liste;
@@ -232,7 +234,11 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
-			List<Point2D> liste = intersecte(r.toPolygone());
+			Polygone pol = r.toPolygone();
+			List<Point2D> liste = intersecte(pol);
+			if (a.inside(pol.getDimension()) == b.inside(pol.getDimension())) {
+				throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
+			}
 			return liste;
 		} catch (NoIntersectionException e) {
 			throw new NoIntersectionException(this, "Pas d'intersection entre le segment et le rectangle");
@@ -322,4 +328,10 @@ public class Segment extends Forme {
 		return a.getPositionAbsolue().equals(segment.a.getPositionAbsolue())
 				&& b.getPositionAbsolue().equals(segment.b.getPositionAbsolue());
 	}
+
+	@Override
+	public String toString() {
+		return "Segment [a=" + a + ", b=" + b + ", centre=" + centre + "]";
+	}
+
 }

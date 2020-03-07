@@ -16,42 +16,42 @@ public class CapteurLaser extends Element implements IModule<Double> {
 
     public CapteurLaser(Forme forme) {
         super(forme);
-        distance = Double.POSITIVE_INFINITY;
+        this.distance = Double.POSITIVE_INFINITY;
     }
 
     @Override
     public void actualise(Simulation simulation) {
         List<ICollisionable> collisionables = simulation.getElements(ICollisionable.class);
-        distance = Double.POSITIVE_INFINITY;
-        Point2D centre = forme.getCentre();
+        this.distance = Double.POSITIVE_INFINITY;
+        Point2D centre = this.forme.getCentre();
 
         for (ICollisionable collisionable : collisionables) {
+            Forme forme = collisionable.getForme();
             try {
-		if (!(collisionable instanceof Robot) && forme.collisionne(collisionable.getForme())) {
-		    // On cherche les elements dans le rayon de mesure
-		    continue;
-		}
-	    } catch (NoIntersectionException e) {
-		e.printStackTrace();
-		// On ne sait pas déterminer s'il y a superposition donc on passe au suivant
-		continue;
-	    }
+                if (!(collisionable instanceof Robot) && this.forme.collisionne(forme)) {
+                    // On cherche les elements dans le rayon de mesure
+                    continue;
+                }
+            } catch (NoIntersectionException e) {
+                e.printStackTrace();
+                // On ne sait pas déterminer s'il y a superposition donc on passe au suivant
+                continue;
+            }
             // Calcul de la distance séparant le centre de l'obstacle et du
             // capteur
-            Forme colForme = collisionable.getForme();
-            Point2D colCentre = colForme.getCentre();
+            Point2D colCentre = forme.getCentre();
             Vecteur2D colPosRelative = centre.getPositionRelative(colCentre);
             double d = colPosRelative.norme();
-            if (d < distance) {
+            if (d < this.distance) {
                 // On retient la distance la plus petite
-                distance = d;
+                this.distance = d;
             }
         }
     }
 
     @Override
     public Double getInfo() {
-        return distance;
+        return this.distance;
     }
 
 }

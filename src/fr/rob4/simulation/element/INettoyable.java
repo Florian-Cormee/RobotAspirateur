@@ -1,4 +1,6 @@
 package fr.rob4.simulation.element;
 
-public interface INettoyable extends IElement {
-}
+/**
+ * Interface-marqueur d'éléments nettoyables.
+ */
+public interface INettoyable extends IElement {}
