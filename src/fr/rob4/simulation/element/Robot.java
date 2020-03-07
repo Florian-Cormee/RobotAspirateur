@@ -1,5 +1,6 @@
 package fr.rob4.simulation.element;
 
+import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.module.IModule;
 import fr.rob4.simulation.geometrie.Forme;
@@ -71,8 +72,8 @@ public class Robot extends Element implements IRobot {
     @Override
     public void deplace(double dG, double dD) {
         // Limitation du déplacement des roues
-        double dGl = Math.min(dG, VITESSE_MAX * Simulation.T);
-        double dDl = Math.min(dD, VITESSE_MAX * Simulation.T);
+        double dGl = Math.signum(dG) * Math.min(Math.abs(dG), VITESSE_MAX * Simulation.T);
+        double dDl = Math.signum(dD) * Math.min(Math.abs(dD), VITESSE_MAX * Simulation.T);
         // Déplacement du robot (cf. code fourni dans Position.java)
         double alpha = (dDl - dGl) / this.ecartRoues;
         Vecteur2D deplacement;
@@ -146,7 +147,7 @@ public class Robot extends Element implements IRobot {
     public void rotation(double angle, Point2D centre) {
         this.dernierTheta = this.theta;
         super.rotation(angle, centre);
-        this.theta += angle;
+        this.theta = Outil.normalize_angle(this.theta + angle);
         for (IModule<?> module : this.modules) {
             module.rotation(angle, centre);
         }
