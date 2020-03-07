@@ -13,7 +13,7 @@ public class StrategieAleatoire implements IStrategie {
     public StrategieAleatoire() {
         this.angleCible = 0;
         this.etat = Etats.AVANCE;
-        this.kRot = 2;
+        this.kRot = 0.5;
     }
 
     @Override
