@@ -58,12 +58,10 @@ public class Robot extends Element implements IRobot {
         this.nettoie = false;
     }
 
-    /**
-     * Actualise les modules puis la strategie
-     */
     @Override
     public void actualise(Simulation simulation, Object appeleur) {
         this.strategie.decide(this);
+        // Actualise chaque capteur
         for (IModule<?> module : this.modules) {
             module.actualise(simulation, this);
         }
@@ -133,6 +131,7 @@ public class Robot extends Element implements IRobot {
     public void translation(Vecteur2D deplacement) {
         this.dernierePos = this.getPosition();
         super.translation(deplacement);
+        // Déplace tous les capteurs
         for (IModule<?> module : this.modules) {
             module.translation(deplacement);
         }

@@ -9,6 +9,4 @@ public interface IElement {
      * @return La forme de l'instance
      */
     Forme getForme();
-
-
 }

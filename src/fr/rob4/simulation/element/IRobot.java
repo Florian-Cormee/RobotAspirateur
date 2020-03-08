@@ -20,7 +20,7 @@ public interface IRobot extends ICollisionable, IActuallisable {
      *
      * @return Une liste non modifiable de tous les modules
      */
-    public List<IModule<?>> getModules();
+    List<IModule<?>> getModules();
 
     /**
      * Obtient une liste des modules du type demand�
@@ -30,28 +30,28 @@ public interface IRobot extends ICollisionable, IActuallisable {
      *
      * @return Une liste des modules du type demand� (vide s'il n'y en a pas)
      */
-    public <T extends IModule<?>> List<T> getModules(Class<? extends T> c);
+    <T extends IModule<?>> List<T> getModules(Class<? extends T> c);
 
     /**
      * Obtient la strategie suivie
      *
      * @return La strategie suivie
      */
-    public IStrategie getStrategie();
+    IStrategie getStrategie();
 
     /**
      * Obtient l'�tat du module de nettoyage
      *
      * @return {@code true} pour que le nettoyage ait lieu sinon {@code false}
      */
-    public boolean isNettoie();
+    boolean isNettoie();
 
     /**
      * Defini si le nettoyage a lieu
      *
      * @param etat {@code true} pour que le nettoyage ait lieu sinon {@code false}
      */
-    public void setNettoie(boolean etat);
+    void setNettoie(boolean etat);
     
 
     /**
@@ -59,12 +59,12 @@ public interface IRobot extends ICollisionable, IActuallisable {
      *
      * @return La position
      */
-    public Point2D getPosition();
+    Point2D getPosition();
     
     /**
      * Obtient l'orientation
      * 
      * @return L'orientation (en radians)
      */
-    public double getOrientation();
+    double getOrientation();
 }

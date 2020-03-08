@@ -39,13 +39,13 @@ public abstract class Element implements IDeplacable {
         return "Element[" + "forme=" + this.forme + ']';
     }
 
+    @Override
     public void rotation(double angle, Point2D centre) {
-        // Rotation de la zone de détection
-        this.forme = this.forme.rotation(angle, centre);
+        this.forme = this.forme.rotation(angle, centre); // Rotation de la forme
     }
 
+    @Override
     public void translation(Vecteur2D deplacement) {
-        // Déplacement de la forme
-        this.forme = this.forme.deplace(deplacement);
+        this.forme = this.forme.deplace(deplacement); // Déplacement de la forme
     }
 }

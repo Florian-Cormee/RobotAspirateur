@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class StrategieAleatoire implements IStrategie {
     private double angleCible;
-    private double distArr;
+    protected double distArr;
     private double kRot;
     private Etats etat;
 
@@ -22,13 +22,13 @@ public class StrategieAleatoire implements IStrategie {
     }
 
     @Override
-    public boolean decide(IRobot robot) {
+    public void decide(IRobot robot) {
         robot.setNettoie(true);
         if (this.etat != Etats.TOURNE) {
             // Vérifie s'il y a une collision
             List<CapteurContact> capteurContacts = robot.getModules(CapteurContact.class);
             for (CapteurContact cc : capteurContacts) {
-                // En cas de collision, on choisi une direction de fuite aléatoire
+                // En cas de collision, on recule
                 if (cc.getInfo()) {
                     this.etat = Etats.RECUL;
                     this.distArr = 0;
@@ -42,7 +42,8 @@ public class StrategieAleatoire implements IStrategie {
         } else if (this.etat == Etats.RECUL) {
             robot.deplace(-2, -2);
             this.distArr += Robot.VITESSE_MAX * Simulation.T;
-            if (this.distArr > 0.05) {
+            if (this.distArr >= 0.05) {
+                // on choisi une direction de fuite aléatoire
                 this.angleCible = (Math.random() - 0.5) * 2 * Math.PI;
                 this.etat = Etats.TOURNE;
             }
@@ -50,11 +51,10 @@ public class StrategieAleatoire implements IStrategie {
             // Fait tourner le robot jusqu'à l'orientation désirée
             double DeltaRoues = this.kRot * (this.angleCible - robot.getOrientation());
             robot.deplace(-DeltaRoues / 2, DeltaRoues / 2);
-            if (Math.abs(this.angleCible - robot.getOrientation()) < 1e-1) {
+            if (Math.abs(this.angleCible - robot.getOrientation()) < 1e-3) {
                 this.etat = Etats.AVANCE;
             }
         }
-        return true;
     }
 
     /**

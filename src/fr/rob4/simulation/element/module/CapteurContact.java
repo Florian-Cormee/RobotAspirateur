@@ -12,11 +12,22 @@ import java.util.Objects;
 public class CapteurContact extends Element implements IModule<Boolean> {
     protected ICollisionable element;
 
+    /**
+     * Crée un capteur de contact à partir de la forme de sa zone d'activation
+     *
+     * @param forme La forme de sa zone d'activation
+     */
     public CapteurContact(Forme forme) {
         super(forme);
         this.element = null;
     }
 
+    /**
+     * Actualise le capteur de contacts
+     *
+     * @param simulation La simulation qui demandant l'actualisation
+     * @param appeleur   L'Objet demandant la mise à jour (cet objet est alors ignoré dans la recherche de collision)
+     */
     @Override
     public void actualise(Simulation simulation, Object appeleur) {
         List<ICollisionable> elements = simulation.getElements(ICollisionable.class);
@@ -25,14 +36,13 @@ public class CapteurContact extends Element implements IModule<Boolean> {
         this.element = null;
         for (ICollisionable element : elements) {
             if (element.equals(appeleur)) {
-                continue;
+                continue; // Ne collisionne pas avec la source
             }
             try {
                 Forme forme = element.getForme();
                 if (this.forme.collisionne(forme)) {
                     this.element = element;
                 }
-
             } catch (NoIntersectionException ignored) {
             }
             if (this.element != null) {

@@ -8,13 +8,11 @@ public interface ICollisionable extends IElement {
      * Prédicat d'une collision
      * <p>
      * Test la superposition des formes de l'instance et de l'élément
-     * </p>
      * <p>
      * Le test doit être commutatif:
      * <code>
      * a.collisionne(b) == b.collisionne(a)
      * </code>
-     * </p>
      *
      * @param element L'élément à tester
      *
@@ -25,7 +23,7 @@ public interface ICollisionable extends IElement {
     default boolean collisionne(ICollisionable element) throws NoIntersectionException {
         Forme thisForme = this.getForme();
         Forme elementForme = element.getForme();
-        return thisForme.collisionne(elementForme);
+        return thisForme.collisionne(elementForme); // Collisione la forme des éléments
     }
 
     /**
