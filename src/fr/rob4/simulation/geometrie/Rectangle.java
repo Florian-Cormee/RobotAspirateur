@@ -190,29 +190,11 @@ public class Rectangle extends Forme {
 	}
 
 	/**
-	 * Modifie la hauteur du rectangle.
-	 *
-	 * @param hauteur Nouvelle hauteur.
-	 */
-	public void setHauteur(double hauteur) {
-		this.hauteur = hauteur;
-	}
-
-	/**
 	 * Obtient la longeur.
 	 *
 	 * @return largeur
 	 */
 	public double getLargeur() {
 		return this.largeur;
-	}
-
-	/**
-	 * Modifie la longeur du rectangle.
-	 *
-	 * @param largeur Nouvelle longeur.
-	 */
-	public void setLargeur(double largeur) {
-		this.largeur = largeur;
 	}
 }
