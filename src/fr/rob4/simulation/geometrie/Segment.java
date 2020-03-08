@@ -59,7 +59,7 @@ public class Segment extends Forme {
                 this.intersecte(s);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -69,7 +69,7 @@ public class Segment extends Forme {
                 this.intersecte(c);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -79,7 +79,7 @@ public class Segment extends Forme {
                 this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -89,7 +89,7 @@ public class Segment extends Forme {
                 this.intersecte(p);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -99,7 +99,7 @@ public class Segment extends Forme {
                 this.intersecte(adc);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -300,7 +300,7 @@ public class Segment extends Forme {
                 Point2D centreAdc = adc.getCentre();
                 Vecteur2D test = centreAdc.getPositionRelative(p);
                 // Angle entre le point et l'orientation de l'arc de cercle
-                double angle = Outil.normalize_angle(test.angle(x) - adc.getOrientation());
+                double angle = Outil.normalize_angle(x.angle(test) - adc.getOrientation());
                 double ouverture = adc.getOuverture();
                 // Cette angle est dans l'intervalle d'ouverture
                 if (-ouverture / 2 >= angle || angle >= ouverture / 2) {

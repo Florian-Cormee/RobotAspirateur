@@ -7,8 +7,11 @@ import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Cette classe représente un arc de cercle. C'est une portion de cercle. On
@@ -72,7 +75,7 @@ public class ArcDeCercle extends Cercle {
                 s.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -82,7 +85,7 @@ public class ArcDeCercle extends Cercle {
                 c.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -92,7 +95,7 @@ public class ArcDeCercle extends Cercle {
                 this.intersecte(p);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -102,7 +105,7 @@ public class ArcDeCercle extends Cercle {
                 this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -112,7 +115,7 @@ public class ArcDeCercle extends Cercle {
                 this.intersecte(adc);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -189,7 +192,7 @@ public class ArcDeCercle extends Cercle {
      * @throws NoIntersectionException
      */
     List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
-        List<Point2D> liste = new ArrayList<Point2D>();
+        Set<Point2D> liste = new HashSet<Point2D>();
         for (Segment s : pol.getSegments()) {
         	try {
         		liste.addAll(s.intersecte(this));
@@ -198,7 +201,7 @@ public class ArcDeCercle extends Cercle {
         if (liste.size() == 0) {
             throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le polygone.");
         } else {
-            return liste;
+            return new ArrayList<Point2D>(liste);
         }
     }
 
@@ -231,17 +234,19 @@ public class ArcDeCercle extends Cercle {
         try {
             List<Point2D> liste = new Cercle(adc.centre, adc.rayon).intersecte(this);
             Vecteur2D x = new Vecteur2D(1, 0);
-            for (Point2D p : liste) { // on verifie pour tous les points s'ils
-                // sont dans le bon intervalle d'angles.
-                Vecteur2D test = adc.centre.getPositionRelative(p);
-                if (adc.ang1 <= adc.ang2) {
-                    if (test.angle(x) < adc.ang1 || test.angle(x) > adc.ang2) {
-                        liste.remove(p);
-                    }
-                } else {
-                    if (test.angle(x) < adc.ang1 && test.angle(x) > adc.ang2) {
-                        liste.remove(p);
-                    }
+            Iterator<Point2D> iterator = liste.iterator();
+            // On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
+            Point2D p;
+            while (iterator.hasNext()) {
+                p = iterator.next();
+                Point2D centreAdc = adc.getCentre();
+                Vecteur2D test = centreAdc.getPositionRelative(p);
+                // Angle entre le point et l'orientation de l'arc de cercle
+                double angle = Outil.normalize_angle(x.angle(test) - adc.getOrientation());
+                double ouverture = adc.getOuverture();
+                // Cette angle est dans l'intervalle d'ouverture
+                if (-ouverture / 2 >= angle || angle >= ouverture / 2) {
+                    iterator.remove();
                 }
             }
             if (liste.size() == 0) { // si la liste est vide, c'est que les
