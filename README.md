@@ -27,11 +27,11 @@ L'environement du robot présente plusieurss caractéristiques:
 - Tous les **obstacles** sont circulaires (de taille variée) sauf les murs de la simulation.
 - La pièce comporte des **tâches** circulaires, de taille inférieure à celle du robot aspirateur. Ces tâches représentent des zones de saleté.
 
-#### Ajouter de nouveaux obstacles**
+#### Ajouter de nouveaux obstacles
 
-Est mis à disposition ne nombreux éléments dans:
+Est mis à disposition de nombreux éléments dans:
 
-> src\fr\rob4\simulation\geometrie
+> fr.rob4.simulation.geometrie
 
 On y retrouve notemment 5 **formes**:
 
@@ -57,7 +57,7 @@ Le robot présente plusieurs caractéristiques:
 
 Se rendre dans le package:
 
-> src.fr.rob4.simulation.element.module
+> fr.rob4.simulation.element.module
 
 Créer une nouvelle classe qui *implements* l'interface **IModule**.
 
@@ -67,13 +67,13 @@ Créer une nouvelle classe qui *implements* l'interface **IModule**.
 
 dans la calsse **SimulationStdBuilder** située dans:
 
-> src\fr\rob4\simulation
+> fr.rob4.simulation
 
 et dans la **ElementFactory** dans ce même dossier.
 
 **NB:** il reste tout à fait possible de créer un robot manuellement et d'ajouter à la main les capteurs 1 à 1 .
 
-### L' <<intelligence>>
+### L' "intelligence"
 
 Pour se déplacer dans son environement, le robot doit posséder une **stratégie**. Grâce aux informations fournies par les **capteurs** du robot, la stratégie va pouvoir le piloter dans la simulation.
 
@@ -89,7 +89,7 @@ Dès que les **capteurs de contact** repèrent une collision avec un **élement*
 
 Premièrement se placer dans le package:
 
-> src.fr.rob4.simulation.strategie
+> fr.rob4.simulation.strategie
 
 Créer ensuite une nouvelle classe qui *implements* l'interface **IStratégie**. Classe à remplir avec toutes les méthodes nécessaires à la strategie souhaitée. 
 
