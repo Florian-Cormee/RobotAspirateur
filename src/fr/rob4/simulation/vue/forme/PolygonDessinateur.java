@@ -9,9 +9,6 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 public class PolygonDessinateur implements IDessinateur<Polygone> {
-    public PolygonDessinateur() {
-    }
-
     @Override
     public void dessine(Graphics2D graphics2D, double echelle, boolean rempli, Polygone element) {
         List<Point2D> points = element.getPoints();

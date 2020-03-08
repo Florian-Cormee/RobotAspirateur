@@ -46,39 +46,52 @@ public class RobotDessinable extends Robot implements IDessinable {
     }
 
     @Override
-    public String toString() {
-        return "RobotDessinable{} " + super.toString();
-    }
-
-    @Override
     public void dessine(Graphics2D graphics2D, double echelle) {
+        // Sauvegarde la couleur et la largeur des traits
         Color precColor = graphics2D.getColor();
         Stroke precStroke = graphics2D.getStroke();
-
+        // Trace la forme du robot
         graphics2D.setColor(Color.PINK);
         IDessinateur<Forme> formeDess = GeometrieDessinateurFactory.instance.forme();
         formeDess.dessine(graphics2D, echelle, true, this.forme);
+        // Trace la direction du robot
+        this.dessineDirection(graphics2D, echelle);
+        // Reinitialise la couleur et la largeur des traits
+        graphics2D.setColor(precColor);
+        graphics2D.setStroke(precStroke);
+        /* Dessine chaque capteur */
+        for (IModule<?> module : this.getModules()) {
+            if (module instanceof IDessinable) {
+                ((IDessinable) module).dessine(graphics2D, echelle);
+            } else {
+                new CapteurDessinable<>(module, false); // Dessinateur par défaut
+            }
+        }
+    }
 
+    /**
+     * Dessine la direction du robot sous la forme d'un segment blanc de 2 pixels de largeur
+     *
+     * @param graphics2D Le graphics2D a utiliser pour le dessin
+     * @param echelle    L'échelle à laquelle dessiner (en p/mètre)
+     */
+    private void dessineDirection(Graphics2D graphics2D, double echelle) {
         graphics2D.setColor(Color.WHITE);
         graphics2D.setStroke(new BasicStroke(2));
+        // Construit un segment du centre du robot vers une extrimité orienté selon la direction du robot
         Rectangle dim = this.forme.getDimension();
         Point2D centre = this.forme.getCentre();
         double longueur = Math.min(dim.getHauteur(), dim.getLargeur()) / 2;
         Point2D extremite = new Point2D(centre, new Vecteur2D(longueur, 0));
         extremite = extremite.rotationOrigine(this.theta);
         Segment direction = new Segment(centre, extremite);
+        // Dessine le segment
         IDessinateur<Segment> segDess = GeometrieDessinateurFactory.instance.segment();
         segDess.dessine(graphics2D, echelle, false, direction);
+    }
 
-        graphics2D.setColor(precColor);
-        graphics2D.setStroke(precStroke);
-
-        for (IModule<?> module : this.getModules()) {
-            if (module instanceof IDessinable) {
-                ((IDessinable) module).dessine(graphics2D, echelle);
-            } else {
-                new CapteurDessinable<>(module, false);
-            }
-        }
+    @Override
+    public String toString() {
+        return "RobotDessinable{} " + super.toString();
     }
 }

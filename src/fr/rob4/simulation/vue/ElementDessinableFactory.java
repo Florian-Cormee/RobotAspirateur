@@ -7,7 +7,7 @@ import fr.rob4.simulation.element.IRobot;
 import fr.rob4.simulation.element.module.IModule;
 import fr.rob4.simulation.geometrie.Forme;
 import fr.rob4.simulation.strategie.IStrategie;
-import fr.rob4.simulation.vue.element.NettoyableDessinable;
+import fr.rob4.simulation.vue.element.TacheDessinable;
 import fr.rob4.simulation.vue.element.ObstacleDessinable;
 import fr.rob4.simulation.vue.element.RobotDessinable;
 import fr.rob4.simulation.vue.element.module.CapteurContactDessinable;
@@ -18,8 +18,10 @@ import java.util.Arrays;
 
 public class ElementDessinableFactory extends ElementFactory {
 
-    public ElementDessinableFactory() {
-    }
+    /**
+     * Crée une Factory d'éléments dessinables
+     */
+    public ElementDessinableFactory() {}
 
     @Override
     public IModule<Boolean> capteurContact(Forme forme) {
@@ -47,6 +49,6 @@ public class ElementDessinableFactory extends ElementFactory {
 
     @Override
     public INettoyable tache(Forme forme) {
-        return new NettoyableDessinable(forme, Color.GRAY);
+        return new TacheDessinable(forme, Color.GRAY);
     }
 }

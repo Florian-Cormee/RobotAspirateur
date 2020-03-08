@@ -8,8 +8,6 @@ import fr.rob4.simulation.vue.IDessinateur;
 import java.awt.Graphics2D;
 
 public class CercleDessinateur implements IDessinateur<Cercle> {
-    public CercleDessinateur() {}
-
     @Override
     public void dessine(Graphics2D graphics2D, double echelle, boolean rempli, Cercle c) {
         Point2D centre = c.getCentre();
@@ -18,6 +16,7 @@ public class CercleDessinateur implements IDessinateur<Cercle> {
         int x = (int) (pos.getX() * echelle - rayon);
         int y = (int) (pos.getY() * echelle - rayon);
         int longueur = (int) rayon * 2;
+        // Dessine le cercle
         if (rempli) {
             graphics2D.fillOval(x, y, longueur, longueur);
         } else {

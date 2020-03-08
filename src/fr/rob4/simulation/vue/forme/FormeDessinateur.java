@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 public class FormeDessinateur implements IDessinateur<Forme> {
     @Override
     public void dessine(Graphics2D graphics2D, double echelle, boolean rempli, Forme element) {
+        // Crée un dessinateur pour le type donnée et le fais dessiner
         if (element.getClass() == Cercle.class) {
             IDessinateur<Cercle> dessinateur = GeometrieDessinateurFactory.instance.cercle();
             dessinateur.dessine(graphics2D, echelle, rempli, (Cercle) element);
@@ -25,7 +26,8 @@ public class FormeDessinateur implements IDessinateur<Forme> {
             IDessinateur<Polygone> dessinateur = GeometrieDessinateurFactory.instance.polygone();
             dessinateur.dessine(graphics2D, echelle, rempli, (Polygone) element);
         } else {
-            String msg = String.format("Ne peut pas dessiner '%s'\n", element);
+            // Il n'y a pas de dessinateur adapté
+            String msg = String.format("Ne peut pas dessiner '%s'", element);
             throw new UnsupportedOperationException(msg);
         }
     }

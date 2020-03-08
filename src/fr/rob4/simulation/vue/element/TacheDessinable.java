@@ -10,10 +10,15 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Objects;
 
-public class NettoyableDessinable extends Tache implements IDessinable {
+public class TacheDessinable extends Tache implements IDessinable {
     private Color couleur;
 
-    public NettoyableDessinable(Forme forme, Color couleur) {
+    /**
+     * Crée un nettoyable dessinable
+     * @param forme La forme de la tache
+     * @param couleur La couleur de la tache
+     */
+    public TacheDessinable(Forme forme, Color couleur) {
         super(forme);
         this.couleur = Objects.requireNonNull(couleur);
     }
@@ -22,7 +27,7 @@ public class NettoyableDessinable extends Tache implements IDessinable {
     public void dessine(Graphics2D graphics2D, double echelle) {
         Color precCouleur = graphics2D.getColor();
         graphics2D.setColor(this.couleur);
-
+        // Appelle le dessinateur pour la forme de la tache
         IDessinateur<Forme> dessinateur = GeometrieDessinateurFactory.instance.forme();
         dessinateur.dessine(graphics2D, echelle, true, this.forme);
 
@@ -45,12 +50,12 @@ public class NettoyableDessinable extends Tache implements IDessinable {
         if (!super.equals(o)) {
             return false;
         }
-        NettoyableDessinable that = (NettoyableDessinable) o;
+        TacheDessinable that = (TacheDessinable) o;
         return Objects.equals(this.couleur, that.couleur);
     }
 
     @Override
     public String toString() {
-        return "NettoyableDessinable{" + "couleur=" + this.couleur + "} " + super.toString();
+        return "NettoyableDessinable[" + "couleur=" + this.couleur + ", super.toString()=" + super.toString() + ']';
     }
 }

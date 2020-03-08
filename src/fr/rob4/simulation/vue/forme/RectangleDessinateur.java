@@ -8,8 +8,6 @@ import fr.rob4.simulation.vue.IDessinateur;
 import java.awt.Graphics2D;
 
 public class RectangleDessinateur implements IDessinateur<Rectangle> {
-    public RectangleDessinateur() {}
-
     @Override
     public void dessine(Graphics2D graphics2D, double echelle, boolean rempli, Rectangle element) {
         Point2D centre = element.getCentre();
@@ -19,6 +17,7 @@ public class RectangleDessinateur implements IDessinateur<Rectangle> {
         int y = (int) ((position.getY() - dimension.getHauteur() / 2) * echelle);
         int l = (int) (dimension.getLargeur() * echelle);
         int h = (int) (dimension.getHauteur() * echelle);
+        // Dessine la figure
         if (rempli) {
             graphics2D.fillRect(x, y, l, h);
         } else {

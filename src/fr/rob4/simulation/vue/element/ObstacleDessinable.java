@@ -31,7 +31,7 @@ public class ObstacleDessinable extends Obstacle implements IDessinable {
         Stroke precStroke = graphics2D.getStroke();
         graphics2D.setColor(this.couleur);
         graphics2D.setStroke(new BasicStroke(2));
-
+        // Appelle le dessinateur pour la forme de l'obstacle
         IDessinateur<Forme> dessinateur = GeometrieDessinateurFactory.instance.forme();
         dessinateur.dessine(graphics2D, echelle, false, this.forme);
 
@@ -61,6 +61,6 @@ public class ObstacleDessinable extends Obstacle implements IDessinable {
 
     @Override
     public String toString() {
-        return "ObstacleDessinable{" + "couleur=" + couleur + "} " + super.toString();
+        return "ObstacleDessinable[" + "couleur=" + couleur + ", super.toString()=" + super.toString() + ']';
     }
 }

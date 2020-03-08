@@ -2,6 +2,7 @@ package fr.rob4.simulation.vue;
 
 import java.awt.Graphics2D;
 
+@FunctionalInterface
 public interface IDessinateur<T> {
     /**
      * Dessine l'élément

@@ -8,9 +8,6 @@ import fr.rob4.simulation.vue.IDessinateur;
 import java.awt.Graphics2D;
 
 public class ArcDeCercleDessinateur implements IDessinateur<ArcDeCercle> {
-    public ArcDeCercleDessinateur() {
-    }
-
     @Override
     public void dessine(Graphics2D graphics2D, double echelle, boolean rempli, ArcDeCercle element) {
         Point2D centre = element.getCentre();
