@@ -28,6 +28,7 @@ public class SimulationPanel extends JPanel implements IObservateur<Simulation> 
      */
     public SimulationPanel(Simulation simulation) {
         this.simulation = Objects.requireNonNull(simulation);
+        simulation.ajouteObservateur(this);// Observe la simulation pour se mettre à jour
     }
 
     @Override
