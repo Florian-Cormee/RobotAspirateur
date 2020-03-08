@@ -19,8 +19,6 @@ import java.util.Set;
  * son orientation et son ouverture, la différence de ces 2 angles. Classe fille
  * de Cercle.
  *
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  * @see Point2D
  * @see Vecteur2D
  * @see Forme
@@ -51,9 +49,9 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	/**
-	 * Crée un arc de cecle à partir des coordonnées de son centre, son diametre, et
-	 * les 2 angles par rapport à l'axe des abscisses, définissant son ouverture et
-	 * son orientatioon.
+	 * Crée un arc de cercle à partir des coordonnées de son centre, son diametre,
+	 * et les 2 angles par rapport à l'axe des abscisses, définissant son ouverture
+	 * et son orientatioon.
 	 *
 	 * @param x  Abscisse du centre
 	 * @param y  Ordonnée du centre
@@ -166,13 +164,15 @@ public class ArcDeCercle extends Cercle {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		Set<Point2D> ensemble = new HashSet<Point2D>();
+		// On teste l'ensemble des segments du polynome pour tester les intersections
+		// entre segment et arc de cercle
 		for (Segment s : pol.getSegments()) {
 			try {
 				ensemble.addAll(s.intersecte(this));
 			} catch (NoIntersectionException e) {
 			}
 		}
-		if (ensemble.size() == 0) {
+		if (ensemble.size() == 0) { // On vérifie si la liste n'est pas vide
 			throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le polygone.");
 		} else {
 			return new ArrayList<Point2D>(ensemble);
@@ -189,6 +189,8 @@ public class ArcDeCercle extends Cercle {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
+			// On convertit le rectangle en polygone pour avoir les intersections entre les
+			// segments et l'arc de cercle
 			List<Point2D> liste = this.intersecte(r.toPolygone());
 			return liste;
 		} catch (NoIntersectionException e) {
@@ -207,7 +209,9 @@ public class ArcDeCercle extends Cercle {
 	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
 		try {
 			List<Point2D> liste = new Cercle(adc.centre, adc.rayon).intersecte(this);
+			// Vecteur unitaire horizontal pour tester les angles des points d'intersections
 			Vecteur2D x = new Vecteur2D(1, 0);
+
 			Iterator<Point2D> iterator = liste.iterator();
 			// On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
 			Point2D p;
@@ -223,9 +227,8 @@ public class ArcDeCercle extends Cercle {
 					iterator.remove();
 				}
 			}
-			if (liste.size() == 0) { // si la liste est vide, c'est que les
-				// points n'étaient pas dans le bon
-				// intervalle.
+			if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
+										// intervalle.
 				throw new NoIntersectionException(this,
 						"L'intersection entre l'instance d'arc de cercle et l'autre arc de "
 								+ "cercle ne se fait pas sur l'arc de cercle.");

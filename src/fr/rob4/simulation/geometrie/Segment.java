@@ -16,8 +16,6 @@ import java.util.Set;
  * Cette classe représente un segment de droite délimité par 2 Point2D. Il peut
  * également être manipulé à partir de son centre.
  *
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  * @see Point2D
  * @see Vecteur2D
  * @see Forme
@@ -33,9 +31,10 @@ public class Segment extends Forme {
 	protected Point2D b;
 
 	/**
-	 *
-	 * @param a
-	 * @param b
+	 * Crée un segment à partir des 2 points qui sont ses extrémitées.
+	 * 
+	 * @param a Première extrémitée
+	 * @param b Deuxième extrémitée
 	 */
 	public Segment(Point2D a, Point2D b) {
 		super(new Point2D(new Vecteur2D((a.getPositionAbsolue().x + b.getPositionAbsolue().x) / 2,
@@ -43,15 +42,6 @@ public class Segment extends Forme {
 		this.a = a;
 		this.b = b;
 	}
-
-	/*
-	 * /**
-	 *
-	 * @param x
-	 *
-	 * @param y / public Segment(double x, double y) { super(x, y); // TODO
-	 * Auto-generated constructor stub }
-	 */
 
 	@Override
 	public boolean collisionne(Forme f) throws NoIntersectionException {
@@ -111,7 +101,7 @@ public class Segment extends Forme {
 		double h = Math.max(pa.y, pb.y) - Math.min(pa.y, pb.y);
 		return new Rectangle(this.centre, lar, h);
 	}
-	
+
 	@Override
 	public Segment rotation(double alpha) {
 		return this.rotation(alpha, centre);
@@ -145,10 +135,20 @@ public class Segment extends Forme {
 		return "Segment [a=" + this.a + ", b=" + this.b + ", centre=" + this.centre + "]";
 	}
 
+	/**
+	 * Obtient le point de la première extrémitée.
+	 * 
+	 * @return Point de la première extrémitée.
+	 */
 	public Point2D getA() {
 		return this.a;
 	}
 
+	/**
+	 * Obtient le point de la deuxième extrémitée.
+	 * 
+	 * @return Point de la deuxième extrémitée.
+	 */
 	public Point2D getB() {
 		return this.b;
 	}
@@ -173,17 +173,12 @@ public class Segment extends Forme {
 		Vecteur2D tempV = q.soustraction(p);
 		double tempD = r.produitCroix(s);
 		if (tempD == 0) { // les segments sont soi parallèles soi en contacte mais ne se coupent pas.
-			/*
-			 * if( tempV.produitCroix(r) == 0 ) {
-			 * 
-			 * }
-			 */
 			throw new NoIntersectionException(this,
 					"les segments sont soi parallèles soi en contacte mais ne se coupent " + "pas.");
 		} else {
-			double t = tempV.produitCroix(s) / tempD;
-			double u = tempV.produitCroix(r) / tempD;
-			if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)) { // Les 2 segments se croisent sauf aux extremités
+			double t = tempV.produitCroix(s) / tempD; // proportion de r dans le segment this
+			double u = tempV.produitCroix(r) / tempD; // proportion de s dans le segment à tester
+			if ((t >= 0) && (t <= 1) && (u >= 0) && (u <= 1)) { // Les 2 segments se croisent
 				return new Point2D(p.addition(r.produit(t)));
 			} else {
 				throw new NoIntersectionException(this, "L'intersection ne se fait sur les segments");
@@ -201,21 +196,26 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Cercle c) throws NoIntersectionException {
 		List<Point2D> liste = new ArrayList<Point2D>();
+		// On cherche à résoudre l'équation des représentations paramétriques du segment
+		// this et du cercle.
 		double dx = this.b.getPositionAbsolue().getX() - this.a.getPositionAbsolue().getX();
 		double dy = this.b.getPositionAbsolue().getY() - this.a.getPositionAbsolue().getY();
 		double xc = c.centre.getPositionAbsolue().getX();
 		double yc = c.centre.getPositionAbsolue().getY();
 
+		// Equation du 2nd ordre : alpha * x² + beta * x + c = 0
 		double alpha = Math.pow(dx, 2) + Math.pow(dy, 2);
 		double beta = 2
 				* (dx * (this.a.getPositionAbsolue().getX() - xc) + dy * (this.a.getPositionAbsolue().getY() - yc));
 		double gamma = Math.pow(this.a.getPositionAbsolue().getX() - xc, 2)
 				+ Math.pow(this.a.getPositionAbsolue().getY() - yc, 2) - Math.pow(c.rayon, 2);
+
 		double delta = Math.pow(beta, 2) - 4 * alpha * gamma;
+
 		// Conjecture
 		if (delta == 0) { // le segment et est tangent au cercle
 			throw new NoIntersectionException(this, "le segment est tangent au cercle.");
-		} else if (delta > 0 && alpha != 0) {
+		} else if (delta > 0 && alpha != 0) { // les racines ne sont pas complexes et éviter le division par 0
 			double t1 = (-beta - Math.sqrt(delta)) / (2 * alpha);
 			double t2 = (-beta + Math.sqrt(delta)) / (2 * alpha);
 			if (t1 >= 0 && t1 <= 1) {
@@ -246,6 +246,7 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		Set<Point2D> ensemble = new HashSet<Point2D>();
+		// On test l'intersection entre this et tous les segments du polynome
 		for (Segment s : pol.getSegments()) {
 			try {
 				// ensemble.addAll(s.intersecte(pol));
@@ -272,13 +273,9 @@ public class Segment extends Forme {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
-			Polygone pol = r.toPolygone();
-			List<Point2D> liste = this.intersecte(pol);
-			/*
-			 * if (this.a.inside(pol.getDimension()) == this.b.inside(pol.getDimension())) {
-			 * throw new NoIntersectionException(this,
-			 * "Pas d'intersection entre le segment et le rectangle"); }
-			 */
+			// On convertit le rectangle polynome pour tester des intersections entre
+			// segments.
+			List<Point2D> liste = this.intersecte(r.toPolygone());
 			return liste;
 		} catch (NoIntersectionException e) {
 			throw new NoIntersectionException("Pas d'intersection entre le segment et le rectangle", e, this);
@@ -297,7 +294,8 @@ public class Segment extends Forme {
 		try {
 			List<Point2D> liste = this.intersecte((Cercle) adc);
 			Iterator<Point2D> iterator = liste.iterator();
-			Vecteur2D x = new Vecteur2D(1, 0);
+			Vecteur2D x = new Vecteur2D(1, 0); // vecteur unitaire horizontal pour vérifier l'angle
+
 			// On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
 			Point2D p;
 			while (iterator.hasNext()) {
@@ -312,27 +310,6 @@ public class Segment extends Forme {
 					iterator.remove();
 				}
 			}
-			// int i = 0;
-			// while (i < liste.size()) {
-			// p = liste.get(i);
-			// Vecteur2D test = adc.centre.getPositionRelative(p);
-			// double angle = test.angle(x);
-			// if (adc.ang1 <= adc.ang2) {
-			// if (angle < adc.ang1 || angle > adc.ang2) { // si on delete p, il ne faut pas
-			// // incrémenter i
-			// liste.remove(i);
-			// } else { // si on garde p, on passe au point suivant
-			// i++;
-			// }
-			// } else {
-			// if (angle < adc.ang1 && angle > adc.ang2) { // si on delete p il ne faut pas
-			// // incrémenter i
-			// liste.remove(i);
-			// } else {
-			// i++; // si on garde p, on passe au point suivant
-			// }
-			// }
-			// }
 			if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
 				// intervalle.
 				throw new NoIntersectionException(this,

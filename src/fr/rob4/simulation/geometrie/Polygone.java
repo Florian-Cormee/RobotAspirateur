@@ -15,8 +15,6 @@ import java.util.Set;
  * Cette Classe représente un polygone. Il peut avoir autant de point que
  * souhaité.
  *
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  * @see Point2D
  * @see Vecteur2D
  * @see Forme
@@ -111,13 +109,14 @@ public class Polygone extends Forme {
 	public Polygone rotation(double alpha) {
 		return this.rotation(alpha, centre);
 	}
-	
+
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
 		List<Point2D> newPoints = new ArrayList<>();
+		// On fait touner tous les points du polygone par rapport au point demandé
 		for (Point2D point : this.points) {
-			Vecteur2D newPos = p.getPositionRelative(point).rotation(alpha).addition(p.position);
-			newPoints.add(new Point2D(point.origine, newPos));
+			Point2D newPt = point.rotation(alpha, p);
+			newPoints.add(newPt);// new Point2D(point.origine, newPos));
 		}
 		return new Polygone(newPoints);
 	}
@@ -125,6 +124,8 @@ public class Polygone extends Forme {
 	@Override
 	public Polygone deplace(Vecteur2D v) {
 		List<Point2D> newL = new ArrayList<Point2D>();
+		// On ajoute à la nouvelle liste de points les points de l'instance déplacés du
+		// vecteur demandé.
 		for (Point2D p : getPoints()) {
 			newL.add(p.deplace(v));
 		}
@@ -158,8 +159,15 @@ public class Polygone extends Forme {
 		return "Polygone [points=" + this.points + ", centre=" + this.centre + "]";
 	}
 
+	/**
+	 * Obtient la liste des segments composants le polygone.
+	 * 
+	 * @return Liste des segments de l'instance
+	 */
 	public List<Segment> getSegments() {
 		List<Segment> liste = new ArrayList<>();
+		// On garde en mémoire le premier point pour construire le dernier segment et
+		// fermer le polygone.
 		Point2D prem = this.points.get(0);
 		Point2D pt1 = prem;
 		// Point2D pt2 = points.get(1);
@@ -186,6 +194,8 @@ public class Polygone extends Forme {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
+			// On convertit le rectangle en polygone pour tester l'intersection entre les
+			// segments.
 			Polygone polygone = r.toPolygone();
 			return this.intersecte(polygone);
 		} catch (NoIntersectionException e) {
@@ -205,19 +215,26 @@ public class Polygone extends Forme {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		Set<Point2D> ensemble = new HashSet<Point2D>();
+		// On teste avec tous les segments de l'instance avec le polygone à tester
 		for (Segment s : this.getSegments()) {
 			try {
 				ensemble.addAll(s.intersecte(pol));
 			} catch (NoIntersectionException e) {
 			}
 		}
-		if (ensemble.size() != 0) {
+		if (ensemble.size() != 0) {	// On vérifie que la taille de l'ensemble
 			return new ArrayList<Point2D>(ensemble);
 		} else {
 			throw new NoIntersectionException(this, "Pas d'intersection entre ce polygone et l'autre.");
 		}
 	}
 
+	/**
+	 * Calcule le baricentre d'une liste de points.
+	 * 
+	 * @param cPts Liste de points dont il faut trouver le baricentre.
+	 * @return Le baricentre.
+	 */
 	private static Point2D baricentre(Collection<? extends Point2D> cPts) {
 		int nb = cPts.size();
 		double xb = 0;
@@ -230,7 +247,8 @@ public class Polygone extends Forme {
 			xb += p.getPositionAbsolue().getX();
 			yb += p.getPositionAbsolue().getY();
 		}
-
+		
+		// moyenne des points
 		return new Point2D(new Vecteur2D(xb / nb, yb / nb));
 	}
 }
