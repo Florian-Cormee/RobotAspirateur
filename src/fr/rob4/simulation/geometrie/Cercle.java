@@ -62,7 +62,6 @@ public class Cercle extends Forme {
 				this.intersecte(c);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -72,7 +71,6 @@ public class Cercle extends Forme {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -82,7 +80,6 @@ public class Cercle extends Forme {
 				this.intersecte(g);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -92,7 +89,6 @@ public class Cercle extends Forme {
 				this.intersecte(adc);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -102,11 +98,10 @@ public class Cercle extends Forme {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce cercle n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
 	}
 
 	@Override

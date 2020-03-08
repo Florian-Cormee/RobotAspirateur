@@ -60,7 +60,6 @@ public class Rectangle extends Forme {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -70,7 +69,6 @@ public class Rectangle extends Forme {
 				c.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -80,7 +78,6 @@ public class Rectangle extends Forme {
 				adc.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -90,7 +87,6 @@ public class Rectangle extends Forme {
 				pol.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -100,11 +96,10 @@ public class Rectangle extends Forme {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
 
 	}
 
@@ -122,7 +117,6 @@ public class Rectangle extends Forme {
 		try {
 			return this.toPolygone().intersecte(r);
 		} catch (NoIntersectionException e) {
-			e.printStackTrace();
 			throw new NoIntersectionException("Pas d'intersection entre ces deux rectangles.", e, this);
 		}
 	}

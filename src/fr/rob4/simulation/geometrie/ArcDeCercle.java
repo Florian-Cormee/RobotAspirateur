@@ -75,7 +75,6 @@ public class ArcDeCercle extends Cercle {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -85,7 +84,6 @@ public class ArcDeCercle extends Cercle {
 				c.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -95,7 +93,6 @@ public class ArcDeCercle extends Cercle {
 				this.intersecte(p);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -105,7 +102,6 @@ public class ArcDeCercle extends Cercle {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -115,26 +111,24 @@ public class ArcDeCercle extends Cercle {
 				this.intersecte(adc);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this,
-				"Cet arc de cercle n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
 	}
 
-	@Override 
+	@Override
 	public ArcDeCercle rotation(double alpha) {
 		return this.rotation(alpha, centre);
 	}
-	
+
 	@Override
 	public ArcDeCercle rotation(double alpha, Point2D p) {
 		double newA1 = Outil.normalize_angle(this.ang1 + alpha);
 		double newA2 = Outil.normalize_angle(this.ang2 + alpha);
-		
-		ArcDeCercle newADC = new ArcDeCercle(this.centre, this.rayon, newA1, newA2);
-		//newADC.setOrientation(this.getOrientation() + alpha);
+
+		ArcDeCercle newADC = new ArcDeCercle(this.centre.rotation(alpha, p), this.rayon, newA1, newA2);
+		// newADC.setOrientation(this.getOrientation() + alpha);
 		return newADC;
 	}
 
@@ -161,36 +155,6 @@ public class ArcDeCercle extends Cercle {
 		}
 		return this.ang2 - this.ang1;
 	}
-
-	/**
-	 * Modifie l'ouverture avec un nouvel angle d'ouverture.
-	 *
-	 * @param o Nouvelle ouverture.
-	 */
-	/*public void setOuverture(double o) throws IllegalArgumentException {
-		double ouv = Math.abs(o);
-		if (ouv < 0 || ouv > 2 * Math.PI)
-			throw new IllegalArgumentException("ADC : setOuverture(double o) ERROR");
-		double mid = ouv / 2; // la moitié de la nouvelle ouverture
-		// On modifie les angles pour avoir la bonne ouverture autour de
-		// l'orientation
-		// actuelle
-		this.ang1 = Outil.normalize_angle(this.getOrientation() - mid);
-		this.ang2 = Outil.normalize_angle(this.getOrientation() + mid);
-	}*/
-
-	/**
-	 * Modifie l'orientation avec un nouvel angle.
-	 *
-	 * @param o Orientation, un angle.
-	 */
-	/*public void setOrientation(double o) {
-		double mid = this.getOuverture() / 2; // la moitié de l'ouverture actuelle
-		// On modofie les angles pour que l'ouverture soit la même autour de la
-		// nouvelle orientation
-		this.ang1 = Outil.normalize_angle(o - mid);
-		this.ang2 = Outil.normalize_angle(o + mid);
-	}*/
 
 	/**
 	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et

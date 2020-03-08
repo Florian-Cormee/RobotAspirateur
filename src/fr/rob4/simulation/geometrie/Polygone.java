@@ -47,7 +47,6 @@ public class Polygone extends Forme {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -57,7 +56,6 @@ public class Polygone extends Forme {
 				c.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -67,7 +65,6 @@ public class Polygone extends Forme {
 				adc.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -77,7 +74,6 @@ public class Polygone extends Forme {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -87,11 +83,10 @@ public class Polygone extends Forme {
 				this.intersecte(pol);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce polygone n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
 	}
 
 	@Override
@@ -194,7 +189,6 @@ public class Polygone extends Forme {
 			Polygone polygone = r.toPolygone();
 			return this.intersecte(polygone);
 		} catch (NoIntersectionException e) {
-			e.printStackTrace();
 			throw new NoIntersectionException("Pas d'intersection entre le polygone et le rectangle", e, this);
 		}
 	}
