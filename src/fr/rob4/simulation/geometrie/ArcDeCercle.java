@@ -19,8 +19,6 @@ import java.util.Set;
  * son orientation et son ouverture, la différence de ces 2 angles. Classe fille
  * de Cercle.
  *
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  * @see Point2D
  * @see Vecteur2D
  * @see Forme
@@ -51,9 +49,9 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	/**
-	 * Crée un arc de cecle à partir des coordonnées de son centre, son diametre, et
-	 * les 2 angles par rapport à l'axe des abscisses, définissant son ouverture et
-	 * son orientatioon.
+	 * Crée un arc de cercle à partir des coordonnées de son centre, son diametre,
+	 * et les 2 angles par rapport à l'axe des abscisses, définissant son ouverture
+	 * et son orientatioon.
 	 *
 	 * @param x  Abscisse du centre
 	 * @param y  Ordonnée du centre
@@ -75,7 +73,6 @@ public class ArcDeCercle extends Cercle {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -85,7 +82,6 @@ public class ArcDeCercle extends Cercle {
 				c.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -95,7 +91,6 @@ public class ArcDeCercle extends Cercle {
 				this.intersecte(p);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -105,7 +100,6 @@ public class ArcDeCercle extends Cercle {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -115,21 +109,24 @@ public class ArcDeCercle extends Cercle {
 				this.intersecte(adc);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this,
-				"Cet arc de cercle n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
+	}
+
+	@Override
+	public ArcDeCercle rotation(double alpha) {
+		return this.rotation(alpha, centre);
 	}
 
 	@Override
 	public ArcDeCercle rotation(double alpha, Point2D p) {
 		double newA1 = Outil.normalize_angle(this.ang1 + alpha);
 		double newA2 = Outil.normalize_angle(this.ang2 + alpha);
-		
-		ArcDeCercle newADC = new ArcDeCercle(this.centre, this.rayon, newA1, newA2);
-		//newADC.setOrientation(this.getOrientation() + alpha);
+
+		ArcDeCercle newADC = new ArcDeCercle(this.centre.rotation(alpha, p), this.rayon, newA1, newA2);
+		// newADC.setOrientation(this.getOrientation() + alpha);
 		return newADC;
 	}
 
@@ -158,36 +155,6 @@ public class ArcDeCercle extends Cercle {
 	}
 
 	/**
-	 * Modifie l'ouverture avec un nouvel angle d'ouverture.
-	 *
-	 * @param o Nouvelle ouverture.
-	 */
-	/*public void setOuverture(double o) throws IllegalArgumentException {
-		double ouv = Math.abs(o);
-		if (ouv < 0 || ouv > 2 * Math.PI)
-			throw new IllegalArgumentException("ADC : setOuverture(double o) ERROR");
-		double mid = ouv / 2; // la moitié de la nouvelle ouverture
-		// On modifie les angles pour avoir la bonne ouverture autour de
-		// l'orientation
-		// actuelle
-		this.ang1 = Outil.normalize_angle(this.getOrientation() - mid);
-		this.ang2 = Outil.normalize_angle(this.getOrientation() + mid);
-	}*/
-
-	/**
-	 * Modifie l'orientation avec un nouvel angle.
-	 *
-	 * @param o Orientation, un angle.
-	 */
-	/*public void setOrientation(double o) {
-		double mid = this.getOuverture() / 2; // la moitié de l'ouverture actuelle
-		// On modofie les angles pour que l'ouverture soit la même autour de la
-		// nouvelle orientation
-		this.ang1 = Outil.normalize_angle(o - mid);
-		this.ang2 = Outil.normalize_angle(o + mid);
-	}*/
-
-	/**
 	 * Obtient la liste de points d'intersection entre l'instance d'arc de cercle et
 	 * un polygone mis en argument.
 	 *
@@ -197,13 +164,15 @@ public class ArcDeCercle extends Cercle {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		Set<Point2D> ensemble = new HashSet<Point2D>();
+		// On teste l'ensemble des segments du polynome pour tester les intersections
+		// entre segment et arc de cercle
 		for (Segment s : pol.getSegments()) {
 			try {
 				ensemble.addAll(s.intersecte(this));
 			} catch (NoIntersectionException e) {
 			}
 		}
-		if (ensemble.size() == 0) {
+		if (ensemble.size() == 0) { // On vérifie si la liste n'est pas vide
 			throw new NoIntersectionException(this, "Pas d'intersection entre cet arc de cercle et le polygone.");
 		} else {
 			return new ArrayList<Point2D>(ensemble);
@@ -220,6 +189,8 @@ public class ArcDeCercle extends Cercle {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
+			// On convertit le rectangle en polygone pour avoir les intersections entre les
+			// segments et l'arc de cercle
 			List<Point2D> liste = this.intersecte(r.toPolygone());
 			return liste;
 		} catch (NoIntersectionException e) {
@@ -238,7 +209,9 @@ public class ArcDeCercle extends Cercle {
 	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
 		try {
 			List<Point2D> liste = new Cercle(adc.centre, adc.rayon).intersecte(this);
+			// Vecteur unitaire horizontal pour tester les angles des points d'intersections
 			Vecteur2D x = new Vecteur2D(1, 0);
+
 			Iterator<Point2D> iterator = liste.iterator();
 			// On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
 			Point2D p;
@@ -254,9 +227,8 @@ public class ArcDeCercle extends Cercle {
 					iterator.remove();
 				}
 			}
-			if (liste.size() == 0) { // si la liste est vide, c'est que les
-				// points n'étaient pas dans le bon
-				// intervalle.
+			if (liste.size() == 0) { // si la liste est vide, c'est que les points n'étaient pas dans le bon
+										// intervalle.
 				throw new NoIntersectionException(this,
 						"L'intersection entre l'instance d'arc de cercle et l'autre arc de "
 								+ "cercle ne se fait pas sur l'arc de cercle.");

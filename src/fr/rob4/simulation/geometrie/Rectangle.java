@@ -9,8 +9,6 @@ import java.util.Objects;
 /**
  * Cette classe représente un rectangle. Il connait sa largeur et sa hauteur.
  *
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  * @see Point2D
  * @see Vecteur2D
  * @see Forme
@@ -60,7 +58,6 @@ public class Rectangle extends Forme {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -70,7 +67,6 @@ public class Rectangle extends Forme {
 				c.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -80,7 +76,6 @@ public class Rectangle extends Forme {
 				adc.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -90,7 +85,6 @@ public class Rectangle extends Forme {
 				pol.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
@@ -100,11 +94,10 @@ public class Rectangle extends Forme {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				//e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce rectangle n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
 
 	}
 
@@ -120,9 +113,10 @@ public class Rectangle extends Forme {
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
 		try {
+			// Appelle l'intersection entre un polygone et un rectangle en convertissant
+			// this en polygone.
 			return this.toPolygone().intersecte(r);
 		} catch (NoIntersectionException e) {
-			e.printStackTrace();
 			throw new NoIntersectionException("Pas d'intersection entre ces deux rectangles.", e, this);
 		}
 	}
@@ -130,6 +124,11 @@ public class Rectangle extends Forme {
 	@Override
 	public Rectangle getDimension() {
 		return this;
+	}
+
+	@Override
+	public Polygone rotation(double alpha) {
+		return this.rotation(alpha, centre);
 	}
 
 	@Override
@@ -148,16 +147,14 @@ public class Rectangle extends Forme {
 	 * <p>
 	 * Note: Ne modifie pas l'instance.
 	 * 
-	 * @return Un Polygone avec les mêmes caractéristiques que le rectangle d'origine.
+	 * @return Un Polygone avec les mêmes caractéristiques que le rectangle
+	 *         d'origine.
 	 */
 	public Polygone toPolygone() {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = this.largeur / 2;
 		double lar2 = this.hauteur / 2;
-		/*pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
-		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, lar2))));
-		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, lar2))));
-		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));*/
+		// On ajoute les points dans le bon ordre pour la construction des segments
 		pointsRect.add(this.centre.deplace(new Vecteur2D(-lon2, -lar2)));
 		pointsRect.add(this.centre.deplace(new Vecteur2D(-lon2, lar2)));
 		pointsRect.add(this.centre.deplace(new Vecteur2D(lon2, lar2)));

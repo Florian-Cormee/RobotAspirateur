@@ -17,8 +17,6 @@ import java.util.Set;
  * Cette classe représente un Cercle paramétré par son centre et son rayon.
  * Classe fille de Forme.
  *
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  * @see Point2D
  * @see Vecteur2D
  * @see Forme
@@ -62,7 +60,6 @@ public class Cercle extends Forme {
 				this.intersecte(c);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -72,7 +69,6 @@ public class Cercle extends Forme {
 				this.intersecte(r);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -82,7 +78,6 @@ public class Cercle extends Forme {
 				this.intersecte(g);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -92,7 +87,6 @@ public class Cercle extends Forme {
 				this.intersecte(adc);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
@@ -102,11 +96,10 @@ public class Cercle extends Forme {
 				s.intersecte(this);
 				return true;
 			} catch (NoIntersectionException e) {
-				// e.printStackTrace();
 				return false;
 			}
 		}
-		throw new NoIntersectionException(this, "Ce cercle n'a pas de collision. Ou la forme n'est pas connue.");
+		throw new NoIntersectionException(this, "La forme n'est pas connue.");
 	}
 
 	@Override
@@ -115,9 +108,13 @@ public class Cercle extends Forme {
 	}
 
 	@Override
+	public Cercle rotation(double alpha) {
+		return this.rotation(alpha, centre);
+	}
+
+	@Override
 	public Cercle rotation(double alpha, Point2D p) {
 		Vecteur2D newPos = p.getPositionRelative(this.centre).rotation(alpha).addition(p.position);
-		// Cercle newCercle = new Cercle(new Point2D(centre.origine, newPos),rayon);
 		return new Cercle(new Point2D(this.centre.origine, newPos), this.rayon);
 	}
 
@@ -135,28 +132,35 @@ public class Cercle extends Forme {
 	 * @throws NoIntersectionException
 	 */
 	List<Point2D> intersecte(Cercle cercle) throws NoIntersectionException {
-		// if (this.centre.getPositionRelative(cercle.centre).norme() <= this.rayon +
-		// cercle.rayon) {
-		double entraxe = centre.getPositionRelative(cercle.centre).norme();
+		double entraxe = centre.getPositionRelative(cercle.centre).norme(); // distance entre les centres des cercles
 		if (entraxe >= rayon + cercle.rayon || entraxe < Math.abs(rayon - cercle.rayon) || entraxe == 0) {
+			// les cercles sont tangents, l'un est inclu dans l'autre, ils sont
+			// concentriques
 			throw new NoIntersectionException(this, "Pas d'intersection entre les cercles");
 		} else {
 			List<Point2D> liste = new ArrayList<Point2D>();
 
 			double rayonC = cercle.rayon;
 
-			double a = (rayon * rayon - rayonC * rayonC + entraxe * entraxe) / (2 * entraxe);
-			double h = Math.sqrt(rayon * rayon - a * a);
+			double a = (rayon * rayon - rayonC * rayonC + entraxe * entraxe) / (2 * entraxe); // distance entre le
+																								// centre de l'instance
+																								// et le point milieu de
+																								// l'intersection entre
+																								// les cercles.
+			double h = Math.sqrt(rayon * rayon - a * a); // distance entre le point milieu et les points d'intersection
+															// (symétrique des deux cotés du point milieu)
 
 			double x0 = this.centre.getPositionAbsolue().getX();
 			double y0 = this.centre.getPositionAbsolue().getY();
 			double x1 = cercle.centre.getPositionAbsolue().getX();
 			double y1 = cercle.centre.getPositionAbsolue().getY();
+
 			Vecteur2D milieu = centre.getPositionAbsolue()
 					.addition(centre.getPositionRelative(cercle.centre).normalise().produit(a));// cercle.centre.getPositionAbsolue();
 			double x2 = milieu.getX();
 			double y2 = milieu.getY();
 
+			// Construction des deux points symétriques
 			double xp = x2 + h * (y1 - y0) / entraxe;
 			double yp = y2 - h * (x1 - x0) / entraxe;
 			liste.add(new Point2D(new Vecteur2D(xp, yp)));
@@ -164,24 +168,6 @@ public class Cercle extends Forme {
 			double xq = x2 - h * (y1 - y0) / entraxe;
 			double yq = y2 + h * (x1 - x0) / entraxe;
 			liste.add(new Point2D(new Vecteur2D(xq, yq)));
-			/*
-			 * double x1 = obsPos.x; double y1 = obsPos.y; double coeff = (x0 - x1) / (y0 -
-			 * y1); double n = (Math.pow(cercle.rayon, 2) - this.rayon * this.rayon - x1 *
-			 * x1 + x0 * x0 - y1 * y1 + y0 * y0) / (2 * (y0 - y1)); double a = coeff * coeff
-			 * + 1; double b = 2 * y0 * coeff - 2 * n * coeff - 2 * x0; double c = x0 * x0 +
-			 * y0 * y0 * n * n - this.rayon * this.rayon - 2 * y0 * n;
-			 * 
-			 * double delta = Math.sqrt(b * b - 4 * a * c); double xp = (-b - delta) / (2 *
-			 * a); double yp = n - xp * coeff;
-			 * 
-			 * if (delta == 0) { liste.add(new Point2D(new Vecteur2D(xp, yp))); return
-			 * liste; }
-			 * 
-			 * double xq = (-b + delta) / (2 * a); double yq = n - xq * coeff;
-			 * 
-			 * liste.add(new Point2D(new Vecteur2D(xp, yp))); liste.add(new Point2D(new
-			 * Vecteur2D(xq, yq)));
-			 */
 
 			return liste;
 		}
@@ -196,6 +182,8 @@ public class Cercle extends Forme {
 	 * @throws NoIntersectionException
 	 */
 	List<Point2D> intersecte(Rectangle r) throws NoIntersectionException {
+		// On convertit le rectangle en polygone pour tester l'intersection entre les
+		// segment et le cercle
 		return this.intersecte(r.toPolygone());
 	}
 
@@ -209,6 +197,8 @@ public class Cercle extends Forme {
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
 		Set<Point2D> ensemble = new HashSet<Point2D>();
+		// On teste avec l'ensemble des segments du polygone pour utiliser
+		// l'intersection entre un cercle et un segment
 		for (Segment s : pol.getSegments()) {
 			try {
 				ensemble.addAll(s.intersecte(this));
@@ -233,7 +223,9 @@ public class Cercle extends Forme {
 	List<Point2D> intersecte(ArcDeCercle adc) throws NoIntersectionException {
 		try {
 			List<Point2D> liste = this.intersecte(new Cercle(adc.centre, adc.rayon));
+			// Vecteur unitaire horizontal pour tester l'angle
 			Vecteur2D x = new Vecteur2D(1, 0);
+			
 			Iterator<Point2D> iterator = liste.iterator();
 			// On verifie pour tous les points s'ils sont dans le bon intervalle d'angles.
 			Point2D p;
@@ -249,13 +241,8 @@ public class Cercle extends Forme {
 					iterator.remove();
 				}
 			}
-			/*
-			 * for (Point2D p : liste) { Vecteur2D test = adc.centre.getPositionRelative(p);
-			 * if (adc.ang1 <= adc.ang2) { if (test.angle(x) < adc.ang1 || test.angle(x) >
-			 * adc.ang2) { liste.remove(p); } } else { if (test.angle(x) < adc.ang1 &&
-			 * test.angle(x) > adc.ang2) { liste.remove(p); } } }
-			 */
-			if (liste.size() == 0) {
+			
+			if (liste.size() == 0) {	// On vérifie si la liste n'est pas vide
 				throw new NoIntersectionException(this,
 						"L'intersection entre le cercle et l'arc de cercle ne se fait pas " + "sur l'arc de cercle.");
 			} else {
