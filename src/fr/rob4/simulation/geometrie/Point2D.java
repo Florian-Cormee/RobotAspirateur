@@ -144,7 +144,7 @@ public class Point2D implements Cloneable {
 	 * 
 	 * @param alpha Angle de la rotation
 	 * @param p     Point autour duquel doit se faire la rotation
-	 * @return 		Résultat de la rotation du point
+	 * @return Résultat de la rotation du point
 	 */
 	public Point2D rotation(double alpha, Point2D p) {
 		Objects.requireNonNull(p, "Ne peut pas faire de rotation sans Point");
@@ -169,6 +169,7 @@ public class Point2D implements Cloneable {
 	 * Fait tourner le point de alpha autour de son origine.
 	 *
 	 * @param alpha Angle de la rotation.
+	 * @return Le point tourné de l'angle autour de son origine.
 	 */
 	public Point2D rotationOrigine(double alpha) {
 		Vecteur2D newPos = this.position.rotation(alpha);

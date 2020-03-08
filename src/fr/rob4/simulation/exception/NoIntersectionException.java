@@ -10,8 +10,6 @@ import fr.rob4.simulation.geometrie.Segment;
  * Cette classe permet de soulever une exception lorsque qu'aucune intersection
  * entre des formes est trouvé.
  *
- * @author Florentin BEROUJON & Forian CORMEE
- * @version 0.0.1
  * @see Forme
  * @see Segment
  *

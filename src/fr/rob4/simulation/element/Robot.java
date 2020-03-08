@@ -30,7 +30,7 @@ public class Robot extends Element implements IRobot {
      * Crée un robot
      * <p>
      * S'assure que les arguments, hormis la collection de capteurs, ne sont pas
-     * {@code null} et normalise le vecteur direction donné. <br/>
+     * {@code null} et normalise le vecteur direction donné. <br>
      * Une collection de capteur {@code null} crée une liste de capteurs vide
      *
      * @param forme      La forme

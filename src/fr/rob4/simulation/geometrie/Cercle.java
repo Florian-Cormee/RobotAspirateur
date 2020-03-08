@@ -33,7 +33,7 @@ public class Cercle extends Forme {
 	 * Crée un nouveau Cercle à partir de son centre et de son rayon.
 	 *
 	 * @param p Centre
-	 * @param d rayon
+	 * @param r rayon
 	 */
 	public Cercle(Point2D p, double r) {
 		super(p);
@@ -45,7 +45,7 @@ public class Cercle extends Forme {
 	 *
 	 * @param x Abscisse du centre.
 	 * @param y Ordonnée du centre.
-	 * @param d rayon
+	 * @param r rayon
 	 */
 	public Cercle(double x, double y, double r) {
 		super(x, y);

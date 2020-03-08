@@ -45,6 +45,8 @@ public abstract class Forme {
 	 *
 	 * @param f Forme avec laquelle il fut tester la superposition.
 	 * @return true si les formes sont superposées, false sinon.
+	 * @throws NoIntersectionException Quand on ne sait gérer la collision ce jeux
+	 *                                 de formes
 	 */
 	public abstract boolean collisionne(Forme f) throws NoIntersectionException;
 

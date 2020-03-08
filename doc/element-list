@@ -1,0 +1,10 @@
+fr.rob4.simulation
+fr.rob4.simulation.element
+fr.rob4.simulation.element.module
+fr.rob4.simulation.exception
+fr.rob4.simulation.geometrie
+fr.rob4.simulation.strategie
+fr.rob4.simulation.vue
+fr.rob4.simulation.vue.element
+fr.rob4.simulation.vue.element.module
+fr.rob4.simulation.vue.forme

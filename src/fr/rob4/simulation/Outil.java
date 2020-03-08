@@ -6,8 +6,6 @@ package fr.rob4.simulation;
 /**
  * Classe permettant de faire appelle à certaines méthodes mathématiques utiles.
  * 
- * @author Florentin BEROUJON & Florian CORMEE
- * @version 0.0.1
  *
  */
 public final class Outil {
