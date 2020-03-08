@@ -5,6 +5,7 @@ import fr.rob4.simulation.exception.NoIntersectionException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,51 +26,26 @@ public class Polygone extends Forme {
 
     // Attributs
     protected List<Point2D> points;
-
+    
     /**
-     * Crée un polygone à partir de son centre et d'une liste de Point2D
-     * représentant ses sommets.
-     *
-     * @param p  Centre
-     * @param cp Liste des sommets (Collection)
+     * Crée un polygone à partir d'une liste de Point2D représentant ses sommets.
+     * 
+     * @param cp Liste des points du polygone
      */
-    public Polygone(Point2D p, Collection<? extends Point2D> cp) {
-        super(p);
-        this.points = new ArrayList<>(cp);
-    }
-
-    /**
-     * Crée un polygone à partir des coordonnées de son centre et d'une liste de
-     * Point2D représentant ses sommets.
-     *
-     * @param x  Abscisse du centre.
-     * @param y  Ordonnée du centre.
-     * @param cp Liste des sommets (Collection)
-     */
-    public Polygone(double x, double y, Collection<? extends Point2D> cp) {
-        super(x, y);
-        this.points = new ArrayList<>(cp);
+    public Polygone(Collection<? extends Point2D> cp){
+    	super(Polygone.baricentre(cp));
+    	this.points = new ArrayList<>(cp);
     }
 
     @Override
     public boolean collisionne(Forme f) throws NoIntersectionException {
-        // On teste d'abord si les formes sont assez proches
-        try {
-            Rectangle dimension = f.getDimension();
-            Rectangle thisDimension = this.getDimension();
-            thisDimension.intersecte(dimension);
-        } catch (NoIntersectionException e) {
-            e.printStackTrace();
-            return false;
-        }
-
         if (f.getClass() == Segment.class) {
             Segment s = (Segment) f;
             try {
                 s.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -79,7 +55,7 @@ public class Polygone extends Forme {
                 c.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -89,7 +65,7 @@ public class Polygone extends Forme {
                 adc.intersecte(this);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -99,7 +75,7 @@ public class Polygone extends Forme {
                 this.intersecte(r);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -109,7 +85,7 @@ public class Polygone extends Forme {
                 this.intersecte(pol);
                 return true;
             } catch (NoIntersectionException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
                 return false;
             }
         }
@@ -147,8 +123,7 @@ public class Polygone extends Forme {
             Vecteur2D newPos = p.getPositionRelative(point).rotation(alpha).addition(p.position);
             newPoints.add(new Point2D(point.origine, newPos));
         }
-        Point2D clone = this.centre.clone();
-        return new Polygone(clone, newPoints);
+        return new Polygone(newPoints);
     }
 
     @Override
@@ -157,7 +132,7 @@ public class Polygone extends Forme {
         for (Point2D p : getPoints()) {
             newL.add(p.deplace(v));
         }
-        return new Polygone(getCentre().deplace(v), newL);
+        return new Polygone(newL);
     }
 
     /**
@@ -233,7 +208,7 @@ public class Polygone extends Forme {
      *
      * @throws NoIntersectionException
      */
-    List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
+	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
         List<Point2D> liste = new ArrayList<>();
         List<Point2D> listPtColl;
         for (Segment s : this.getSegments()) {
@@ -252,5 +227,21 @@ public class Polygone extends Forme {
         } else {
             throw new NoIntersectionException(this, "Pas d'intersection entre ce polygone et l'autre.");
         }
+    }
+    
+    private static Point2D baricentre(Collection<? extends Point2D> cPts) {
+    	int nb = cPts.size();
+    	double xb = 0;
+    	double yb = 0;
+    	
+    	Iterator<? extends Point2D> iterator = cPts.iterator();
+    	Point2D p;
+        while (iterator.hasNext()) {
+            p = iterator.next();
+            xb += p.getPositionAbsolue().getX();
+            yb += p.getPositionAbsolue().getY();
+        }
+        
+        return new Point2D(new Vecteur2D(xb/nb, yb/nb));
     }
 }
