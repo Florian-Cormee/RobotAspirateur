@@ -18,7 +18,7 @@ public final class Outil {
 	public static double normalize_angle(double a) {
 		while (a > Math.PI)
 			a -= 2 * Math.PI;
-		while (a < -Math.PI)
+		while (a <= -Math.PI)
 			a += 2 * Math.PI;
 		return a;
 	}
