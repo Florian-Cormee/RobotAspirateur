@@ -5,6 +5,7 @@ import fr.rob4.simulation.vue.SimulationPanel;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import java.util.Random;
 
 public final class Main {
     private Main() {
@@ -23,5 +24,11 @@ public final class Main {
         frame.setSize(250, 250);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        try {
+            s.lancer();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
