@@ -1,0 +1,1604 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2064</x>
+      <y>488</y>
+      <w>592</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>BasiqueElementFactory
+--
++ BasiqueElementFactory()
++ capteurContact(forme: Forme): IModule&lt;Boolean&gt;
++ capteurSalete(forme: Forme): IModule&lt;Boolean&gt;
++ obstacle(forme: Forme): ICollisionable
++ robot(forme: Forme, strategie: IStrategie, orientation: double, ecartRoues: double, modules: IModule&lt;?&gt;...): IRobot
++ tache(forme: Forme)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2048</x>
+      <y>368</y>
+      <w>592</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>/ElementFactory/
+--
+_+ getInstance(): ElementFactory_
+/+ capteurContact(forme: Forme): IModule&lt;Boolean&gt;/
+/+ capteurSalete(forme: Forme): IModule&lt;Boolean&gt;/
+/+ obstacle(forme: Forme): ICollisionable/
+/+ robot(forme: Forme, strategie: IStrategie, orientation: double, ecartRoues: double, modules: IModule&lt;?&gt;...): IRobot/
+/+ tache(forme: Forme)/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2064</x>
+      <y>448</y>
+      <w>24</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>880</x>
+      <y>656</y>
+      <w>240</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>/Element/
+--
+# forme: Forme
+--
++ Element(f: Forme)
++ rotation(angle: double, centre: Point2D): void
++ translation(deplacement: Vecteur2D): void
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1312</x>
+      <y>368</y>
+      <w>120</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/IElement/
+--
+/+ getForme() : Forme/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>816</x>
+      <y>1136</y>
+      <w>232</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>/Forme/
+--
+# centre : Point2D
+--
++ Forme(p: Point2D)
++ Forme(x: double , y: double)
++ rotation(alpha: double): Forme
+/+ getDimension(): Rectangle/
+/+ collisionne(f: Forme)/
+/+ rotation(alpha: double , p: Point2D): Forme/
+/+ deplace(v: Vecteur2D): Forme/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>976</x>
+      <y>728</y>
+      <w>32</w>
+      <h>424</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;510.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>456</y>
+      <w>296</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>/IActuallisable/
+--
+/+ actualise(simulation : Simulation): void/
+/+ actualise(simulation : Simulation, appeleur: Object): void/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1344</x>
+      <y>400</y>
+      <w>24</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1712</x>
+      <y>456</y>
+      <w>240</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>/ICollisionable/
+--
+/+ collisionne(element: ICollisionable): boolean/
+/+ gereCollision(element: ICollisionable): void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1384</x>
+      <y>400</y>
+      <w>368</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;440.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>872</x>
+      <y>456</y>
+      <w>248</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>/IDeplacable/
+--
+/+ rotation(angle: double, centre: Point2D): void/
+/+ translation(Vecteur2D deplacement): void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>992</x>
+      <y>400</y>
+      <w>352</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>420.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1960</x>
+      <y>456</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>/INettoyable/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1408</x>
+      <y>400</y>
+      <w>608</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;740.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1128</x>
+      <y>560</y>
+      <w>368</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>/IRobot/
+--
+/+ deplace(dG: double, dD: double): void/
+/+ getModules(): List&lt;IModule&lt;?&gt;&gt;/
+/+ &lt;T extends IModule&lt;?&gt;&gt; getModules(c: Class&lt;? extends T&gt;): List&lt;T&gt;/
+/+ getStrategie(): IStrategie/
+/+ isNettoie(): boolean/
+/+ setNettoie(etat: boolean): void/
+/+ getPosition(): Point2D/
+/+ getOrientation(): double/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1280</x>
+      <y>496</y>
+      <w>24</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1448</x>
+      <y>496</y>
+      <w>312</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>370.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1624</x>
+      <y>1808</y>
+      <w>256</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Obstacle
+--
++ Obstacle(forme: Forme)
++ gereCollision(element: ICollisionable) : boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1808</x>
+      <y>496</y>
+      <w>24</w>
+      <h>1328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1640.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1024</x>
+      <y>816</y>
+      <w>624</w>
+      <h>248</h>
+    </coordinates>
+    <panel_attributes>Robot
+--
+# modules: List&lt;IModule&lt;?&gt; &gt;
+# strategie: IStrategie
+# theta: double
+# ecartRoues: double
+# nettoie: boolean
+# dernierePos: Point2D
+# derniereTheta: double
+--
++ Robot(forme: Forme, modules: Collection&lt;? extends IModule&lt;?&gt;&gt;, strategie: IIStrategie, theta: double, ecartRoues: double)
++ actualise(simulation: Simulation): void
++ deplace(dG: double, dD: double): void
++ gereCollision(element: ICollisionable): void
++ getModules():  List&lt;IModule&lt;?&gt;&gt;
++ &lt;T extends IModule&lt;?&gt;&gt; getModules(c : Class&lt;? extends T&gt;) : List&lt;T&gt;
++ isNettoie(): boolean
++ rotation(angle: double, centre: Point2D): void
++ setNettoie(etat: boolean): void
++ translation(deplacement: Vecteur2D): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1192</x>
+      <y>680</y>
+      <w>24</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1048</x>
+      <y>728</y>
+      <w>24</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;110.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>584</x>
+      <y>760</y>
+      <w>456</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..n
+m2=1</panel_attributes>
+    <additional_attributes>550.0;80.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>512</x>
+      <y>736</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/IModule&lt;T&gt;/
+--
++getInfo(): T
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1584</x>
+      <y>1136</y>
+      <w>152</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/IStrategie/
+--
+/+ decide(robot: IRobot): void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1592</x>
+      <y>1056</y>
+      <w>32</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1312</x>
+      <y>1136</y>
+      <w>256</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>Point2D
+--
+# origine : Point2D
+# position : Vecteur2D
+--
++ Point2D(position: Vecteur2D)
++ Point2D(position: Vecteur2D, origine: Point2D)
++ getPositionRelative(p: Point2D) : Vecteur2D
++ getPositionAbsolue(): Vecteur2D
++ deplace(v: Vecteur2D): Point2D
++ rotationOrigine(alpha: double): Point2D
++ rotation(alpha: double , p: Point2D): Point2D</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1336</x>
+      <y>1056</y>
+      <w>32</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1936</x>
+      <y>1920</y>
+      <w>128</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Tache
+--
++ Tache(fomre: Forme)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1992</x>
+      <y>472</y>
+      <w>24</w>
+      <h>1464</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1810.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>992</x>
+      <y>496</y>
+      <w>24</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>648</x>
+      <y>944</y>
+      <w>304</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CapteurSalete
+--
+# nettoyables: Set&lt;INettoyable&gt;
+--
++ CapteurSalete(forme: Forme)
++ actualise(simulation : Simulation, appeleur: Object): void
++ getInfo(): Boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>912</x>
+      <y>728</y>
+      <w>24</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>768</y>
+      <w>120</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;240.0;130.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>632</x>
+      <y>848</y>
+      <w>304</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CapteurContact
+--
+# element: ICollisionable
+--
++ CapteurContact(forme: Forme)
++ actualise(simulation : Simulation, appeleur: Object): void
++ getInfo(): Boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>936</x>
+      <y>728</y>
+      <w>24</w>
+      <h>232</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>568</x>
+      <y>768</y>
+      <w>80</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0;80.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>544</x>
+      <y>496</y>
+      <w>360</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>430.0;10.0;10.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>568</x>
+      <y>496</y>
+      <w>592</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>720.0;10.0;10.0;300.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>2048</x>
+      <y>600</y>
+      <w>592</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>ElementDessinableFactory
+--
++ ElementDessinableFactory()
++ capteurContact(forme: Forme): IModule&lt;Boolean&gt;
++ capteurSalete(forme: Forme): IModule&lt;Boolean&gt;
++ obstacle(forme: Forme): ICollisionable
++ robot(forme: Forme, strategie: IStrategie, orientation: double, ecartRoues: double, modules: IModule&lt;?&gt;...): IRobot
++ tache(forme: Forme)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>2048</x>
+      <y>448</y>
+      <w>24</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>24</x>
+      <y>560</y>
+      <w>296</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/IDessinable/
+--
+/+ dessine(graphics2D: Graphics2D, echelle: double): void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>184</y>
+      <w>440</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/IDessinateur&lt;T&gt;/
+--
+/+ dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: T): void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>712</x>
+      <y>120</y>
+      <w>400</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>SimulationPanel
+--
+- simulation: Simulation
++ SimulationPanel(simulation: Simulation)
+- dessineElement(e: IElement, graphics2D: Graphics2D, echelle: double): void
+- echelle(): double
++ notifie(source: IObservable&lt;Simulation&gt;): void
++ void paint(g: Graphics)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>984</x>
+      <y>72</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>JPanel</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1016</x>
+      <y>88</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>768</x>
+      <y>56</y>
+      <w>208</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/IObservateur&lt;T&gt;/
+--
+/+ notifie(source: IObservable&lt;T&gt;): void/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>928</x>
+      <y>88</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>312</x>
+      <y>264</y>
+      <w>496</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>ArcDeCercleDessinateur
+--
++ ArcDeCercleDessinateur()
++ dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: ArcDeCercle): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>336</x>
+      <y>216</y>
+      <w>24</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>264</x>
+      <y>320</y>
+      <w>496</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>CercleDessinateur
+--
++ CercleDessinateur()
++ dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Cercle): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>376</y>
+      <w>496</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>FormeDessinateur
+--
++ FormeDessinateur()
++ dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Forme): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>0</y>
+      <w>240</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>GeometrieDessinateurFactory
+--
+_+ instance: GeometrieDessinateurFactory_
+--
+- GeometrieDessinateurFactory()
++ arcDeCercle(): IDessinateur&lt;ArcDeCercle&gt;
++ cercle(): IDessinateur&lt;Cercle&gt;
++ forme(): IDessinateur&lt;Forme&gt;
++ polygone(): IDessinateur&lt;Polygone&gt;
++ rectangle(): IDessinateur&lt;Rectangle&gt;
++ segment(): IDessinateur&lt;Segment&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>176</x>
+      <y>432</y>
+      <w>496</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>PolygonDessinateur
+--
++ PolygonDessinateur()
++ dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Polygone): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>488</y>
+      <w>496</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>SegmentDessinateur
+--
++ SegmentDessinateur()
++ dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Segment): void
+- versPositionEnPixels(p: Point2D, echelle: double): int[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>216</y>
+      <w>24</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>232</x>
+      <y>216</y>
+      <w>24</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>184</x>
+      <y>216</y>
+      <w>24</w>
+      <h>232</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>216</y>
+      <w>24</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;340.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>248</x>
+      <y>128</y>
+      <w>80</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;
+&lt;&lt;Instantie&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;70.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>120</x>
+      <y>840</y>
+      <w>304</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CapteurContactDessinable
+--
+- changementCouleur: LocalTime
+- derniereCouleur: Color
+--
++ CapteurContactDessinable(forme: Forme)
++ dessine(graphics2D: Graphics2D, echelle: double): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>416</x>
+      <y>848</y>
+      <w>232</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>270.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>120</x>
+      <y>592</y>
+      <w>24</w>
+      <h>264</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;310.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>96</x>
+      <y>928</y>
+      <w>304</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CapteurSaleteDessinable
+--
+- changementCouleur: LocalTime
+- derniereCouleur: Color
+--
++ CapteurSaleteDessinable(forme: Forme)
++ dessine(graphics2D: Graphics2D, echelle: double): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>392</x>
+      <y>968</y>
+      <w>272</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>320.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>96</x>
+      <y>592</y>
+      <w>24</w>
+      <h>352</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;420.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>632</y>
+      <w>304</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>CapteurDessinable&lt;T&gt;
+--
+- capteur: IModule&lt;T&gt;
+- plein: boolean
+--
++ CapteurDessinable(capteur: IModule&lt;T&gt;, plein: boolean)
+--
++ actualise(simulation: Simulation, appeleur: Object)
++ dessine(graphics2d: Graphics2D, echelle: double)
++ getForme(): Forme
++ getInfo(): T
++ rotation(angle: double, centre: Point2D): void
++ translation(deplacement: Vecteur2D): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>752</y>
+      <w>96</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>100.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>592</y>
+      <w>24</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>736</y>
+      <w>96</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>40</x>
+      <y>1832</y>
+      <w>296</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>ObstacleDessinable
+--
+- couleur: Color
+--
++ ObstacleDessinable(forme: Forme, couleur: Color)
++ dessine(graphics2D: Graphics2D, echelle: double): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>328</x>
+      <y>1824</y>
+      <w>1312</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>1620.0;10.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>48</x>
+      <y>592</y>
+      <w>24</w>
+      <h>1256</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1550.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>16</x>
+      <y>1920</y>
+      <w>296</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>TacheDessinable
+--
+- couleur: Color
+--
++ TacheDessinable(forme: Forme, couleur: Color)
++ dessine(graphics2D: Graphics2D, echelle: double): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>72</x>
+      <y>1016</y>
+      <w>344</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>RobotDessinable
+--
++ RobotDessinable(forme: Forme, couleur: Color)
++ dessine(graphics2D: Graphics2D, echelle: double): void
++ dessineDirection(graphics2D: Graphics2D, echelle: double): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>72</x>
+      <y>592</y>
+      <w>24</w>
+      <h>440</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;530.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>1024</y>
+      <w>632</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>770.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>304</x>
+      <y>1920</y>
+      <w>1648</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>2040.0;20.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>24</x>
+      <y>592</y>
+      <w>24</w>
+      <h>1344</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;1660.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1592</x>
+      <y>1368</y>
+      <w>160</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>StrategieChemin
+--
++ StrategieChemin()
++ decide(robot: IRobot): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1624</x>
+      <y>1200</y>
+      <w>160</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>StrategieAleatoire
+--
+- angleCible: double
+- distArr: double
+- kRot: double
+- etat: Etat
+--
++ StrategieAleatoire()
++ decide(robot: IRobot): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1608</x>
+      <y>1312</y>
+      <w>160</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>StrategieSuiveurMurs
+--
++ StrategieSuiveurMurs()
++ decide(robot: IRobot): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1624</x>
+      <y>1168</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1608</x>
+      <y>1168</y>
+      <w>24</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1592</x>
+      <y>1168</y>
+      <w>24</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1272</x>
+      <y>0</y>
+      <w>256</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>/IObservable&lt;T&gt;/
+--
+/+ ajouteObservateur(obs: IObservateur&lt;T&gt;): void/
+/+ estObserve(obs: IObservateur&lt;T&gt;): boolean/
+/+ retireObservateur(obs: IObservateur&lt;T&gt;): void/
+/+ notifierTous(): void/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1200</x>
+      <y>120</y>
+      <w>408</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>Simulation
+--
+- observateurs: List&lt;IObservateur&lt;Simulation&gt;&gt;
+# elements: ArrayList&lt;Element&gt;
+# bordures: ICollisionable
+--
++ Simulation(bordures: ICollisionable, elements: Collection&lt;? extends IElement&gt;)
+- actualise(): void
++ ajouteObservateur(obs: IObservateur&lt;Simulation&gt;): void
++ estObserve(obs: IObservateur&lt;Simulation&gt;): boolean
++ getBordures(): ICollisionable
++ getElements(): List&lt;IElement&gt;
++ &lt;T extends IElement&gt;getElements(c : Class&lt;? extends T&gt;) : List&lt;T&gt;
++ lnacer(): void
++ notifierTous(): void
++ retireObservateur(obs: IObservateur&lt;Simulation&gt;): void</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1392</x>
+      <y>72</y>
+      <w>24</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1104</x>
+      <y>160</y>
+      <w>112</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1384</x>
+      <y>304</y>
+      <w>40</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1..n
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1712</x>
+      <y>120</y>
+      <w>456</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>SimulationStdBuilder
+--
+- elements: List&lt;IElement&gt;
+- factory: ElementFactory
+- bordures: ICollisionable
+--
++ SimulationStdBuilder(factory: ElementFactory)
++ ajouteElement(element: IElement): void
++ ajouteObstacleCirculaire(x: double, y: double, diametre: double): void
++ ajouteRobotStandard(x: double, y: double, orientation: double, strategie: IStrategie): void
++ ajouteTacheCirculaire(x: double, y: double, diametre: double): void
++ build(): Simulation</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1040</x>
+      <y>1136</y>
+      <w>288</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>10.0;10.0;340.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>176</x>
+      <y>1384</y>
+      <w>304</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Rectangle
+--
+# largeur : double
+# hauteur : double
+--
++ Rectangle(p: Point2D , lar: double , h: double)
++ Rectangle(x: double , y: double , lar: double , h: double)
++ getDimension() : Rectangle
++ toPolygone() : Polygone
++ deplace(v: Vecteur2D): Rectangle
++ rotation(alpha: double): Polygone
++ rotation(alpha: double , p: Point2D): Polygone
++ collisionne(f: Forme): boolean
+~ intersecte(r: Rectangle): List&lt;Point2D&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>208</x>
+      <y>1256</y>
+      <w>640</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>780.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>488</x>
+      <y>1384</y>
+      <w>248</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>Cercle
+--
+# rayon : double
+--
++ Cercle(p: Point2D , r: double)
++ Cercle(x: double , y: double , r: double)
++ getDimension(): Rectangle
++ deplace(v: Vecteur2D): Cercle
++ rotation(alpha : double) : Cercle
++ rotation(alpha : double , p : Point2D) : Cercle
++ collisionne(f: Forme): boolean
+~ intersecte(cercle: Cercle): List&lt;Point2D&gt;
+~ intersecte(adc: ArcDeCercle): List&lt;Point2D&gt;
+~ intersecte(r: Rectangle): List&lt;Point2D&gt;
+~ intersecte(pol: Polygone): List&lt;Point2D&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>608</x>
+      <y>1256</y>
+      <w>304</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>360.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>416</x>
+      <y>1600</y>
+      <w>368</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>ArcDeCercle
+--
+# ang1 : double
+# ang2 : double
+--
++ ArcDeCercle(p: Point2D , r: double , a1: double , a2: double)
++ ArcDeCercle(x: double , y: double , d: double , a1: double , a2: double)
++ getOuverture(): double
++ getOrientation(): double
++ deplace(v: Vecteur2D): ArcDeCercle
++ rotation(alpha: double): ArcDeCercle
++ rotation(alpha: double , p: Point2D): ArcDeCercle
++ collisionne(f: Forme): boolean
+~ intersecte(adc: ArcDeCercle): List&lt;Point2D&gt;
+~ intersecte(r: Rectangle): List&lt;Point2D&gt;
+~ intersecte(pol: Polygone): List&lt;Point2D&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>592</x>
+      <y>1560</y>
+      <w>24</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>744</x>
+      <y>1384</y>
+      <w>304</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>Polygone
+--
+# points: List&lt;Point2D&gt;
+--
++ Polygone(cp: Collection&lt;? extends Point2D&gt;)
++ getDimension(): Rectangle
++ getSegments(): List&lt;Segment&gt;
++ deplace(v: Vecteur2D): Polygone
++ rotation(alpha: double): Polygone
++ rotation(alpha: double , p: Point2D): Polygone
++ collisionne(f: Forme): boolean
+~ intersecte(r: Rectangle): List&lt;Point2D&gt;
+~ intersecte(pol: Polygone): List&lt;Point2D&gt;
+- baricentre(cPts: Collection&lt;? extends Point2D&gt;): Point2D</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>1256</y>
+      <w>104</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>110.0;10.0;10.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>1384</y>
+      <w>248</w>
+      <h>208</h>
+    </coordinates>
+    <panel_attributes>Segment
+--
+# a: Point2D
+# b: Point2D
+--
++ Segment(a: Point2D, b: Point2D)
++ getDimension(): Rectangle
++ deplace(v: Vecteur2D): Segment
++ norme(): double
++ rotation(alpha: double): Segment
++ rotation(alpha: double , p: Point2D): Segment
++ collisionne(f: Forme): boolean
+~ intersecte(seg: Segment): List&lt;Point2D&gt;
+~ intersecte(c: Cercle): List&lt;Point2D&gt;
+~ intersecte(adc: ArcDeCercle): List&lt;Point2D&gt;
+~ intersecte(r: Rectangle): List&lt;Point2D&gt;
+~ intersecte(pol: Polygone): List&lt;Point2D&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1312</x>
+      <y>1352</y>
+      <w>256</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>Vecteur2D
+--
+# x : double
+# y : double
+--
++ Vecteur2D()
++ Vecteur2D(x: double , y: double)
++ clone(): Vecteur2D
++ addition(v: Vecteur2D): Vecteur2D
++ angle(v: Vecteur2D): double
++ scalaire(v: Vecteur2D) : double
++ norme() : double
++ equals(v: Vecteur2D , epsilon: double): boolean
++ normalise() : Vecteur2D
++ produit(a: double) : Vecteur2D
++ produitCroix(v: Vecteur2D): double
++ rotation(angle: double) : Vecteur2D
++ soustraction(v: Vecteur2D) : Vecteur2D</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1024</x>
+      <y>1256</y>
+      <w>64</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;160.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1432</x>
+      <y>1272</y>
+      <w>40</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..1</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1216</x>
+      <y>1232</y>
+      <w>112</w>
+      <h>168</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..n
+m2=1</panel_attributes>
+    <additional_attributes>10.0;190.0;10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1600</x>
+      <y>152</y>
+      <w>128</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;Construit&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1424</x>
+      <y>360</y>
+      <w>640</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;Instantie les implémentations&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;780.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1072</x>
+      <y>728</y>
+      <w>752</w>
+      <h>1096</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0;920.0;60.0;920.0;1350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1096</x>
+      <y>728</y>
+      <w>912</w>
+      <h>1208</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;1120.0;50.0;1120.0;1490.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>664</x>
+      <y>1040</y>
+      <w>304</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>CapteurLaser
+--
+# distance: double
+--
++ CapteurLaser(forme: Forme)
++ actualise(simulation : Simulation, appeleur: Object): void
++ getInfo(): Double</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>768</y>
+      <w>160</w>
+      <h>296</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;350.0;180.0;350.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>952</x>
+      <y>728</y>
+      <w>24</w>
+      <h>328</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;390.0</additional_attributes>
+  </element>
+</diagram>
