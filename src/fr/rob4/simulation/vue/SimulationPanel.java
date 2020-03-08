@@ -1,5 +1,7 @@
 package fr.rob4.simulation.vue;
 
+import fr.rob4.simulation.IObservable;
+import fr.rob4.simulation.IObservateur;
 import fr.rob4.simulation.Simulation;
 import fr.rob4.simulation.element.ICollisionable;
 import fr.rob4.simulation.element.IElement;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("serial")
-public class SimulationPanel extends JPanel {
+public class SimulationPanel extends JPanel implements IObservateur<Simulation> {
     private final Simulation simulation;
 
     /**
@@ -43,6 +45,14 @@ public class SimulationPanel extends JPanel {
         }
         SimulationPanel that = (SimulationPanel) o;
         return this.simulation.equals(that.simulation);
+    }
+
+    @Override
+    public void notifie(IObservable<Simulation> source) {
+        if (this.simulation == source) {
+            // Si la source est bien l'instance dessinée, on mets à jour la fenètre
+            this.repaint();
+        }
     }
 
     @Override
