@@ -11,12 +11,13 @@ import fr.rob4.simulation.vue.forme.GeometrieDessinateurFactory;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.time.Duration;
 import java.util.Objects;
 
 public class CapteurDessinable<T> implements IModule<T>, IDessinable {
     public static final Color COULEUR_DESACTIVE = new Color(0, 50, 255, 100);
     public static final Color COULEUR_ACTIVE = new Color(0, 255, 50, 100);
-
+    public static final Duration DUREE_CHANGEMENT = Duration.ofMillis(500);
     private IModule<T> capteur;
     private boolean plein;
 

@@ -88,8 +88,8 @@ public class SimulationPanel extends JPanel implements IObservateur<Simulation> 
         Forme forme = bordures.getForme();
         Rectangle r = forme.getDimension();
         // Calcule l'échelle en p/mètre sur les 2 axes
-        double echelleH = (d.getHeight() + 5) / r.getHauteur();
-        double echelleV = (d.getWidth() + 5) / r.getLargeur();
+        double echelleH = (d.getHeight() - 5) / r.getHauteur();
+        double echelleV = (d.getWidth() - 5) / r.getLargeur();
         // Retourne la plus petite des deux
         return Math.min(echelleH, echelleV);
     }
