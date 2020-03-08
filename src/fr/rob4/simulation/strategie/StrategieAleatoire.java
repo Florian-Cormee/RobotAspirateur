@@ -6,6 +6,7 @@ import fr.rob4.simulation.element.Robot;
 import fr.rob4.simulation.element.module.CapteurContact;
 
 import java.util.List;
+import java.util.Objects;
 
 public class StrategieAleatoire implements IStrategie {
     private double angleCible;
@@ -74,10 +75,42 @@ public class StrategieAleatoire implements IStrategie {
         return this.etat;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.angleCible, this.distArr, this.kRot, this.etat);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        StrategieAleatoire that = (StrategieAleatoire) o;
+        return Double.compare(that.angleCible, this.angleCible) == 0 && Double.compare(that.distArr, this.distArr) ==
+                                                                        0 && Double.compare(that.kRot, this.kRot) ==
+                                                                             0 && this.etat == that.etat;
+    }
+
+    @Override
+    public String toString() {
+        return "StrategieAleatoire[" +
+               "angleCible=" +
+               this.angleCible +
+               ", distArr=" +
+               this.distArr +
+               ", kRot=" +
+               this.kRot +
+               ", etat=" +
+               this.etat +
+               ']';
+    }
+
     public enum Etats {
         TOURNE,
         AVANCE,
         RECUL
     }
-
 }

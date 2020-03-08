@@ -35,6 +35,79 @@ public class Simulation {
     }
 
     /**
+     * Obtient les bordures
+     *
+     * @return Les bordures
+     */
+    public ICollisionable getBordures() { return this.bordures;}
+
+    /**
+     * Obtient une vue non modifiable de la liste des éléments
+     *
+     * @return Une vue non modifiable de la liste des éléments
+     */
+    public List<IElement> getElements() {
+        return Collections.unmodifiableList(this.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.elements, this.bordures);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        Simulation that = (Simulation) o;
+        return this.elements.equals(that.elements) && this.bordures.equals(that.bordures);
+    }
+
+    @Override
+    public String toString() {
+        return "Simulation{" + "elements=" + this.elements + ", bordures=" + this.bordures + '}';
+    }
+
+    /**
+     * Lance la simulation
+     * <p>
+     * La simulation s'actualise à une période {@link Simulation#T} (le thread est mis en sommeil).
+     * La méthode se termine quand il n'y plus de taches à nettoyer.
+     *
+     * @throws InterruptedException Quand {@link Thread#sleep(long)} lève une exception
+     * @see Thread#sleep(long)
+     */
+    public void lancer() throws InterruptedException {
+        while (!this.getElements(INettoyable.class).isEmpty()) {
+            this.actualise();
+            Thread.sleep((long) (T * 1e3));
+        }
+    }
+
+    /**
+     * Obtient tous les éléments d'un type particulier
+     *
+     * @param c   La classe du type demandé
+     * @param <T> Le type demandé
+     *
+     * @return Une liste contenant tous les éléments du type demandé (vide si il n'y en a aucun)
+     */
+    public <T extends IElement> List<T> getElements(Class<? extends T> c) {
+        List<T> list = new ArrayList<>();
+        for (IElement element : this.elements) {
+            if (c.isInstance(element)) {
+                T elementCast = c.cast(element);
+                list.add(elementCast);
+            }
+        }
+        return list;
+    }
+
+    /**
      * Actualise la simulation
      * <p>
      * L'actualisation est réalisée dans cet ordre:
@@ -87,62 +160,5 @@ public class Simulation {
                 }
             }
         }
-    }
-
-    /**
-     * Obtient tous les éléments d'un type particulier
-     *
-     * @param c   La classe du type demandé
-     * @param <T> Le type demandé
-     *
-     * @return Une liste contenant tous les éléments du type demandé (vide si il n'y en a aucun)
-     */
-    public <T extends IElement> List<T> getElements(Class<? extends T> c) {
-        List<T> list = new ArrayList<>();
-        for (IElement element : this.elements) {
-            if (c.isInstance(element)) {
-                T elementCast = c.cast(element);
-                list.add(elementCast);
-            }
-        }
-        return list;
-    }
-
-    /**
-     * Obtient les bordures
-     *
-     * @return Les bordures
-     */
-    public ICollisionable getBordures() { return this.bordures;}
-
-    /**
-     * Obtient une vue non modifiable de la liste des éléments
-     *
-     * @return Une vue non modifiable de la liste des éléments
-     */
-    public List<IElement> getElements() {
-        return Collections.unmodifiableList(this.elements);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.elements, this.bordures);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || this.getClass() != o.getClass()) {
-            return false;
-        }
-        Simulation that = (Simulation) o;
-        return this.elements.equals(that.elements) && this.bordures.equals(that.bordures);
-    }
-
-    @Override
-    public String toString() {
-        return "Simulation{" + "elements=" + this.elements + ", bordures=" + this.bordures + '}';
     }
 }
