@@ -7,9 +7,11 @@ import fr.rob4.simulation.Outil;
 import fr.rob4.simulation.exception.NoIntersectionException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Cette classe représente un Cercle paramétré par son centre et son rayon.
@@ -136,7 +138,7 @@ public class Cercle extends Forme {
 		// if (this.centre.getPositionRelative(cercle.centre).norme() <= this.rayon +
 		// cercle.rayon) {
 		double entraxe = centre.getPositionRelative(cercle.centre).norme();
-		if (entraxe > rayon + cercle.rayon || entraxe < Math.abs(rayon - cercle.rayon) || entraxe == 0) {
+		if (entraxe >= rayon + cercle.rayon || entraxe < Math.abs(rayon - cercle.rayon) || entraxe == 0) {
 			throw new NoIntersectionException(this, "Pas d'intersection entre les cercles");
 		} else {
 			List<Point2D> liste = new ArrayList<Point2D>();
@@ -150,14 +152,15 @@ public class Cercle extends Forme {
 			double y0 = this.centre.getPositionAbsolue().getY();
 			double x1 = cercle.centre.getPositionAbsolue().getX();
 			double y1 = cercle.centre.getPositionAbsolue().getY();
-			Vecteur2D milieu = centre.getPositionAbsolue().addition(centre.getPositionRelative(cercle.centre).normalise().produit(a));//cercle.centre.getPositionAbsolue();
+			Vecteur2D milieu = centre.getPositionAbsolue()
+					.addition(centre.getPositionRelative(cercle.centre).normalise().produit(a));// cercle.centre.getPositionAbsolue();
 			double x2 = milieu.getX();
 			double y2 = milieu.getY();
-			
+
 			double xp = x2 + h * (y1 - y0) / entraxe;
 			double yp = y2 - h * (x1 - x0) / entraxe;
 			liste.add(new Point2D(new Vecteur2D(xp, yp)));
-			
+
 			double xq = x2 - h * (y1 - y0) / entraxe;
 			double yq = y2 + h * (x1 - x0) / entraxe;
 			liste.add(new Point2D(new Vecteur2D(xq, yq)));
@@ -205,18 +208,18 @@ public class Cercle extends Forme {
 	 * @throws NoIntersectionException
 	 */
 	List<Point2D> intersecte(Polygone pol) throws NoIntersectionException {
-		List<Point2D> liste = new ArrayList<Point2D>();
+		Set<Point2D> ensemble = new HashSet<Point2D>();
 		for (Segment s : pol.getSegments()) {
 			try {
-				liste.addAll(s.intersecte(this));
+				ensemble.addAll(s.intersecte(this));
 			} catch (NoIntersectionException e) {
 				continue;
 			}
 		}
-		if (liste.size() == 0) {
+		if (ensemble.size() == 0) {
 			throw new NoIntersectionException(this, "Pas d'intersection entre le cercle et le rectangle");
 		}
-		return liste;
+		return new ArrayList<Point2D>(ensemble);
 	}
 
 	/**
@@ -273,15 +276,6 @@ public class Cercle extends Forme {
 		}
 		Cercle cercle = (Cercle) o;
 		return Objects.equals(this.centre, cercle.centre) && (this.rayon == cercle.rayon);
-	}
-
-	@Override
-	public Cercle clone() {
-		try {
-			return (Cercle) super.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;
-		}
 	}
 
 	@Override

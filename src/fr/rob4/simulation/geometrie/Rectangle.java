@@ -125,21 +125,6 @@ public class Rectangle extends Forme {
 			e.printStackTrace();
 			throw new NoIntersectionException("Pas d'intersection entre ces deux rectangles.", e, this);
 		}
-		/*
-		 * double dw1 = largeur/2; double dh1 = hauteur/2; double dw2 =
-		 * r.getLargeur()/2; double dh2 = r.getHauteur()/2;
-		 * 
-		 * Vecteur2D posR = centre.getPositionRelative(r.getCentre()); if( posR.getX() <
-		 * (dw1+dw2) && posR.getY() < (dh1+dh2)) { List<Point2D> liste = new
-		 * ArrayList<Point2D>(); Vecteur2D dy = posR.getY()>=0 ? new Vecteur2D(0, -dh2)
-		 * : new Vecteur2D(0, dh2); Vecteur2D dx = posR.getX()>=0 ? new Vecteur2D(-dw2,
-		 * 0) : new Vecteur2D(dw2, 0); liste.add(new
-		 * Point2D(centre.getPositionAbsolue().addition(posR).addition(dy)));
-		 * liste.add(new
-		 * Point2D(centre.getPositionAbsolue().addition(posR).addition(dx))); return
-		 * liste; }else { throw new NoIntersectionException(this,
-		 * "Pas d'intersection entre ces deux rectangles."); }
-		 */
 	}
 
 	@Override
@@ -158,14 +143,25 @@ public class Rectangle extends Forme {
 		return new Rectangle(getCentre().deplace(v), largeur, hauteur);
 	}
 
+	/**
+	 * Obtient l'equivalent du rectangle en polygone.
+	 * <p>
+	 * Note: Ne modifie pas l'instance.
+	 * 
+	 * @return Un Polygone avec les mêmes caractéristiques que le rectangle d'origine.
+	 */
 	public Polygone toPolygone() {
 		List<Point2D> pointsRect = new ArrayList<Point2D>();
 		double lon2 = this.largeur / 2;
 		double lar2 = this.hauteur / 2;
-		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
+		/*pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, -lar2))));
 		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(-lon2, lar2))));
 		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, lar2))));
-		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));
+		pointsRect.add(new Point2D(this.centre.getPositionAbsolue().addition(new Vecteur2D(lon2, -lar2))));*/
+		pointsRect.add(this.centre.deplace(new Vecteur2D(-lon2, -lar2)));
+		pointsRect.add(this.centre.deplace(new Vecteur2D(-lon2, lar2)));
+		pointsRect.add(this.centre.deplace(new Vecteur2D(lon2, lar2)));
+		pointsRect.add(this.centre.deplace(new Vecteur2D(lon2, -lar2)));
 		return new Polygone(pointsRect);
 	}
 

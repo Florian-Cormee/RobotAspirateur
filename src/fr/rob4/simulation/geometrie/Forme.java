@@ -18,7 +18,7 @@ import fr.rob4.simulation.exception.NoIntersectionException;
  * @see Rectangle
  * @see Polygone
  */
-public abstract class Forme {
+public abstract class Forme{
 
     // Attribut
     protected Point2D centre;
