@@ -7,7 +7,6 @@ public interface IActuallisable extends IElement {
      * Actualise l'éléments
      * <p>
      * L'actualisation a toujours lieu avant la gestion des collisions.
-     * </p>
      *
      * @param simulation La simulation qui demandant l'actualisation
      */
@@ -19,7 +18,6 @@ public interface IActuallisable extends IElement {
      * Actualise l'éléments
      * <p>
      * L'actualisation a toujours lieu avant la gestion des collisions.
-     * </p>
      *
      * @param simulation La simulation qui demandant l'actualisation
      * @param appeleur L'Objet demandant la mise à jour

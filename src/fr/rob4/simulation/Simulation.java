@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public class Simulation {
+public class Simulation implements IObservable<Simulation> {
     /** Période d'échantillonage (en secondes) */
     public static final double T = 1e-2;
-
+    private final List<IObservateur<Simulation>> observateurs;
     protected List<IElement> elements;
     protected ICollisionable bordures;
 
@@ -31,7 +31,100 @@ public class Simulation {
     public Simulation(ICollisionable bordures, Collection<? extends IElement> elements) {
         this.bordures = Objects.requireNonNull(bordures);
         this.elements = new ArrayList<>(elements);
+        this.observateurs = new ArrayList<>();
         this.elements.add(bordures);
+    }
+
+    @Override
+    public void ajouteObservateur(IObservateur<Simulation> obs) {
+        Objects.requireNonNull(obs);
+        this.observateurs.add(obs);
+    }
+
+    @Override
+    public boolean estObserve(IObservateur<Simulation> obs) {
+        return this.observateurs.contains(obs);
+    }
+
+    @Override
+    public void retireObservateur(IObservateur<Simulation> obs) {
+        this.observateurs.remove(obs);
+    }
+
+    /**
+     * Obtient les bordures
+     *
+     * @return Les bordures
+     */
+    public ICollisionable getBordures() { return this.bordures;}
+
+    /**
+     * Obtient une vue non modifiable de la liste des éléments
+     *
+     * @return Une vue non modifiable de la liste des éléments
+     */
+    public List<IElement> getElements() {
+        return Collections.unmodifiableList(this.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.elements, this.bordures);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+        Simulation that = (Simulation) o;
+        return this.elements.equals(that.elements) && this.bordures.equals(that.bordures);
+    }
+
+    @Override
+    public String toString() {
+        return "Simulation[" + "elements=" + this.elements + ", bordures=" + this.bordures + ']';
+    }
+
+    /**
+     * Lance la simulation
+     * <p>
+     * La simulation s'actualise à une période {@link Simulation#T} (le thread est mis en sommeil).
+     * La méthode se termine quand il n'y plus de taches à nettoyer. Les {@link IObservateur}s sont notifiés après
+     * chaque actualisation.
+     *
+     * @throws InterruptedException Quand {@link Thread#sleep(long)} lève une exception
+     * @see Thread#sleep(long)
+     */
+    public void lancer() throws InterruptedException {
+        while (!this.getElements(INettoyable.class).isEmpty()) {
+            this.actualise();
+            this.notifierTous();
+            Thread.sleep((long) (T * 1e3));
+        }
+    }
+
+    /**
+     * Obtient tous les éléments d'un type particulier
+     *
+     * @param c   La classe du type demandé
+     * @param <T> Le type demandé
+     *
+     * @return Une liste contenant tous les éléments du type demandé (vide si il n'y en a aucun)
+     */
+    public <T extends IElement> List<T> getElements(Class<? extends T> c) {
+        List<T> list = new ArrayList<>();
+        for (IElement element : this.elements) {
+            if (c.isInstance(element)) {
+                // On stock les éléments du bon type
+                T elementCast = c.cast(element);
+                list.add(elementCast);
+            }
+        }
+        return list;
     }
 
     /**
@@ -39,8 +132,8 @@ public class Simulation {
      * <p>
      * L'actualisation est réalisée dans cet ordre:
      *     <ol>
-     *         <li>Gestion des collisions</li>
      *         <li>Actualisation des éléments</li>
+     *         <li>Gestion des collisions</li>
      *         <li>Nettoyage des tâches par les robots</li>
      *     </ol>
      * </p>
@@ -89,60 +182,10 @@ public class Simulation {
         }
     }
 
-    /**
-     * Obtient tous les éléments d'un type particulier
-     *
-     * @param c   La classe du type demandé
-     * @param <T> Le type demandé
-     *
-     * @return Une liste contenant tous les éléments du type demandé (vide si il n'y en a aucun)
-     */
-    public <T extends IElement> List<T> getElements(Class<? extends T> c) {
-        List<T> list = new ArrayList<>();
-        for (IElement element : this.elements) {
-            if (c.isInstance(element)) {
-                T elementCast = c.cast(element);
-                list.add(elementCast);
-            }
-        }
-        return list;
-    }
-
-    /**
-     * Obtient les bordures
-     *
-     * @return Les bordures
-     */
-    public ICollisionable getBordures() { return this.bordures;}
-
-    /**
-     * Obtient une vue non modifiable de la liste des éléments
-     *
-     * @return Une vue non modifiable de la liste des éléments
-     */
-    public List<IElement> getElements() {
-        return Collections.unmodifiableList(this.elements);
-    }
-
     @Override
-    public int hashCode() {
-        return Objects.hash(this.elements, this.bordures);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
+    public void notifierTous() {
+        for (IObservateur<Simulation> obs : this.observateurs) {
+            obs.notifie(this);
         }
-        if (o == null || this.getClass() != o.getClass()) {
-            return false;
-        }
-        Simulation that = (Simulation) o;
-        return this.elements.equals(that.elements) && this.bordures.equals(that.bordures);
-    }
-
-    @Override
-    public String toString() {
-        return "Simulation{" + "elements=" + this.elements + ", bordures=" + this.bordures + '}';
     }
 }

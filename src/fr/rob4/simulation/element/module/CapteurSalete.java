@@ -25,6 +25,13 @@ public class CapteurSalete extends Element implements IModule<Boolean> {
         this.nettoyables = new HashSet<>();
     }
 
+    /**
+     * Actualise le capteur de saletés
+     *
+     * @param simulation La simulation qui demandant l'actualisation
+     * @param @param     appeleur   L'Objet demandant la mise à jour (cet objet est alors ignoré dans la recherche de
+     *                   taches)
+     */
     @Override
     public void actualise(Simulation simulation, Object appeleur) {
         List<INettoyable> nettoyables = simulation.getElements(INettoyable.class);

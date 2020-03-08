@@ -31,6 +31,8 @@ public class SimulationStdBuilder {
 
     /**
      * Crée un builder de simulation selon le cahier des charges
+     *
+     * @param factory Factory à utliser pour créer les éléments
      */
     public SimulationStdBuilder(ElementFactory factory) {
         this.factory = Objects.requireNonNull(factory);
@@ -50,21 +52,32 @@ public class SimulationStdBuilder {
         if (this.estHorsZone(x, y, diametre, diametre)) {
             throw new IllegalArgumentException("Les coordonnées font sortir l'obstacle de la simulation");
         }
-        diametre = Math.abs(diametre);
-        if (diametre > DIAMETRE_ROBOT_STD) {
-            throw new IllegalArgumentException("La tache doit être plus petite que le robot");
-        }
-        // Crée la tache
+        // Crée l'obstacle
         Cercle forme = new Cercle(x, y, diametre / 2);
         ICollisionable tache = this.factory.obstacle(forme);
         this.ajouteElement(tache);
     }
 
+    /**
+     * Test qu'un élément soit dans la zone de simulation
+     *
+     * @param x       L'absisse de l'élément
+     * @param y       L'ordonné de l'élément
+     * @param largeur La largeur de l'élément
+     * @param hauteur La hauteur de l'élément
+     *
+     * @return <code>true</code> si l'élément est hors de la zone de simulation sinon <code>false</code>
+     */
     private boolean estHorsZone(double x, double y, double largeur, double hauteur) {
         return (Math.abs(x) > (LARGEUR_PIECE - largeur) / 2) || (Math.abs(y) > (HAUTEUR_PIECE - hauteur) / 2);
     }
 
-    private void ajouteElement(IElement element) {
+    /**
+     * Ajoute un élément à la simulation
+     *
+     * @param element L'élément à ajouter
+     */
+    public void ajouteElement(IElement element) {
         Objects.requireNonNull(element);
         this.elements.add(element);
     }
@@ -105,7 +118,7 @@ public class SimulationStdBuilder {
         IModule<Boolean> capteurSalete = this.factory.capteurSalete(formeCapteurSalete);
         // Création de la zone de détection du capteur de contact central
         Forme formeCapteurContact = new ArcDeCercle(centre,
-                                                    DIAMETRE_ROBOT_STD / 2,
+                                                    DIAMETRE_ROBOT_STD / 2 + 0.01,
                                                     -OUVERTURE_CAPTEUR_CONTACT_STD / 2,
                                                     +OUVERTURE_CAPTEUR_CONTACT_STD / 2);
         // Création des capteurs de contact
@@ -118,15 +131,33 @@ public class SimulationStdBuilder {
         return new IModule<?>[]{capteurSalete, capteurContactG, capteurContactC, capteurContactD};
     }
 
+    /**
+     * Ajoute une tache circulaire
+     *
+     * @param x        L'absisse de la tache (en m)
+     * @param y        L'ordonnée de la tache (en m)
+     * @param diametre Le diamètre de la tache (en m)
+     */
     public void ajouteTacheCirculaire(double x, double y, double diametre) {
+        // Test les arguments
         if (this.estHorsZone(x, y, diametre, diametre)) {
             throw new IllegalArgumentException("Les coordonnées font sortir la tache de la simulation");
         }
+        diametre = Math.abs(diametre);
+        if (diametre > DIAMETRE_ROBOT_STD) {
+            throw new IllegalArgumentException("La tache doit être plus petite que le robot");
+        }
+        // Crée la tache
         Cercle forme = new Cercle(x, y, diametre / 2);
         INettoyable tache = this.factory.tache(forme);
         this.ajouteElement(tache);
     }
 
+    /**
+     * Construit la simulation
+     *
+     * @return La simulation construite
+     */
     public Simulation build() {
         return new Simulation(this.bordures, this.elements);
     }
