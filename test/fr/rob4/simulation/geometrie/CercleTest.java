@@ -96,7 +96,6 @@ class CercleTest {
 		Cercle c4 = new Cercle(1, 0, 2);
 		try {
 			List<Point2D> l = c3.intersecte(c4);
-			System.out.println(l);
 			Segment s = new Segment(new Point2D(new Vecteur2D(0, 2)), new Point2D(new Vecteur2D(0, -2)));
 			List<Point2D> listeTest = s.intersecte(c3);
 			assertEquals(2, l.size());
@@ -144,14 +143,15 @@ class CercleTest {
 		Cercle c = new Cercle(0, 0, 1);
 		ArcDeCercle adc = new ArcDeCercle(2, 0, 1, 2 * Math.PI / 3, -2 * Math.PI / 3);
 
+		// Arc de cercle tangent
 		try {
 			c.intersecte(adc);
 			fail();
 		} catch (NoIntersectionException e) {
 		}
 
-		ArcDeCercle adc2 = adc.deplace(new Vecteur2D(-0.5, 0));
-		adc2.setOrientation(0);
+		// Arc de cercle orienté du mauvais coté
+		ArcDeCercle adc2 = new ArcDeCercle(1.5, 0, 1, -Math.PI / 3, Math.PI / 3);
 		try {
 			c.intersecte(adc2);
 			fail();
