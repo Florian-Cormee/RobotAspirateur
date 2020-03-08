@@ -1,6 +1,7 @@
 @startuml "Diagramme de classe"
 
 skinparam linetype ortho
+'skinparam classAttributeIconSize 0
 
 ' package "geometrie" {
     abstract class Forme {
@@ -116,66 +117,96 @@ skinparam linetype ortho
 ' }
 
 ' package "element" {
-    interface IElement {
-        {abstract} + getForme() : Forme
+    class BasiqueElementFactory{
+        + capteurContact(forme: Forme): IModule<Boolean>
+        + capteurSalete(forme: Forme): IModule<Boolean>
+        + obstacle(forme: Forme): ICollisionable
+        + robot(forme: Forme, strategie: IStrategie, orientation: double, ecartRoues: double, modules: IModule<?>...): IRobot
+        + tache(forme: Forme)
     }
-    IElement ..|> IActuallisable
-
-    interface ICollisionable {
-        {abstract} + gereCollision(element : IElement) : boolean
-    }
-    ICollisionable ..|> IElement
-
-    interface INettoyable
-    INettoyable ..|> IElement
+    BasiqueElementFactory -|> ElementFactory
 
     abstract class Element {
-        #forme : Forme
-
-        + Element(f : Forme)
-
-        + getForme() : Forme
+        # forme: Forme
+        + Element(f: Forme)
+        + rotation(angle: double, centre: Point2D): void
+        + translation(deplacement: Vecteur2D): void
     }
     Element ..|> IElement
     Element "1" *-- "1" Forme
 
-    class Obstacle {
-        + Obstacle(f : Forme)
+    interface IActuallisable {
+        {abstract} + actualise(simulation : Simulation): void
+        {abstract} + actualise(simulation : Simulation, appeleur: Object): void
+    }
+    IActuallisable ..|> IElement
 
-        + gereCollision(element : IElement) : boolean
-        + actualise(simulation : Simulation) : boolean
+    interface ICollisionable {
+        {abstract}+ collisionne(element: ICollisionable): boolean
+        {abstract}+ gereCollision(element: ICollisionable): void
+    }
+    ICollisionable ..|> IElement
+
+    interface IDeplacable {
+        {abstract}+ rotation(angle: double, centre: Point2D): void
+        {abstract}+ translation(Vecteur2D deplacement): void
+    }
+    IDeplacable ..|> IElement
+
+    interface IElement {
+        {abstract} + getForme() : Forme
+    }
+
+    interface INettoyable
+    INettoyable ..|> IElement
+
+    interface IRobot {
+        {abstract}+ deplace(dG: double, dD: double): void
+        {abstract}+ getModules(): List<IModule<?>>
+        {abstract}+ <T extends IModule<?>> getModules(c: Class<? extends T>): List<T>
+        {abstract}+ getStrategie(): IStrategie
+        {abstract}+ isNettoie(): boolean
+        {abstract}+ setNettoie(etat: boolean): void
+        {abstract}+ getPosition(): Point2D
+        {abstract}+ getOrientation(): double
+    }
+    IRobot ..|> ICollisionable
+    IRobot ..|> IActuallisable
+
+    class Obstacle {
+        + Obstacle(forme: Forme)
+        + gereCollision(element: ICollisionable) : boolean
     }
     Obstacle --|> Element
     Obstacle ..|> ICollisionable
 
     class Robot {
-        # direction : Vecteur2D
-        # vitesse : double
-        # modules : List<IModule<?>>
-        # IStrategie : IStrategie
-
-        + Robot(forme : Forme, modules : Collection<? extends IModule<?>>, IStrategie : IIStrategie, vitesse double)
-
-        + getPosition() : Position
-        + deplace(dl : double , dr : double , ecartRoues : double) : Position
-        + getVitesse() : double
-        + setVitesse(v : double) : void
-        + getIStrategie() : IStrategie
-        + getModules() :  List<IModule<?>>
-        + <T extends IModule<?>> getModules(c : Class<T>) :  List<T>
-        + actualise(simulation : Simulation) : boolean
-        + gereCollision(element : IElement) : boolean
+        # modules: List<IModule<?>>
+        # strategie: IStrategie
+        # theta: double
+        # ecartRoues: double
+        # nettoie: boolean
+        # dernierePos: Point2D
+        # derniereTheta: double
+        + Robot(forme: Forme, modules: Collection<? extends IModule<?>>, strategie: IIStrategie, theta: double, ecartRoues: double)
+        + actualise(simulation: Simulation): void
+        + deplace(dG: double, dD: double): void
+        + gereCollision(element: ICollisionable): void
+        + getModules():  List<IModule<?>>
+        + <T extends IModule<?>> getModules(c : Class<? extends T>) : List<T>
+        + isNettoie(): boolean
+        + rotation(angle: double, centre: Point2D): void
+        + setNettoie(etat: boolean): void
+        + translation(deplacement: Vecteur2D): void
     }
     Robot --|> Element
-    Robot ..|> ICollisionable
+    Robot ..|> IRobot
     Robot  "1" *-- "0..n" IModule
     Robot  "1" *-- "1" IStrategie
-    Robot "1" *-- "1" Vecteur2D
+    Robot "1" *-- "1" Point2D
 
     class Tache {
-        + Tache(f : Forme)
-
-        + actualise(simulation : Simulation) : boolean
+        + Tache(fomre: Forme)
     }
     Tache --|> Element
     Tache ..|> INettoyable
@@ -218,38 +249,240 @@ skinparam linetype ortho
     CapteurLaser ..|> IModule
 ' }
 
-' package "strategie" {
-    interface IStrategie {
-        {abstract} + update(r : Robot) : boolean
+' package "exception" {
+    class NoIntersectionException {
+        - forme: Forme
+        + NoIntersectionException(f: Forme)
+        + NoIntersectionException(f: Forme, msg: String)
+        + NoIntersectionException(message: String, cause: Throwable, forme: Forme)
     }
+    NoIntersectionException -|> Exception
 
-    class StrategieAleatoire
-    StrategieAleatoire ..|> IStrategie
-
-    class StrategieChemin
-    StrategieChemin ..|> IStrategie
-
-    class StrategieSuiveurMurs
-    StrategieSuiveurMurs ..|> IStrategie
+    class NonRelatifException {
+        - forme: Forme
+        + NonRelatifException(f: Forme)
+        + NonRelatifException(f: Forme, msg: String)
+    }
+    NonRelatifException -|> Exception
 ' }
 
-interface IActuallisable {
-    {abstract} + actualise(simulation : Simulation) : boolean
+' package "strategie" {
+    interface IStrategie {
+        {abstract} + decide(robot: IRobot): void
+    }
+
+    class StrategieAleatoire {
+        - angleCible: double
+        - distArr: double
+        - kRot: double
+        - etat: Etat
+        + StrategieAleatoire()
+        + decide(robot: IRobot): void
+    }
+    StrategieAleatoire ..|> IStrategie
+
+    class StrategieChemin {
+        + StrategieChemin()
+        + decide(robot: IRobot): void
+    }
+    StrategieChemin ..|> IStrategie
+
+    class StrategieSuiveurMurs{
+        + StrategieSuiveurMurs()
+        + decide(robot: IRobot): void
+    }
+    StrategieSuiveurMurs ..|> IStrategie
+'}
+
+'package "vue" {
+    'package "element" {
+        ' package "module" {
+            class CapteurContactDessinable {
+                - changementCouleur: LocalTime
+                - derniereCouleur: Color
+                + CapteurContactDessinable(forme: Forme)
+                + dessine(graphics2D: Graphics2D, echelle: double): void
+            }
+            CapteurContactDessinable -|> CapteurContact
+            CapteurContactDessinable ..|> IDessinable
+
+            class CapteurDessinable<T> {
+                - capteur: IModule<T>
+                - plein: boolean
+                + CapteurDessinable(capteur: IModule<T>, plein: boolean)
+                + actualise(simulation: Simulation, appeleur: Object)
+                + dessine(graphics2d: Graphics2D, echelle: double)
+                + getForme(): Forme
+                + getInfo(): T
+                + rotation(angle: double, centre: Point2D): void
+                + translation(deplacement: Vecteur2D): void
+            }
+            CapteurDessinable ..|> IModule
+            CapteurDessinable ..|> IDessinable
+
+            class CapteurSaleteDessinable {
+                - changementCouleur: LocalTime
+                - derniereCouleur: Color
+                + CapteurSaleteDessinable(forme: Forme)
+                + dessine(graphics2D: Graphics2D, echelle: double): void
+            }
+            CapteurSaleteDessinable -|> CapteurSalete
+            CapteurSaleteDessinable ..|> IDessinable
+        ' }
+
+        class ObstacleDessinable {
+            - couleur: Color
+            + ObstacleDessinable(forme: Forme, couleur: Color)
+            + dessine(graphics2D: Graphics2D, echelle: double): void
+        }
+        ObstacleDessinable -|> Obstacle
+        ObstacleDessinable ..|> IDessinable
+
+        class RobotDessinable {
+            + RobotDessinable(forme: Forme, couleur: Color)
+            + dessine(graphics2D: Graphics2D, echelle: double): void
+            + dessineDirection(graphics2D: Graphics2D, echelle: double): void
+        }
+        RobotDessinable -|> Robot
+        RobotDessinable ..|> IDessinable
+
+        class TacheDessinable {
+            - couleur: Color
+            + TacheDessinable(forme: Forme, couleur: Color)
+            + dessine(graphics2D: Graphics2D, echelle: double): void
+        }
+        TacheDessinable -|> Tache
+        TacheDessinable ..|> IDessinable
+    '}
+    'package "forme" {
+        class ArcDeCercleDessinateur {
+            + ArcDeCercleDessinateur()
+            + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: ArcDeCercle): void
+        }
+        ArcDeCercleDessinateur ..|> IDessinateur
+
+        class CercleDessinateur {
+            + CercleDessinateur()
+            + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Cercle): void
+        }
+        CercleDessinateur ..|> IDessinateur
+
+        class FormeDessinateur {
+            + FormeDessinateur()
+            + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Forme): void
+        }
+        FormeDessinateur ..|> IDessinateur
+
+        class GeometrieDessinateurFactory {
+            +{static} instance: GeometrieDessinateurFactory
+            - GeometrieDessinateurFactory()
+            + arcDeCercle(): IDessinateur<ArcDeCercle>
+            + cercle(): IDessinateur<Cercle>
+            + forme(): IDessinateur<Forme>
+            + polygone(): IDessinateur<Polygone>
+            + rectangle(): IDessinateur<Rectangle>
+            + segment(): IDessinateur<Segment>
+        }
+
+        class PolygonDessinateur {
+            + PolygonDessinateur()
+            + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Polygone): void
+        }
+        PolygonDessinateur ..|> IDessinateur
+
+        class RectangleDessinateur {
+            + RectangleDessinateur()
+            + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Rectangle): void
+        }
+        RectangleDessinateur ..|> IDessinateur
+
+        class SegmentDessinateur {
+            + SegmentDessinateur()
+            + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: Segment): void
+            - versPositionEnPixels(p: Point2D, echelle: double): int[]
+        }
+        SegmentDessinateur ..|> IDessinateur
+    '}
+
+    class ElementDessinableFactory {
+        + capteurContact(forme: Forme): IModule<Boolean>
+        + capteurSalete(forme: Forme): IModule<Boolean>
+        + obstacle(forme: Forme): ICollisionable
+        + robot(forme: Forme, strategie: IStrategie, orientation: double, ecartRoues: double, modules: IModule<?>...): IRobot
+        + tache(forme: Forme)
+    }
+    ElementDessinableFactory -|> ElementFactory
+
+    interface IDessinable {
+        +{abstract} dessine(graphics2D: Graphics2D, echelle: double): void
+    }
+
+    interface IDessinateur<T> {
+        + dessine(graphics2D: Graphics2D, echelle: double, rempli: boolean, element: T): void
+    }
+
+    class SimulationPanel {
+        - simulation: Simulation
++ SimulationPanel(simulation: Simulation)
+- dessineElement(e: IElement, graphics2D: Graphics2D, echelle: double): void
+- echelle(): double
++ notifie(source: IObservable<Simulation>): void
++ void paint(g: Graphics)
+    }
+    SimulationPanel -|> JPanel
+    SimulationPanel ..|> IObservateur
+
+'}
+
+abstract ElementFactory {
+    {static}+ getInstance(): ElementFactory
+    {abstract}+ capteurContact(forme: Forme): IModule<Boolean>
+    {abstract}+ capteurSalete(forme: Forme): IModule<Boolean>
+    {abstract}+ obstacle(forme: Forme): ICollisionable
+    {abstract}+ robot(forme: Forme, strategie: IStrategie, orientation: double, ecartRoues: double, modules: IModule<?>...): IRobot
+    {abstract}+ tache(forme: Forme)
+}
+
+interface IObservable<T> {
+    {abstract}+ ajouteObservateur(obs: IObservateur<T>): void
+    {abstract}+ estObserve(obs: IObservateur<T>): boolean
+    {abstract}+ retireObservateur(obs: IObservateur<T>): void
+    {abstract}+ notifierTous(): void
+}
+
+interface IObservateur<T> {
+    {abstract}+ notifie(source: IObservable<T>): void
 }
 
 class Simulation {
-    # elems : ArrayList<Element>
+    {static}+ T: double
+    - observateurs: List<IObservateur<Simulation>>
+    # elements: ArrayList<Element>
+    # bordures: ICollisionable
 
-    + getCollisionable() : List<Collisionable>
-    + getElems(c : Class<T>) : List<T>
-    + play() : void
-    + pause() : void
-    + quit() : void
-    # update() : void
-    # run() : void
+    + Simulation(bordures: ICollisionable, elements: Collection<? extends IElement>)
+    - actualise(): void
+    + ajouteObservateur(obs: IObservateur<Simulation>): void
+    + estObserve(obs: IObservateur<Simulation>): boolean
+    + getBordures(): ICollisionable
+    + getElements(): List<IElement>
+    + <T extends IElement>getElements(c : Class<? extends T>) : List<T>
+    + lnacer(): void
+    + notifierTous(): void
+    + retireObservateur(obs: IObservateur<Simulation>): void
 }
-Simulation ..|> Runnable
+Simulation ..|> IObservable
 Simulation "0..1" *-- "0..n" IElement
 
-interface Runnable
+class SimulationStdBuilder {
+    - elements: List<IElement>
+    - factory: ElementFactory
+    - bordures: ICollisionable
+    + SimulationStdBuilder(factory: ElementFactory)
+    + ajouteElement(element: IElement): void
+    + ajouteObstacleCirculaire(x: double, y: double, diametre: double): void
+    + ajouteRobotStandard(x: double, y: double, orientation: double, strategie: IStrategie): void
+    + ajouteTacheCirculaire(x: double, y: double, diametre: double): void
+    + build(): Simulation
+}
 @enduml
