@@ -172,7 +172,8 @@ public class Robot extends Element implements IRobot {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(),
+        int superCode = super.hashCode();
+        return Objects.hash(superCode,
                             this.modules,
                             this.strategie,
                             this.theta,
@@ -212,7 +213,7 @@ public class Robot extends Element implements IRobot {
                ", theta=" +
                this.theta +
                ", " +
-               "toString()=" +
+               "super.toString()=" +
                super.toString() +
                "]";
     }
