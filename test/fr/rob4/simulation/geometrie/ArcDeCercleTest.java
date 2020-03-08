@@ -35,12 +35,21 @@ class ArcDeCercleTest {
 
 	@Test
 	void testRotationDoublePoint2D() {
-		fail("Not yet implemented");
+		ArcDeCercle adc = new ArcDeCercle(0, 0, 1, -Math.PI/6, Math.PI/6);
+		ArcDeCercle adc2 = adc.rotation(Math.PI/2);
+		assertEquals(Math.PI/3, adc2.getOuverture(), 1e-10);
+		assertEquals(2*Math.PI/6, adc2.ang1, 1e-10);
+		assertEquals(4*Math.PI/6, adc2.ang2, 1e-10);
+		
 	}
 
 	@Test
 	void testGetOrientation() {
-		fail("Not yet implemented");
+		ArcDeCercle adc = new ArcDeCercle(0, 0, 1, -Math.PI/6, Math.PI/6);
+		assertEquals(0, adc.getOrientation(), 1e-10);
+		
+		ArcDeCercle adc2 = new ArcDeCercle(0, 0, 1, 5*Math.PI/6, -5*Math.PI/6);
+		assertEquals(Math.PI, adc2.getOrientation(), 1e-10);
 	}
 
 	@Test

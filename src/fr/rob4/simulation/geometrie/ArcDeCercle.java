@@ -123,6 +123,11 @@ public class ArcDeCercle extends Cercle {
 				"Cet arc de cercle n'a pas de collision. Ou la forme n'est pas connue.");
 	}
 
+	@Override 
+	public ArcDeCercle rotation(double alpha) {
+		return this.rotation(alpha, centre);
+	}
+	
 	@Override
 	public ArcDeCercle rotation(double alpha, Point2D p) {
 		double newA1 = Outil.normalize_angle(this.ang1 + alpha);

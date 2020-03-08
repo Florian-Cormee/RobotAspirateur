@@ -113,6 +113,11 @@ public class Cercle extends Forme {
 	public Rectangle getDimension() {
 		return new Rectangle(this.centre, this.rayon * 2, this.rayon * 2);
 	}
+	
+	@Override
+	public Cercle rotation(double alpha) {
+		return this.rotation(alpha, centre);
+	}
 
 	@Override
 	public Cercle rotation(double alpha, Point2D p) {

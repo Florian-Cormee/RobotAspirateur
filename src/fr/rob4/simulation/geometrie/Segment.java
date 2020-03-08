@@ -116,13 +116,12 @@ public class Segment extends Forme {
 		double h = Math.max(pa.y, pb.y) - Math.min(pa.y, pb.y);
 		return new Rectangle(this.centre, lar, h);
 	}
+	
+	@Override
+	public Segment rotation(double alpha) {
+		return this.rotation(alpha, centre);
+	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see fr.rob4.simulation.geometrie.Forme#rotation(double,
-	 * fr.rob4.simulation.geometrie.Point2D)
-	 */
 	@Override
 	public Segment rotation(double alpha, Point2D p) {
 		return new Segment(this.a.rotation(alpha, p), this.b.rotation(alpha, p));

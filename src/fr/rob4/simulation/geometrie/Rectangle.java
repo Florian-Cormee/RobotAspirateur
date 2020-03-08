@@ -131,6 +131,11 @@ public class Rectangle extends Forme {
 	public Rectangle getDimension() {
 		return this;
 	}
+	
+	@Override
+	public Polygone rotation(double alpha) {
+		return this.rotation(alpha, centre);
+	}
 
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {

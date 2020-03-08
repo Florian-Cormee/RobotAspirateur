@@ -112,12 +112,11 @@ public class Polygone extends Forme {
 		return new Rectangle(this.centre, xMax - xMin, yMax - yMin);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see fr.rob4.simulation.geometrie.Forme#rotation(double,
-	 * fr.rob4.simulation.geometrie.Point2D)
-	 */
+	@Override
+	public Polygone rotation(double alpha) {
+		return this.rotation(alpha, centre);
+	}
+	
 	@Override
 	public Polygone rotation(double alpha, Point2D p) {
 		List<Point2D> newPoints = new ArrayList<>();
