@@ -7,7 +7,7 @@ Il a pour objectif de mettre en pratique nos cours sur la programmation object e
 
 ### Auteurs
 - Florentin BEROUJON
-- Florain CORMEE
+- Florian CORMEE
 
 ## Lancer la simulation
 
@@ -23,7 +23,7 @@ Lancer le programme :D
 
 L'environement du robot présente plusieurss caractéristiques:
 
-- Dimension de 4m x 4m.
+- Dimension de 4 x 4 m.
 - Tous les **obstacles** sont circulaires (de taille variée) sauf les murs de la simulation.
 - La pièce comporte des **tâches** circulaires, de taille inférieure à celle du robot aspirateur. Ces tâches représentent des zones de saleté.
 
@@ -59,7 +59,7 @@ Se rendre dans le package:
 
 > fr.rob4.simulation.element.module
 
-Créer une nouvelle classe qui *implements* l'interface **IModule**.
+Créer une nouvelle classe qui *implemente* l'interface **IModule**.
 
 **NB:** Si le robot doit impérativement posséder ce nouveau capteur, il est possible de modifier la méthode:
 
@@ -91,7 +91,7 @@ Premièrement se placer dans le package:
 
 > fr.rob4.simulation.strategie
 
-Créer ensuite une nouvelle classe qui *implements* l'interface **IStratégie**. Classe à remplir avec toutes les méthodes nécessaires à la strategie souhaitée. 
+Créer ensuite une nouvelle classe qui *implemente* l'interface **IStratégie**. Classe à remplir avec toutes les méthodes nécessaires à la strategie souhaitée. 
 
 **IMPORTANT:** la stratégie n'est pas sensé avoir accès à la **simulation**. Les **capteurs** font le pont entre les deux.
 
@@ -99,7 +99,7 @@ Créer ensuite une nouvelle classe qui *implements* l'interface **IStratégie**.
 
 La simulation s' update toutes les 0,01s.
 
-A chaque itération, la simulation s'actualise. Puis elle demande à tous les éléments **actualisables** (inclus le robot, la startégie et les capteurs) de s'actualiser aussi. Elle demande les collisions entre tous les éléments **collisionnables**, si il y a bien une collision entre 2 de ces éléments, la simulation demande à chacun de gérer la collision. Ensuite, on s'intéresse au robot, si le **capteur de saleté** à repérer une zone de saleté, cette dernière est supprimée de la simulation.
+A chaque itération, la simulation s'actualise. Puis elle demande à tous les éléments **actualisables** (inclus le robot, la startégie et les capteurs) de s'actualiser aussi. Elle demande les collisions entre tous les éléments **collisionnables**, s'il y a bien une collision entre 2 de ces éléments, la simulation demande à chacun de gérer la collision. Ensuite, on s'intéresse au robot, si le **capteur de saleté** à repérer une zone de saleté, cette dernière est supprimée de la simulation.
 
 Cette boucle se réitère jusqu'à ce qu'il n'y ai plus d'éléments **INettoyable** dans la simulation.
 
@@ -114,7 +114,7 @@ Vu la compléxité de l'UML, il a été jugé non pertinant de mentionner les ge
 - Un affichage des éléments
 - Une stratégie aléatoire (avec machine à état embarquée)
 - La possibilité d'implémenter de nouvelle startégies
-- La possibilité d'implémenter de nouveaux capteur
+- La possibilité d'implémenter de nouveaux capteurs
 - Abstraction des types via un **pattern abstract factory**
 - Gestion des collisions avec calcul du point d'intersection.
 - Mise à jour de l'affichage des capteurs lorsqu'ils s'activent  (changment de couleur)
